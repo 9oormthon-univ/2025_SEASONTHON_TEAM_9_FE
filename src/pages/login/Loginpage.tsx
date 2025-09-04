@@ -1,9 +1,9 @@
 import styled from "styled-components"
-
+import { useNavigate } from "react-router-dom";
 
 export default function Loginpage() {
 
-
+    const navigate = useNavigate();
 
     return <Container>
         <Imagecontainer></Imagecontainer>
@@ -12,7 +12,7 @@ export default function Loginpage() {
         <Bar1>비밀번호</Bar1>
         <Inputbar placeholder="비밀번호를 입력해주세요" type="password"></Inputbar>
         <Btncontainer>
-            <Btn>회원가입</Btn>
+            <Btn onClick={()=>{navigate(`/signup`, { replace: false });}}>회원가입</Btn>
             <Btn style={{ marginLeft: "4%" }}>로그인</Btn>
         </Btncontainer>
         <div style={{marginTop:"30px",textAlign:"center",color:"#1E2024A8"}}>아이디/비밀번호 찾기</div>
