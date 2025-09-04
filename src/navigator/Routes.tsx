@@ -7,6 +7,7 @@ import Wordpage from "../pages/Wordpage";
 import Communitypage from "../pages/Communitypage";
 import Contentspage from "../pages/Contentspage";
 import Homepage from "../pages/Homepage";
+import Loginpage from "../pages/Loginpage";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -31,6 +32,10 @@ const routes = createBrowserRouter([
         {
             path:"contents",
             element:<Contentspage/>
+        },
+        {
+            path:"login",
+            element:<Loginpage/>
         }
     ]
   },

@@ -2,19 +2,22 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import NavContext from "./Navcontext";
-import Homepage from "./Homepage";
-import Wordpage from "./Wordpage";
-import Contentspage from "./Contentspage";
-import Communitypage from "./Communitypage";
-import Searchpage from "./Searchpage";
 
 const Mainpage = () => {
+    const { pathname } = useLocation();
+    const lastSegment = pathname.split("/").pop();
 
-    const [btnclick, setbtnclick] = useState<[Boolean, Boolean,Boolean,Boolean]>([false, false, false, false]);
+    const [btnclick, setbtnclick] = useState<[Boolean, Boolean, Boolean, Boolean]>([false, false, false, false]);
     const navigate = useNavigate();
-    const [homeview,sethomeview] = useState(true)
 
     // 현재 경로에 맞춰 버튼 상태 동기화
+    useEffect(() => {
+        if (lastSegment === "word") setbtnclick([true, false, false, false]);
+        else if (lastSegment === "contents") setbtnclick([false, true, false, false]);
+        else if (lastSegment === "community") setbtnclick([false, false, true, false]);
+        else if (lastSegment === "search") setbtnclick([false, false, false, true]);
+        else setbtnclick([false, false, false, false]);
+    }, [lastSegment]);
 
     // (필요 시) 리사이즈 리스너는 useEffect로 관리
     useEffect(() => {
@@ -29,31 +32,35 @@ const Mainpage = () => {
         const newarr: [Boolean, Boolean, Boolean, Boolean] = [false, false, false, false];
         newarr[i] = true;
         setbtnclick(newarr);
-        sethomeview(false)
+
+        // 라우트 이름을 lastSegment 기준과 동일하게 유지
+        if (i === 0) navigate(`/word`, { replace: true });
+        else if (i === 1) navigate(`/contents`, { replace: true });
+        else if (i === 2) navigate(`/community`, { replace: true });
+        else navigate(`/search`, { replace: true });
     };
 
     return (
-        <div style={{flexDirection:"column"}}>
+        <NavContext.Provider value={{ setbtnclick }}>
+          <div style={{flexDirection:"column"}}>
             <Navbar style={{justifyContent:"center"}}>
                 <div style={{position:"absolute",left:"200px"}}>이미지</div>
                 <div style={{width:"600px",height:"40px",alignItems:"center",justifyContent:"space-between",flexDirection:"row",display:"flex"}}>
-                    <Btns $clicked={btnclick[0]} onClick={()=>{btnchange(0)}}>단어</Btns>
-                    <Btns $clicked={btnclick[1]} onClick={()=>{btnchange(1)}}>콘텐츠</Btns>
-                    <Btns $clicked={btnclick[2]} onClick={()=>{btnchange(2)}}>커뮤니티</Btns>
-                    <Btns $clicked={btnclick[3]} onClick={()=>{btnchange(3)}}>검색</Btns>
+                    <Btns $clicked={btnclick[0]} onClick={()=>{window.scrollTo({ top: 0 });btnchange(0)}}>단어</Btns>
+                    <Btns $clicked={btnclick[1]} onClick={()=>{window.scrollTo({ top: 0 });btnchange(1)}}>콘텐츠</Btns>
+                    <Btns $clicked={btnclick[2]} onClick={()=>{window.scrollTo({ top: 0 });btnchange(2)}}>커뮤니티</Btns>
+                    <Btns $clicked={btnclick[3]} onClick={()=>{window.scrollTo({ top: 0 });btnchange(3)}}>검색</Btns>
 
                 </div>
-                <div style={{position:"absolute",right:"200px"}}>로그인</div>
+                <div style={{position:"absolute",right:"200px"}} onClick={()=>{navigate(`/login`, { replace: false });}}>로그인</div>
                 
             </Navbar>
-            <div style={{paddingTop:"95px"}}>
-                {homeview && <Homepage/>}
-                {btnclick[0] && <Wordpage></Wordpage>}
-                {btnclick[1] && <Contentspage></Contentspage>}
-                {btnclick[2] && <Communitypage></Communitypage>}
-                {btnclick[3] && <Searchpage></Searchpage>}
-            </div>
+            
         </div>
+            <MainContent>
+                <Outlet />
+            </MainContent>
+        </NavContext.Provider>
     );
 };
 
@@ -61,14 +68,11 @@ export default Mainpage;
 
 /* ===== styled-components ===== */
 
-const Container = styled.div`
-width:100%;
-
-`
 
 const MainContent = styled.main`
   padding-top: 95px;   /* 네비바 높이 */
-  min-height: 100dvh;
+  display: flex;
+  justify-content:center
 `;
 
 const Navbar = styled.div`
