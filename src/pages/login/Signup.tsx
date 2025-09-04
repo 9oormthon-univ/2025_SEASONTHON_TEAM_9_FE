@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function Signuppage() {
+    const navigate = useNavigate();
 
 
 
@@ -18,7 +19,7 @@ export default function Signuppage() {
         <Rules>{"(전체) 약관 동의"}</Rules>
         <Rules>{"(선택) 약관 동의"}</Rules>
         <Rules>{"(선택) 약관 동의"}</Rules>
-        <Loginbtn>로그인</Loginbtn>
+        <Loginbtn onClick={()=>{navigate(`/signupsuccess`, { replace: false });}}>로그인</Loginbtn>
     </Container>
 }
 

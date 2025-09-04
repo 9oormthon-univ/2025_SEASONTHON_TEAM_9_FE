@@ -7,8 +7,9 @@ import Wordpage from "../pages/Wordpage";
 import Communitypage from "../pages/Communitypage";
 import Contentspage from "../pages/Contentspage";
 import Homepage from "../pages/Homepage";
-import Loginpage from "../pages/Loginpage";
-import Signuppage from "../pages/Signup";
+import Loginpage from "../pages/login/Loginpage";
+import Signuppage from "../pages/login/Signup";
+import SignupSuccess from "../pages/login/SignupSuccess";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -38,9 +39,13 @@ const routes = createBrowserRouter([
             path:"login",
             element:<Loginpage/>
         },
-         {
+        {
             path:"signup",
             element:<Signuppage/>
+        },
+        {
+            path:"signupsuccess",
+            element:<SignupSuccess/>
         }
     ]
   },
