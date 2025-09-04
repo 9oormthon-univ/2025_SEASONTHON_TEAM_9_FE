@@ -44,7 +44,7 @@ const Mainpage = () => {
         <NavContext.Provider value={{ setbtnclick }}>
           <div style={{flexDirection:"column"}}>
             <Navbar style={{justifyContent:"center"}}>
-                <div style={{position:"absolute",left:"200px"}}>이미지</div>
+                <div style={{position:"absolute",left:"200px"}} onClick={()=>{navigate(`/`, { replace: false });}}>이미지</div>
                 <div style={{width:"600px",height:"40px",alignItems:"center",justifyContent:"space-between",flexDirection:"row",display:"flex"}}>
                     <Btns $clicked={btnclick[0]} onClick={()=>{window.scrollTo({ top: 0 });btnchange(0)}}>단어</Btns>
                     <Btns $clicked={btnclick[1]} onClick={()=>{window.scrollTo({ top: 0 });btnchange(1)}}>콘텐츠</Btns>
@@ -85,7 +85,7 @@ const Navbar = styled.div`
   width: 100%;
   height: 95px;
   background-color: white;
-  border-bottom: 2px solid black;
+  border-bottom: 1px solid #F0F0F9;
   z-index: 9999;
   box-sizing: border-box;
 `;
