@@ -7,9 +7,9 @@ import Wordpage from "../pages/Wordpage";
 import Communitypage from "../pages/Communitypage";
 import Contentspage from "../pages/Contentspage";
 import Homepage from "../pages/Homepage";
-import Loginpage from "../pages/login/Loginpage";
-import Signuppage from "../pages/login/Signup";
-import SignupSuccess from "../pages/login/SignupSuccess";
+import Loginpage from "../features/login/Loginpage";
+import Signuppage from "../features/login/Signup";
+import SignupSuccess from "../features/login/SignupSuccess";
 const routes = createBrowserRouter([
   {
     path: "/",
