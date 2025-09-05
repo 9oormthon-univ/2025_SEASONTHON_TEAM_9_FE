@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { TokenReq } from "../api/axiosInstance"; // 경로 맞게 import
-import NavContext from "./Navcontext";
+import { TokenReq } from "@/api/axiosInstance"; // 경로 맞게 import
 import styled from "styled-components";
-import bookmark_default from "../assets/bookmarkicon/bookmark_default.png";
-import bookmark_fill from "../assets/bookmarkicon/bookmark_fill.png";
+import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
+import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
+import ContentCard from "@/components/ContentCard";
 
 type Content = {
   title: string;
@@ -60,7 +60,7 @@ export default function Contentspage() {
 
   const [contentsdata, setcontentsdata] = useState<Content[]>(datas);
 
-  const [detaildatas, setdetaildatas] = useState<Content | null>(null); // ✅ null로 초기화
+  const [detaildatas, setdetaildatas] = useState<Content | null>(null);
 
   async function fetchData() {
     try {
@@ -83,41 +83,7 @@ export default function Contentspage() {
         <Title>타이틀</Title>
         <Gridcontainer>
           {contentsdata.map((items, index) => (
-            <div
-              style={{
-                flexDirection: "column",
-                display: "flex",
-                height: "250px",
-              }}
-              key={index}
-            >
-              <Element_img
-                onClick={() => {
-                  setdetaildatas({
-                    title: items.title,
-                    writer: items.writer,
-                    date: items.date,
-                    imageurl: items.imageurl,
-                    tags: items.tags,
-                    discription: items.discription,
-                    bookmarking: items.bookmarking,
-                  });
-                  setselect(true);
-                }}
-              ></Element_img>
-              <Element_title>
-                <text>{items.title}</text>
-                <img
-                  src={items.bookmarking ? bookmark_fill : bookmark_default}
-                  style={{ position: "absolute", right: "10px" }}
-                ></img>
-              </Element_title>
-              <Element_tagbar>
-                {items.tags.map((items2, index) => (
-                  <Element_tags key={index}>{items2}</Element_tags>
-                ))}
-              </Element_tagbar>
-            </div>
+            <ContentCard item={items} onSelect={setdetaildatas} />
           ))}
         </Gridcontainer>
       </ContentsContainer>

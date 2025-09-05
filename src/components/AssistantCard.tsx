@@ -1,0 +1,102 @@
+import styled from "styled-components";
+import Vectoricon from "@/assets/Vector.png";
+import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
+import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
+
+interface CardProps {
+  name: string;
+  bookmarking: boolean;
+  tags: string[];
+}
+
+export default function AssistantCard({ name, bookmarking, tags }: CardProps) {
+  return (
+    <CardWrapper>
+      <Title>
+        <span>{name}</span>
+        <Bookmark
+          src={bookmarking ? bookmark_fill : bookmark_default}
+          alt="bookmark"
+        />
+      </Title>
+
+      <TagBar>
+        {tags.map((tag, i) => (
+          <Tag key={i}>{tag}</Tag>
+        ))}
+      </TagBar>
+
+      <ActionButton>
+        <span>단어명</span>
+        <img src={Vectoricon} alt="vector" />
+      </ActionButton>
+    </CardWrapper>
+  );
+}
+
+const CardWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 180px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 2px 0px #00000033;
+`;
+
+const Title = styled.div`
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  padding: 0 10px;
+
+  span {
+    position: absolute;
+    left: 10px;
+    font-weight: 600;
+  }
+`;
+
+const Bookmark = styled.img`
+  position: absolute;
+  right: 25px;
+`;
+
+const TagBar = styled.div`
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 0 10px;
+`;
+
+const Tag = styled.div`
+  padding: 2px 12px;
+  background-color: #f0f0f9;
+  border-radius: 10px;
+  color: #5f9ceb;
+  font-weight: 500;
+`;
+
+const ActionButton = styled.div`
+  margin: 20px 10px 0;
+  height: 60px;
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: 10px;
+  font-size: 18px;
+  background-color: #f7f8fc;
+  color: #1e202457;
+
+  &:hover {
+    background-color: #021122;
+    color: #fff;
+  }
+`;
