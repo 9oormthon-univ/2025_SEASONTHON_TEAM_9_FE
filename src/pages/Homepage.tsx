@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
-import NavContext from "./Navcontext";
 import Searchicon from "@/assets/Searchicon.png";
 import Vectoricon from "@/assets/Vector.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
