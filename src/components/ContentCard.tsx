@@ -4,13 +4,13 @@ import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 
 export interface ContentItem {
-  id: number;
+  id: string;
   title: string;
   writer: string;
   date: string;
-  imageurl: string;
+  imageUrl: string;
   tags: string[];
-  discription: string;
+  description: string;
   bookmarking: boolean;
 }
 

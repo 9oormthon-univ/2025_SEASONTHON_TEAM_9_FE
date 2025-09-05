@@ -9,26 +9,34 @@ import AssistantCard from "../components/AssistantCard";
 const tags = ["프론트엔드", "백엔드", "리액트", "인공지능"];
 
 type RelationWord = {
+  id: string;
   name: string;
   tags: string[];
   bookmarking: boolean;
+  definition: string;
 };
 
 const datas: RelationWord[] = [
   {
+    id: "1",
     name: "프론트엔드",
     tags: ["리액트", "플러터", "코틀린"],
     bookmarking: true,
+    definition: "",
   },
   {
+    id: "2",
     name: "백엔드",
     tags: ["nodejs", "CI/CD", "스레드"],
     bookmarking: false,
+    definition: "",
   },
   {
+    id: "3",
     name: "AI",
     tags: ["트랜스포머", "GPT", "인공지능"],
     bookmarking: true,
+    definition: "",
   },
 ];
 
@@ -100,9 +108,11 @@ export default function Homepage() {
         {datas.map((items, index) => (
           <AssistantCard
             key={index}
+            id={items.id}
             name={items.name}
             bookmarking={items.bookmarking}
             tags={items.tags}
+            definition={items.definition}
           />
         ))}
       </Gridcontainer>

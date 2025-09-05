@@ -14,23 +14,7 @@ import SortIcon from "@/assets/word/sort.svg";
 import FilterIcon from "@/assets/word/filter.svg";
 import AssistantCard from "@/components/AssistantCard";
 import { TokenReq } from "@/api/axiosInstance";
-
-type TermTag = { id: string; name: string };
-type Term = {
-  id: string;
-  nameKr: string;
-  nameEn: string;
-  definition: string;
-  imgUrl: string;
-  tags: TermTag[];
-};
-
-type Word = {
-  id: string;
-  name: string;
-  bookmarking: boolean;
-  tags: string[];
-};
+import type { Term, Word } from "@/types/type";
 
 const categories = ["전체", "UI/UX", "Frontend"];
 

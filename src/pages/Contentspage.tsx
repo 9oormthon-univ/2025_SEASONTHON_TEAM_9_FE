@@ -7,57 +7,57 @@ import styled from "styled-components";
 import Bg from "@/components/Banner";
 
 type Content = {
+  id: string;
   title: string;
-  imageurl: string;
+  imageUrl: string;
   tags: string[];
   bookmarking: boolean;
   writer: string;
   date: string;
-  discription: string;
+  description: string;
 };
 
 const datas: Content[] = [
   {
-    id: 1,
+    id: "1",
     title: "프론트엔드",
-    imageurl: "s",
+    imageUrl: "s",
     tags: ["개발", "디자인", "리액트"],
     bookmarking: false,
     writer: "홍길동",
     date: "2025-09-04",
-    discription: "sd",
+    description: "sd",
   },
   {
-    id: 2,
+    id: "2",
     title: "프론트엔드",
-    imageurl: "s",
+    imageUrl: "s",
     tags: ["개발", "디자인", "리액트"],
     bookmarking: false,
     writer: "홍길동",
     date: "2025-09-04",
-    discription: "sd",
+    description: "sd",
   },
   {
-    id: 3,
+    id: "3",
     title: "프론트엔드",
-    imageurl: "s",
+    imageUrl: "s",
     tags: ["개발", "디자인", "리액트"],
     bookmarking: true,
     writer: "홍길동",
     date: "2025-09-04",
-    discription: "sd",
+    description: "sd",
   },
   {
-    id: 4,
+    id: "4",
     title: "프론트엔드",
-    imageurl: "s",
+    imageUrl: "s",
     tags: ["개발", "디자인", "리액트"],
     bookmarking: false,
     writer: "홍길동",
     date: "2025-09-04",
-    discription: "sd",
+    description: "sd",
   },
-  // ...
 ];
 
 export default function Contentspage() {
@@ -139,7 +139,7 @@ export default function Contentspage() {
           }}
         ></div>
         <Detail_image></Detail_image>
-        <Detail_discription>{detaildatas?.discription}</Detail_discription>
+        <Detail_discription>{detaildatas?.description}</Detail_discription>
         <div style={{ marginBottom: "200px" }}></div>
       </Detail_container>
     </Container>

@@ -52,9 +52,11 @@ export default function AssistantCard({
 const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 180px;
-  border-radius: 5px;
+  height: 151px;
+  width: 260px;
+  border-radius: 20px;
   box-shadow: 0px 0px 2px 0px #00000033;
+  padding: 10px;
 `;
 
 const Title = styled.div`
@@ -98,7 +100,7 @@ const Tag = styled.div`
 
 const ActionButton = styled.button`
   margin: 20px 10px 0;
-  height: 60px;
+  height: 45px;
   padding: 0 12px;
 
   display: flex;
@@ -109,6 +111,9 @@ const ActionButton = styled.button`
   font-size: 18px;
   background-color: #f7f8fc;
   color: #1e202457;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
     background-color: #021122;

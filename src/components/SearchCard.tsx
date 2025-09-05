@@ -3,6 +3,7 @@ import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 
 type AssistantCardProps = {
+  id: string;
   title: string;
   bookmarking: boolean;
   description: string;
@@ -11,6 +12,7 @@ type AssistantCardProps = {
 };
 
 export default function SearchCard({
+  id,
   title,
   bookmarking,
   description,
@@ -51,7 +53,7 @@ export default function SearchCard({
 //
 
 const CardWrapper = styled.div`
-  width: 780px;
+  width: 100%;
   justify-self: start;
   box-shadow: 0 0 0 2px #c8d6e8;
   border-radius: 25px;

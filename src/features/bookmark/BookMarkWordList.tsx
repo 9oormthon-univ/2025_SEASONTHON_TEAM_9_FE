@@ -7,10 +7,11 @@ export default function BookMarkWordList() {
   const [tab, setTab] = useState(0);
 
   const words = Array.from({ length: 9 }).map((_, i) => ({
-    id: i,
+    id: String(i),
     name: `단어명`,
     bookmarking: i % 2 === 0,
     tags: ["태그", "태그", "태그"],
+    definition: "",
   }));
 
   const categories = ["카테고리", "카테고리", "카테고리"];
@@ -55,10 +56,12 @@ export default function BookMarkWordList() {
       <CardGrid>
         {words.map((w) => (
           <AssistantCard
+            id={w.id}
             key={w.id}
             name={w.name}
             bookmarking={w.bookmarking}
             tags={w.tags}
+            definition={w.definition}
           />
         ))}
       </CardGrid>
