@@ -2,8 +2,8 @@
   "files": [],
 
   "compilerOptions": {
-    "types": ["vite/client", "vitest/globals"],
-    "baseUrl": "./",
+    "types": ["vite/client"],
+    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
       "@assets/*": ["src/assets/*"],
@@ -19,7 +19,6 @@
       "@features/*": ["src/features/*"]
     }
   },
-
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }

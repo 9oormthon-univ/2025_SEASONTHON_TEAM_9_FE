@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import NavContext from "./Navcontext";
-import Searchicon from "../assets/Searchicon.png";
-import Vectoricon from "../assets/Vector.png";
-import bookmark_default from "../assets/bookmarkicon/bookmark_default.png";
-import bookmark_fill from "../assets/bookmarkicon/bookmark_fill.png";
+import Searchicon from "@/assets/Searchicon.png";
+import Vectoricon from "@/assets/Vector.png";
+import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
+import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
+import AssistantCard from "../components/AssistantCard";
 
 const tags = ["프론트엔드", "백엔드", "리액트", "인공지능"];
 
@@ -98,35 +99,12 @@ export default function Homepage() {
       <Bar>연관단어 제시 텍스트</Bar>
       <Gridcontainer>
         {datas.map((items, index) => (
-          <div
-            style={{
-              flexDirection: "column",
-              display: "flex",
-              height: "180px",
-              borderRadius: "5px",
-              boxShadow: "0px 0px 2px 0px #00000033",
-            }}
+          <AssistantCard
             key={index}
-          >
-            <Element_title>
-              <text style={{ position: "absolute", left: "10px" }}>
-                {items.name}
-              </text>
-              <img
-                src={items.bookmarking ? bookmark_fill : bookmark_default}
-                style={{ position: "absolute", right: "10px" }}
-              ></img>
-            </Element_title>
-            <Element_tagbar>
-              {items.tags.map((items2, index) => (
-                <Element_tags key={index}>{items2}</Element_tags>
-              ))}
-            </Element_tagbar>
-            <Element_button>
-              <text>단어명</text>
-              <img src={Vectoricon}></img>
-            </Element_button>
-          </div>
+            name={items.name}
+            bookmarking={items.bookmarking}
+            tags={items.tags}
+          />
         ))}
       </Gridcontainer>
       <div
