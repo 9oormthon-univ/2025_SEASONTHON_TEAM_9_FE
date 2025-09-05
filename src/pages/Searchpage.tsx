@@ -4,6 +4,7 @@ import Searchicon from "@/assets/Searchicon.png";
 import Vectoricon from "@/assets/Vector.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
+import SearchCard from "@/components/SearchCard";
 
 const tagname = ["단어", "이미지"];
 
@@ -123,61 +124,14 @@ export default function Searchpage() {
               );
             } else if (m.role === "assistant2") {
               return (
-                <Assistant2 key={m.id}>
-                  <div
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "600",
-                      margin: "20px 20px",
-                      position: "relative",
-                    }}
-                  >
-                    {m.title}
-                    <img
-                      src={m.bookmarking ? bookmark_fill : bookmark_default}
-                      style={{ position: "absolute", right: "20px" }}
-                    ></img>
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: "500",
-                      margin: "20px 20px",
-                    }}
-                  >
-                    {m.discription}
-                  </div>
-                  <div
-                    style={{
-                      flexDirection: "row",
-                      display: "flex",
-                      marginLeft: "20px",
-                    }}
-                  >
-                    {m.tags.map((v, i) => (
-                      <Tags key={i}>{v}</Tags>
-                    ))}
-                  </div>
-
-                  <Assistant2_secondblock>
-                    {m.comment.map((v, i) => (
-                      <div
-                        key={i}
-                        style={{
-                          color: "#1E202457",
-                          fontSize: "14px",
-                          marginLeft: "10px",
-                          padding: "10px 0px",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        {v}
-                      </div>
-                    ))}
-                  </Assistant2_secondblock>
-                  <div style={{ marginBottom: "20px" }}></div>
-                </Assistant2>
+                <SearchCard
+                  key={m.id}
+                  title={m.title}
+                  bookmarking={m.bookmarking}
+                  description={m.description}
+                  tags={m.tags}
+                  comments={m.comment}
+                />
               );
             } else if (m.role === "assistant3") {
               return <Assistant3 key={m.id}>연관단어 제시 텍스트</Assistant3>;

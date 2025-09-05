@@ -13,9 +13,8 @@ import SearchIcon from "@/assets/word/search.svg";
 import SortIcon from "@/assets/word/sort.svg";
 import FilterIcon from "@/assets/word/filter.svg";
 import AssistantCard from "@/components/AssistantCard";
-import { TokenReq } from "@/api/axiosInstance"; // axios 인스턴스 import
+import { TokenReq } from "@/api/axiosInstance";
 
-// 🔹 API 타입
 type TermTag = { id: string; name: string };
 type Term = {
   id: string;
@@ -26,7 +25,6 @@ type Term = {
   tags: TermTag[];
 };
 
-// 🔹 화면용 타입
 type Word = {
   id: string;
   name: string;
@@ -154,6 +152,7 @@ export default function WordList() {
           {words.map((w) => (
             <AssistantCard
               key={w.id}
+              id={w.id}
               name={w.name}
               bookmarking={w.bookmarking}
               tags={w.tags}
@@ -188,7 +187,6 @@ export default function WordList() {
 const Container = styled.div`
   width: 100%;
   margin: 0 auto;
-  padding: 40px 20px;
 `;
 
 const PageWrapper = styled.div`

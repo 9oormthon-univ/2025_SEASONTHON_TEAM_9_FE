@@ -67,7 +67,6 @@ const MainLayout = () => {
 export default MainLayout;
 
 const MainContent = styled.main`
-  padding-top: 95px; /* 네비바 높이 */
   display: flex;
   justify-content: center;
 `;

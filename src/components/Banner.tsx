@@ -4,7 +4,6 @@ import defaultImg from "@/assets/profile.jpg";
 const Bg = styled.div<{ src?: string }>`
   width: 100%;
   height: 400px;
-  border-radius: 10px;
   background: ${({ src }) =>
     src
       ? `url(${src}) center/cover no-repeat`

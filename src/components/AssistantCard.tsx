@@ -2,8 +2,10 @@ import styled from "styled-components";
 import Vectoricon from "@/assets/Vector.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
+import { useNavigate } from "react-router-dom";
 
 interface CardProps {
+  id: string;
   name: string;
   bookmarking: boolean;
   tags: string[];
@@ -11,11 +13,18 @@ interface CardProps {
 }
 
 export default function AssistantCard({
+  id,
   name,
   bookmarking,
   tags,
   definition,
 }: CardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/word/${id}`);
+  };
+
   return (
     <CardWrapper>
       <Title>
@@ -32,7 +41,7 @@ export default function AssistantCard({
         ))}
       </TagBar>
 
-      <ActionButton>
+      <ActionButton onClick={handleClick}>
         <span>{definition}</span>
         <img src={Vectoricon} alt="vector" />
       </ActionButton>
@@ -87,7 +96,7 @@ const Tag = styled.div`
   font-weight: 500;
 `;
 
-const ActionButton = styled.div`
+const ActionButton = styled.button`
   margin: 20px 10px 0;
   height: 60px;
   padding: 0 12px;
@@ -95,7 +104,7 @@ const ActionButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  border: none;
   border-radius: 10px;
   font-size: 18px;
   background-color: #f7f8fc;
@@ -104,5 +113,6 @@ const ActionButton = styled.div`
   &:hover {
     background-color: #021122;
     color: #fff;
+    cursor: pointer;
   }
 `;
