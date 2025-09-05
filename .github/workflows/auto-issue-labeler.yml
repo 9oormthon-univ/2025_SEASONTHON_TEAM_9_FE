@@ -1,0 +1,85 @@
+name: 'Auto Issue Labeling'
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  auto-label-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label issues based on title and body
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = issue.title.toLowerCase();
+            const body = (issue.body || '').toLowerCase();
+            const labels = [];
+
+            // Feature 라벨
+            if (title.match(/feat|feature|기능|구현/) || 
+                body.match(/기능|구현/) || 
+                title.includes('✨')) {
+              labels.push('✨ feature');
+            }
+
+            // Chore 라벨  
+            if (title.match(/chore|기타|환경설정|설정/) || 
+                body.match(/기타|환경설정|설정/) || 
+                title.includes('🌀')) {
+              labels.push('🌀 chore');
+            }
+
+            // Fix 라벨
+            if (title.match(/fix|수정|핫픽스/) || 
+                body.match(/수정|핫픽스/) || 
+                title.includes('🛠️')) {
+              labels.push('🛠️ fix');
+            }
+
+            // Bug 라벨
+            if (title.match(/bug|버그|오류|에러/) || 
+                body.match(/버그|오류|에러/) || 
+                title.includes('🐞')) {
+              labels.push('🐞 bug');
+            }
+
+            // Refactor 라벨
+            if (title.match(/refactor|리팩토링|구조\s*개선/) || 
+                body.match(/리팩토링|구조\s*개선/) || 
+                title.includes('♻️')) {
+              labels.push('♻️ refactor');
+            }
+
+            // Enhancement 라벨
+            if (title.match(/enhancement|개선|성능\s*향상/) || 
+                body.match(/개선|성능\s*향상/) || 
+                title.includes('☀️')) {
+              labels.push('☀️ enhancement');
+            }
+
+            // Question 라벨
+            if (title.match(/question|문의|질문|how\s*to/) || 
+                body.match(/문의|질문|how\s*to/) || 
+                title.includes('⁉️')) {
+              labels.push('⁉️ question');
+            }
+
+            // 라벨 적용
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: labels
+              });
+              
+              console.log(`Applied labels: ${labels.join(', ')}`);
+            } else {
+              console.log('No matching labels found');
+            }
