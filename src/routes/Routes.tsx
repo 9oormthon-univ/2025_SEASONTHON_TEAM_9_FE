@@ -13,6 +13,7 @@ import BookMarkPage from "@/pages/BookMarkPage";
 import BookMarkWordDetailPage from "@/pages/BookMarkWordDetailPage";
 import BookMarkContentDetailPage from "@/pages/BookMarkContentDetailPage";
 import BookmarkLayout from "@/components/BookmarkLayout";
+import ContentsDetailPage from "@/pages/ContentsDetailPage";
 
 const routes = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const routes = createBrowserRouter([
       {
         path: "bookmark",
         element: <BookMarkPage />,
+      },
+      {
+        path: "contents/:id",
+        element: <ContentsDetailPage />,
       },
       {
         path: "bookmark/word/:id",

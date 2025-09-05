@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { TokenReq } from "@/api/axiosInstance"; // 경로 맞게 import
-import styled from "styled-components";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import ContentCard from "@/components/ContentCard";
+import styled from "styled-components";
+import Bg from "@/components/Banner";
 
 type Content = {
   title: string;
@@ -17,6 +18,7 @@ type Content = {
 
 const datas: Content[] = [
   {
+    id: 1,
     title: "프론트엔드",
     imageurl: "s",
     tags: ["개발", "디자인", "리액트"],
@@ -26,6 +28,7 @@ const datas: Content[] = [
     discription: "sd",
   },
   {
+    id: 2,
     title: "프론트엔드",
     imageurl: "s",
     tags: ["개발", "디자인", "리액트"],
@@ -35,6 +38,7 @@ const datas: Content[] = [
     discription: "sd",
   },
   {
+    id: 3,
     title: "프론트엔드",
     imageurl: "s",
     tags: ["개발", "디자인", "리액트"],
@@ -44,6 +48,7 @@ const datas: Content[] = [
     discription: "sd",
   },
   {
+    id: 4,
     title: "프론트엔드",
     imageurl: "s",
     tags: ["개발", "디자인", "리액트"],
@@ -78,7 +83,7 @@ export default function Contentspage() {
 
   return !select ? (
     <Container>
-      <Bg></Bg>
+      <Bg />
       <ContentsContainer>
         <Title>타이틀</Title>
         <Gridcontainer>
@@ -146,12 +151,6 @@ const Container = styled.div`
   flex-direction: column;
   display: flex;
   align-items: center;
-`;
-
-const Bg = styled.div`
-  width: 100%;
-  height: 400px;
-  background-color: black;
 `;
 
 const ContentsContainer = styled.div`

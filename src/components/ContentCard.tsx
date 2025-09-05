@@ -1,8 +1,10 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 
 export interface ContentItem {
+  id: number;
   title: string;
   writer: string;
   date: string;
@@ -14,16 +16,21 @@ export interface ContentItem {
 
 interface ContentCardProps {
   item: ContentItem;
-  onSelect: (item: ContentItem) => void;
+  onSelect?: (item: ContentItem) => void; // 선택 이벤트는 optional로
 }
 
 export default function ContentCard({ item, onSelect }: ContentCardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (onSelect) {
+      onSelect(item);
+    }
+    navigate(`/contents/${item.id}`);
+  };
+
   return (
-    <CardContainer
-      onClick={() => {
-        onSelect(item);
-      }}
-    >
+    <CardContainer onClick={handleClick}>
       <ElementImg />
       <ElementTitle>
         <span>{item.title}</span>
