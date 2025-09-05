@@ -6,7 +6,7 @@ const TokenReq : AxiosInstance = axios.create({
     accept: "application/json",
   },
   withCredentials: true,
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // // 응답 인터셉터 추가
