@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   TextField,
@@ -13,23 +13,63 @@ import SearchIcon from "@/assets/word/search.svg";
 import SortIcon from "@/assets/word/sort.svg";
 import FilterIcon from "@/assets/word/filter.svg";
 import AssistantCard from "@/components/AssistantCard";
+import { TokenReq } from "@/api/axiosInstance"; // axios 인스턴스 import
 
-const categories = ["카테고리", "카테고리", "카테고리"];
+// 🔹 API 타입
+type TermTag = { id: string; name: string };
+type Term = {
+  id: string;
+  nameKr: string;
+  nameEn: string;
+  definition: string;
+  imgUrl: string;
+  tags: TermTag[];
+};
+
+// 🔹 화면용 타입
+type Word = {
+  id: string;
+  name: string;
+  bookmarking: boolean;
+  tags: string[];
+};
+
+const categories = ["전체", "UI/UX", "Frontend"];
 
 export default function WordList() {
   const [value, setValue] = useState(0);
-  const [words] = useState(
-    Array.from({ length: 12 }).map((_, i) => ({
-      name: `단어명 ${i + 1}`,
-      bookmarking: i % 2 === 0,
-      tags: ["태그", "태그", "태그"],
-    }))
-  );
+  const [words, setWords] = useState<Word[]>([]);
+
+  async function fetchTerms() {
+    try {
+      const res = await TokenReq.get<{ terms: Term[] }>("/terms", {
+        params: { ids: "13e754a0-da7a-45c8-a841-51d0da658429" },
+      });
+      console.log("✅ 응답:", res.data);
+
+      const mapped: Word[] = res.data.terms.map((t) => ({
+        id: t.id,
+        name: t.nameKr, // 카드에 보일 이름
+        bookmarking: false, // 기본값
+        definition: t.definition,
+        tags: t.tags.map((tag) => tag.name),
+      }));
+
+      setWords(mapped);
+    } catch (err) {
+      console.error("❌ 에러:", err);
+    }
+  }
+
+  useEffect(() => {
+    fetchTerms();
+  }, []);
 
   return (
     <Container>
       <Bg />
       <PageWrapper>
+        {/* 검색창 */}
         <SearchBox>
           <TextField
             placeholder="원하는 단어를 검색하세요"
@@ -50,6 +90,7 @@ export default function WordList() {
           />
         </SearchBox>
 
+        {/* 탭 & 필터 */}
         <ToolbarWrapper>
           <Tabs
             value={value}
@@ -110,16 +151,18 @@ export default function WordList() {
 
         {/* 카드 그리드 */}
         <Grid>
-          {words.map((w, i) => (
+          {words.map((w) => (
             <AssistantCard
-              key={i}
+              key={w.id}
               name={w.name}
               bookmarking={w.bookmarking}
               tags={w.tags}
+              definition={w.definition}
             />
           ))}
         </Grid>
 
+        {/* 더보기 버튼 */}
         <LoadMore>
           <Button
             variant="outlined"
@@ -137,6 +180,10 @@ export default function WordList() {
     </Container>
   );
 }
+
+//
+// 🔹 styled-components
+//
 
 const Container = styled.div`
   width: 100%;

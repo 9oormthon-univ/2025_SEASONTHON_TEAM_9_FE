@@ -7,9 +7,15 @@ interface CardProps {
   name: string;
   bookmarking: boolean;
   tags: string[];
+  definition: string;
 }
 
-export default function AssistantCard({ name, bookmarking, tags }: CardProps) {
+export default function AssistantCard({
+  name,
+  bookmarking,
+  tags,
+  definition,
+}: CardProps) {
   return (
     <CardWrapper>
       <Title>
@@ -27,7 +33,7 @@ export default function AssistantCard({ name, bookmarking, tags }: CardProps) {
       </TagBar>
 
       <ActionButton>
-        <span>단어명</span>
+        <span>{definition}</span>
         <img src={Vectoricon} alt="vector" />
       </ActionButton>
     </CardWrapper>
