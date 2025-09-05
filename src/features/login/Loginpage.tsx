@@ -1,19 +1,53 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { TokenReq } from "@/api/axiosInstance"; // axios 인스턴스 import
 
 export default function Loginpage() {
   const navigate = useNavigate();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  const handleLogin = async () => {
+    try {
+      const res = await TokenReq.post("/login", { email, password });
+
+      if (res.status === 200) {
+        console.log(res.headers);
+        const token = res.headers["authorization"];
+        TokenReq.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+        setError(null);
+        navigate(`/`, { replace: true });
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || "로그인 실패");
+    }
+  };
+
   return (
     <Container>
       <Imagecontainer></Imagecontainer>
+
       <Bar1>이메일</Bar1>
-      <Inputbar placeholder="이메일을 입력해주세요"></Inputbar>
+      <Inputbar
+        placeholder="이메일을 입력해주세요"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
       <Bar1>비밀번호</Bar1>
       <Inputbar
         placeholder="비밀번호를 입력해주세요"
         type="password"
-      ></Inputbar>
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
+      {error && <ErrorMsg>{error}</ErrorMsg>}
+
       <Btncontainer>
         <Btn
           onClick={() => {
@@ -22,18 +56,23 @@ export default function Loginpage() {
         >
           회원가입
         </Btn>
-        <Btn style={{ marginLeft: "4%" }}>로그인</Btn>
+        <Btn style={{ marginLeft: "4%" }} onClick={handleLogin}>
+          로그인
+        </Btn>
       </Btncontainer>
+
       <div
         style={{ marginTop: "30px", textAlign: "center", color: "#1E2024A8" }}
       >
         아이디/비밀번호 찾기
       </div>
+
       <div
         style={{ marginTop: "60px", textAlign: "center", color: "#1E2024A8" }}
       >
         소셜 로그인
       </div>
+
       <Btncontainer2>
         <div>카카오</div>
         <div>네이버</div>
@@ -70,7 +109,7 @@ const Inputbar = styled.input`
   border: 1px solid #1e202457;
   border-radius: 8px;
   font-size: 14px;
-  box-sizing: border-box; /* padding, border 포함해서 100% */
+  box-sizing: border-box;
 
   &:focus {
     outline: none;
@@ -110,4 +149,10 @@ const Btncontainer2 = styled.div`
   flex-direction: row;
   height: 90px;
   justify-content: space-between;
+`;
+
+const ErrorMsg = styled.div`
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
 `;

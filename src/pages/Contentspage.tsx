@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TokenReq } from "@/api/axiosInstance"; // 경로 맞게 import
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
@@ -13,7 +13,7 @@ type Content = {
   bookmarking: boolean;
   writer: string;
   date: string;
-  discription: string; // 서버 필드명이 이 철자라면 그대로 유지
+  discription: string;
 };
 
 const datas: Content[] = [
