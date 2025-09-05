@@ -1,0 +1,89 @@
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
+import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
+
+export interface ContentItem {
+  id: number;
+  title: string;
+  writer: string;
+  date: string;
+  imageurl: string;
+  tags: string[];
+  discription: string;
+  bookmarking: boolean;
+}
+
+interface ContentCardProps {
+  item: ContentItem;
+  onSelect?: (item: ContentItem) => void; // 선택 이벤트는 optional로
+}
+
+export default function ContentCard({ item, onSelect }: ContentCardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (onSelect) {
+      onSelect(item);
+    }
+    navigate(`/contents/${item.id}`);
+  };
+
+  return (
+    <CardContainer onClick={handleClick}>
+      <ElementImg />
+      <ElementTitle>
+        <span>{item.title}</span>
+        <img
+          src={item.bookmarking ? bookmark_fill : bookmark_default}
+          style={{ position: "absolute", right: "10px" }}
+          alt="bookmark"
+        />
+      </ElementTitle>
+      <ElementTagbar>
+        {item.tags.map((tag, index) => (
+          <ElementTag key={index}>{tag}</ElementTag>
+        ))}
+      </ElementTagbar>
+    </CardContainer>
+  );
+}
+
+const CardContainer = styled.div`
+  flex-direction: column;
+  display: flex;
+  height: 250px;
+  cursor: pointer;
+`;
+
+const ElementImg = styled.div`
+  width: 100%;
+  height: 150px;
+  background-color: blue;
+  border-radius: 5px;
+`;
+
+const ElementTitle = styled.div`
+  width: 100%;
+  margin-top: 10px;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+`;
+
+const ElementTagbar = styled.div`
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+`;
+
+const ElementTag = styled.div`
+  margin-right: 10px;
+  padding: 2px 12px;
+  width: auto;
+  background-color: #f0f0f9;
+  border-radius: 10px;
+`;

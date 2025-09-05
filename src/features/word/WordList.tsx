@@ -8,6 +8,7 @@ import {
   Box,
   InputAdornment,
 } from "@mui/material";
+import Bg from "@/components/Banner";
 import SearchIcon from "@/assets/word/search.svg";
 import SortIcon from "@/assets/word/sort.svg";
 import FilterIcon from "@/assets/word/filter.svg";
@@ -26,113 +27,122 @@ export default function WordList() {
   );
 
   return (
-    <PageWrapper>
-      <SearchBox>
-        <TextField
-          placeholder="원하는 단어를 검색하세요"
-          variant="outlined"
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <img
-                  src={SearchIcon}
-                  alt="search"
-                  style={{ width: 20, height: 20 }}
-                />
-              </InputAdornment>
-            ),
-            sx: { borderRadius: 10, backgroundColor: "white" },
-          }}
-        />
-      </SearchBox>
-
-      <ToolbarWrapper>
-        <Tabs
-          value={value}
-          onChange={(_, newValue) => setValue(newValue)}
-          TabIndicatorProps={{ style: { display: "none" } }}
-          sx={{
-            "& .MuiTab-root": {
-              borderRadius: "20px",
-              minHeight: "36px",
-              padding: "6px 16px",
-              marginRight: "8px",
-              backgroundColor: "#f0f0f9",
-              textTransform: "none",
-              fontWeight: 500,
-            },
-            "& .Mui-selected": {
-              backgroundColor: "#111827",
-              color: "white",
-            },
-          }}
-        >
-          {categories.map((c, i) => (
-            <Tab label={c} key={i} />
-          ))}
-        </Tabs>
-
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Button
+    <Container>
+      <Bg />
+      <PageWrapper>
+        <SearchBox>
+          <TextField
+            placeholder="원하는 단어를 검색하세요"
             variant="outlined"
-            size="small"
-            sx={{ color: "#1E2024" }}
-            endIcon={
-              <img
-                src={FilterIcon}
-                alt="filter"
-                style={{ width: 10, height: 10 }}
-              />
-            }
-          >
-            ㄱ
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            sx={{ color: "#1E2024" }}
-            endIcon={
-              <img
-                src={SortIcon}
-                alt="sort"
-                style={{ width: 10, height: 10 }}
-              />
-            }
-          >
-            가나다순
-          </Button>
-        </Box>
-      </ToolbarWrapper>
-
-      {/* 카드 그리드 */}
-      <Grid>
-        {words.map((w, i) => (
-          <AssistantCard
-            key={i}
-            name={w.name}
-            bookmarking={w.bookmarking}
-            tags={w.tags}
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <img
+                    src={SearchIcon}
+                    alt="search"
+                    style={{ width: 20, height: 20 }}
+                  />
+                </InputAdornment>
+              ),
+              sx: { borderRadius: 10, backgroundColor: "white" },
+            }}
           />
-        ))}
-      </Grid>
+        </SearchBox>
 
-      <LoadMore>
-        <Button
-          variant="outlined"
-          sx={{
-            borderRadius: "30px",
-            padding: "10px 20px",
-            color: "#ff9800",
-            borderColor: "#ff9800",
-          }}
-        >
-          단어 더 알아보기
-        </Button>
-      </LoadMore>
-    </PageWrapper>
+        <ToolbarWrapper>
+          <Tabs
+            value={value}
+            onChange={(_, newValue) => setValue(newValue)}
+            TabIndicatorProps={{ style: { display: "none" } }}
+            sx={{
+              "& .MuiTab-root": {
+                borderRadius: "20px",
+                minHeight: "36px",
+                padding: "6px 16px",
+                marginRight: "8px",
+                backgroundColor: "#f0f0f9",
+                textTransform: "none",
+                fontWeight: 500,
+              },
+              "& .Mui-selected": {
+                backgroundColor: "#111827",
+                color: "white",
+              },
+            }}
+          >
+            {categories.map((c, i) => (
+              <Tab label={c} key={i} />
+            ))}
+          </Tabs>
+
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ color: "#1E2024" }}
+              endIcon={
+                <img
+                  src={FilterIcon}
+                  alt="filter"
+                  style={{ width: 10, height: 10 }}
+                />
+              }
+            >
+              ㄱ
+            </Button>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ color: "#1E2024" }}
+              endIcon={
+                <img
+                  src={SortIcon}
+                  alt="sort"
+                  style={{ width: 10, height: 10 }}
+                />
+              }
+            >
+              가나다순
+            </Button>
+          </Box>
+        </ToolbarWrapper>
+
+        {/* 카드 그리드 */}
+        <Grid>
+          {words.map((w, i) => (
+            <AssistantCard
+              key={i}
+              name={w.name}
+              bookmarking={w.bookmarking}
+              tags={w.tags}
+            />
+          ))}
+        </Grid>
+
+        <LoadMore>
+          <Button
+            variant="outlined"
+            sx={{
+              borderRadius: "30px",
+              padding: "10px 20px",
+              color: "#ff9800",
+              borderColor: "#ff9800",
+            }}
+          >
+            단어 더 알아보기
+          </Button>
+        </LoadMore>
+      </PageWrapper>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px;
+`;
 
 const PageWrapper = styled.div`
   width: 100%;
