@@ -15,7 +15,8 @@
       "@utils/*": ["src/utils/*"],
       "@types/*": ["src/types/*"],
       "@api/*": ["src/api/*"],
-      "@routes/*": ["src/routes/*"]
+      "@routes/*": ["src/routes/*"],
+      "@features/*": ["src/features/*"]
     }
   },
 
