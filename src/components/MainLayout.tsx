@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import BookmarkIcon from "@/assets/navbarIcon/bookmark_fill.png";
-import ProfileIcon from "@/assets/navbarIcon/profile.png";
+import ProfileIcon from "@/assets/profile.jpg";
 import NotificationIcon from "@/assets/navbarIcon/notification_fill.png";
 import clucidSvgLogo from "@/assets/clucidSvgLogo.svg";
 import BadgeIcon from "@mui/icons-material/EmojiEvents"; // 배지
@@ -98,7 +98,12 @@ const MainLayout = () => {
               <img
                 src={ProfileIcon}
                 alt="profile"
-                style={{ cursor: "pointer" }}
+                width={26}
+                height={26}
+                style={{
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                }}
                 onClick={handleMenuOpen}
               />
             </NavbarRightBtn>
@@ -122,7 +127,18 @@ const MainLayout = () => {
           },
         }}
       >
-        <MenuItem disabled>
+        <MenuItem>
+          <img
+            src={ProfileIcon}
+            alt="profile"
+            width={26}
+            height={26}
+            style={{
+              borderRadius: "50%",
+              cursor: "pointer",
+              marginRight: "10px",
+            }}
+          />
           <Typography fontWeight={600}>신혁수</Typography>
         </MenuItem>
         <Divider />
