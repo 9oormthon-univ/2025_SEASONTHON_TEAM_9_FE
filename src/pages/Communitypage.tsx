@@ -2,11 +2,31 @@
 import { useMemo, useState } from "react";
 import styled from "styled-components";
 
-type Category = "개발" | "데이터" | "AI" | "기획" | "디자인" | "마케팅" | "비즈니스";
+import i1_1 from "@/assets/communitypageicon/laptop_2_fill.png";
+import i1_2 from "@/assets/communitypageicon/laptop_2_fill-1.png";
+import i2_1 from "@/assets/communitypageicon/chart_bar_fill.png";
+import i2_2 from "@/assets/communitypageicon/chart_bar_fill-1.png";
+import i3_1 from "@/assets/communitypageicon/brain_fill.png";
+import i3_2 from "@/assets/communitypageicon/brain_fill-1.png";
+import i4_1 from "@/assets/communitypageicon/document_3_fill.png";
+import i4_2 from "@/assets/communitypageicon/document_3_fill-1.png";
+import i5_1 from "@/assets/communitypageicon/layers_fill.png";
+import i5_2 from "@/assets/communitypageicon/layers_fill-1.png";
+import i6_1 from "@/assets/communitypageicon/shopping_cart_1_fill.png";
+import i6_2 from "@/assets/communitypageicon/shopping_cart_1_fill-1.png";
+import i7_1 from "@/assets/communitypageicon/necktie_fill.png";
+import i7_2 from "@/assets/communitypageicon/necktie_fill-1.png";
+import Descendicon from "@/assets/communitypageicon/sort_descending_line.png"
+
+type Category = {
+  title:string
+  icon1: string,
+  icon2: string,
+}
 
 type Post = {
   id: string;
-  category: Category;
+  category: string;
   author: string;
   title: string;
   excerpt: string;
@@ -15,7 +35,49 @@ type Post = {
   comments?: number;
 };
 
-const CATEGORIES: Category[] = ["개발", "데이터", "AI", "기획", "디자인", "마케팅", "비즈니스"];
+const CATEGORIES: Category[] = [
+  {
+    title: "개발",
+    icon1 : i1_1,
+    icon2 : i1_2
+
+  }, 
+  {
+    title: "데이터",
+    icon1 : i2_1,
+    icon2 : i2_2
+
+  }, 
+  {
+    title: "AI",
+    icon1 : i3_1,
+    icon2 : i3_2
+
+  }, 
+  {
+    title: "기획",
+    icon1 : i4_1,
+    icon2 : i4_2
+  }, 
+  {
+    title: "디자인",
+    icon1 : i5_1,
+    icon2 : i5_2
+
+  }, 
+  {
+    title: "마케팅",
+    icon1 : i6_1,
+    icon2 : i6_2
+
+  }, 
+  {
+    title: "비즈니스",
+    icon1 : i7_1,
+    icon2 : i7_2
+
+  }, 
+];
 
 const DUMMY_POSTS: Post[] = [
   {
@@ -76,8 +138,9 @@ const DUMMY_POSTS: Post[] = [
 ];
 
 export default function Communitypage() {
-  const [active, setActive] = useState<Category>("개발");
-  const [sort, setSort] = useState<"latest" | "popular">("latest"); // 최신순 / 인기순
+  // active는 string (카테고리 title)로 관리
+  const [active, setActive] = useState<string>("개발");
+  const [sort, setSort] = useState<"latest" | "popular">("latest");
 
   const posts = useMemo(() => {
     const filtered = DUMMY_POSTS.filter((p) => p.category === active);
@@ -85,7 +148,9 @@ export default function Communitypage() {
       return [...filtered].sort((a, b) => a.minutesAgo - b.minutesAgo);
     } else {
       return [...filtered].sort(
-        (a, b) => (b.likes ?? 0) + (b.comments ?? 0) - ((a.likes ?? 0) + (a.comments ?? 0))
+        (a, b) =>
+          (b.likes ?? 0) + (b.comments ?? 0) -
+          ((a.likes ?? 0) + (a.comments ?? 0))
       );
     }
   }, [active, sort]);
@@ -93,25 +158,34 @@ export default function Communitypage() {
   return (
     <Wrap>
       <Sidebar>
-        {CATEGORIES.map((c) => (
-          <SideItem
-            key={c}
-            aria-current={active === c}
-            onClick={() => setActive(c)}
-            role="button"
-            tabIndex={0}
-          >
-            
-            <span>{c}</span>
-          </SideItem>
-        ))}
+        {CATEGORIES.map((c) => {
+          const isActive = active === c.title;
+          return (
+            <SideItem
+              key={c.title}
+              aria-current={isActive}
+              onClick={() => setActive(c.title)}
+              role="button"
+              tabIndex={0}
+            >
+              <img
+                src={isActive ? c.icon1 : c.icon2}
+                alt={c.title}
+                style={{ width: 20, height: 20 }}
+              />
+              <span>{c.title}</span>
+            </SideItem>
+          );
+        })}
       </Sidebar>
 
       <Content>
         <HeaderRow>
           <h2>전체글 보기</h2>
-          <SortButton onClick={() => setSort((s) => (s === "latest" ? "popular" : "latest"))}>
-            {sort === "latest" ? "최신순" : "인기순"}
+          <SortButton
+            onClick={() => setSort((s) => (s === "latest" ? "popular" : "latest"))}
+          >
+            {sort === "latest" ? "최신순" : "인기순"}<img style={{marginLeft:"10px"}} src={Descendicon}></img>
           </SortButton>
         </HeaderRow>
 
@@ -128,7 +202,9 @@ export default function Communitypage() {
                 <Meta>
                   <span>{formatMinutes(p.minutesAgo)}</span>
                   {typeof p.likes === "number" && <span>· 좋아요 {p.likes}</span>}
-                  {typeof p.comments === "number" && <span>· 댓글 {p.comments}</span>}
+                  {typeof p.comments === "number" && (
+                    <span>· 댓글 {p.comments}</span>
+                  )}
                 </Meta>
               </Right>
             </PostItem>
@@ -146,7 +222,6 @@ function formatMinutes(mins: number) {
   return `${h}시간 전`;
 }
 
-/* ============ styles ============ */
 
 /* ============ styles ============ */
 
@@ -234,14 +309,15 @@ const HeaderRow = styled.div`
 
 const SortButton = styled.button`
   border: 1px solid #ccc;
-  background: #fafafa;
-  color: #333;
+  color: rgba(30, 32, 36, 0.6);
   font-size: 13px;
   padding: 8px 12px;
   border-radius: 10px;
   cursor: pointer;
   transition: 120ms ease;
-
+  background-color:white;
+  display:flex;
+  justify-content:center;
   &:hover {
     background: #f0f0f0;
   }
@@ -260,8 +336,7 @@ const PostItem = styled.article`
   gap: 12px;
   padding: 14px 12px;
   background: #ffffff; /* 게시글 카드 배경 흰색 */
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
+  border-bottom: 1px solid #F0F0F9;
   transition: 120ms ease;
   cursor: pointer;
 

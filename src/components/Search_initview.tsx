@@ -78,25 +78,23 @@ const Header = styled.div`
 `;
 
 const Headline = styled.h2`
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1.35;
   font-weight: 700;
   letter-spacing: -0.01em;
   margin: 0 0 8px;
-  @media (min-width: 768px) {
-    font-size: 24px;
-  }
 `;
 
 const Sub = styled.p`
   margin: 0;
   color: rgba(0, 0, 0, 0.56);
+  font-size:16px;
 `;
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: 14px;
   margin-top: 28px;
 `;
 
@@ -134,21 +132,16 @@ const LabelPill = styled.span`
 `;
 
 const Card = styled.div`
-  height: 50px;
+  height: 40px;
   width: 600px;
   flex-direction: row;
-  align-items: center;
   display: flex;
-  border-radius: 50px 50px 50px 50px;
+  border-radius: 70px 70px 70px 70px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   background: rgba(255, 255, 255, 0.86);
   box-shadow: 0px 0px 14.53px 0px rgba(162, 196, 240, 0.3);
   transition: box-shadow 0.2s ease;
   padding: 18px 20px;
-  @media (min-width: 768px) {
-    padding: 22px 24px;
-    border-radius: 32px;
-  }
 `;
 
 const CardBody = styled.div`
@@ -162,12 +155,9 @@ const CardBody = styled.div`
 
 const CardText = styled.p`
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   color: rgba(0, 0, 0, 0.92);
-  @media (min-width: 768px) {
-    font-size: 16px;
-  }
 `;
 
 const HintLine = styled.div`
