@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Searchicon from "@/assets/Searchicon.png";
 import AssistantCard from "../components/AssistantCard";
@@ -21,7 +21,7 @@ const datas: RelationWord[] = [
     id: "13e754a0-da7a-45c8-a841-51d0da658429",
     name: "프론트엔드",
     tags: ["리액트", "플러터", "코틀린"],
-    isBookmarked: true,
+    isBookmarked: false,
     definition: "랜더링의 원리",
   },
   {
@@ -35,7 +35,31 @@ const datas: RelationWord[] = [
     id: "13e754a0-da7a-45c8-a841-51d0da658429",
     name: "AI",
     tags: ["트랜스포머", "GPT", "인공지능"],
+    isBookmarked: false,
+    definition: "인공지능의 원리",
+  },
+];
+
+const datas2: RelationWord[] = [
+  {
+    id: "13e754a0-da7a-45c8-a841-51d0da658429",
+    name: "프론트엔드",
+    tags: ["리액트", "플러터", "코틀린"],
     isBookmarked: true,
+    definition: "랜더링의 원리",
+  },
+  {
+    id: "13e754a0-da7a-45c8-a841-51d0da658429",
+    name: "백엔드",
+    tags: ["nodejs", "CI/CD", "스레드"],
+    isBookmarked: true,
+    definition: "백엔드 개발의 원리",
+  },
+  {
+    id: "13e754a0-da7a-45c8-a841-51d0da658429",
+    name: "AI",
+    tags: ["트랜스포머", "GPT", "인공지능"],
+    isBookmarked: false,
     definition: "인공지능의 원리",
   },
 ];
@@ -43,10 +67,21 @@ const datas: RelationWord[] = [
 export default function Homepage() {
   const navigate = useNavigate();
   const [searchContent, setSearchContent] = useState("");
+  const [logintrue,setlogintrue] = useState(false)
+  const [relativeword,setrelative] = useState<RelationWord[]>(datas)
 
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchContent(e.target.value);
   };
+
+  useEffect(()=>{
+    if(localStorage.getItem("accessToken")){
+      setrelative(datas2)
+    }
+    else{
+      setrelative(datas)
+    }
+  },[])
 
   return (
     <Container>
@@ -78,9 +113,9 @@ export default function Homepage() {
         ))}
       </Tagbar>
 
-      <Bar>연관단어 제시 텍스트</Bar>
+      <Bar>새로 등록된 키워드</Bar>
       <GridContainer>
-        {datas.map((items, index) => (
+        {relativeword.map((items, index) => (
           <AssistantCard
             key={index}
             id={items.id}
@@ -182,7 +217,7 @@ const InputBar = styled.input`
   height: 50px;
   padding: 0 12px;
   border: 1px solid #1e202457;
-  border-radius: 8px;
+  border-radius: 25px 25px 25px 25px;
   font-size: 14px;
   box-sizing: border-box;
 
@@ -233,7 +268,7 @@ const Bar = styled.div`
 `;
 
 const GridContainer = styled.div`
-  margin-top: 40px;
+  margin-top: 20px;
   width: 1000px;
   display: grid;
   gap: 10px;

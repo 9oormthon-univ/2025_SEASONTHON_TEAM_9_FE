@@ -70,7 +70,7 @@ export default function KeywordRequestForm() {
                     ></Namebar>
                     <Definitionbar>
                         <div style={{ width: "90%", color: "rgba(30, 32, 36, 0.34)", minHeight: "100px", marginTop: "10px", fontSize: "16px" }}>{keywordDef}</div>
-                        <div style={{ width: "90%", height: "35px", margin: "10px 0px", display: "flex", justifyContent: "end" }}>
+                        <div style={{ width: "95%", height: "35px", margin: "10px 0px", display: "flex", justifyContent: "end" }}>
                             <div
                                 onClick={() => { sendKeyword() }}
                                 style={{ borderRadius: "10px", width: "50px", height: "100%", backgroundColor: "rgba(2, 17, 34, 1)", color: "white", display: "flex", justifyContent: "center", alignItems: "center" }}>생성</div>

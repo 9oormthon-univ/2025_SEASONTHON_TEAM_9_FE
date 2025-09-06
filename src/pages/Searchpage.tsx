@@ -206,7 +206,7 @@ export default function SearchPage() {
       </Wrap>
       <div
         style={{
-          marginBottom: "30px",
+          marginBottom: "0px",
           width: "100%",
           height: "140px",
           backgroundColor: "#F7F8FC",
@@ -265,8 +265,8 @@ export default function SearchPage() {
             <img
               src={searchIcon}
               style={{
-                position: "absolute",
-                left: "8px",
+                position:"absolute",
+                left: "20px",
                 width: 20,
                 height: 20,
                 pointerEvents: "none",
@@ -380,7 +380,8 @@ const Element_button = styled.div`
   height: 60px;
   margin-top: 20px;
   padding: 0 12px;
-  margin: 0 10px;
+  margin-left:10px;
+  margin-right:10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -410,16 +411,16 @@ const InputBar = styled.input`
   width: 100%;
   height: 50px;
   border: 1px solid #1e202457;
-  border-radius: 8px;
+  border-radius:20px 20px 20px 20px;
   font-size: 14px;
   padding-left: 35px;
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px #dfe1e5;
-  }
+  };
   &::placeholder {
-    color: #1e202457;
-  }
+    color: #1e202457; 
+  };
 `;
 
 const Searchbtn = styled.button`
