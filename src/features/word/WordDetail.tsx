@@ -37,9 +37,7 @@ export default function WordDetail() {
             />
           )
         )}
-
         <SubHeader>함께 알면 좋은 키워드</SubHeader>
-
         <WordListing words={words} loading={loading} />
       </Content>
     </Wrapper>
@@ -52,7 +50,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  background-color: #f9fafb;
+  background: linear-gradient(180deg, #f6faff 0%, #fefeff 100%);
 `;
 
 const Content = styled.div`
@@ -61,7 +59,7 @@ const Content = styled.div`
   padding: 40px 20px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 10px;
 `;
 
 const Header = styled.div`
@@ -78,11 +76,4 @@ const KeyWordDetail = styled.div`
 const SubHeader = styled.h2`
   font-size: 18px;
   font-weight: 500;
-  margin-top: 20px;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
 `;

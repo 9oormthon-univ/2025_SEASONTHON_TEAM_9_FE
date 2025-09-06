@@ -45,6 +45,10 @@ const MainLayout = () => {
     navigate(`/`, { replace: false });
   };
 
+  const handleBadgeClick = () => {
+    navigate(`/badge`);
+  };
+
   return (
     <>
       <div style={{ flexDirection: "column" }}>
@@ -143,9 +147,7 @@ const MainLayout = () => {
         </MenuItem>
         <Divider />
 
-        <MenuItem onClick={() => {
-          handleMenuClose();
-          navigate(`/badge`, { replace: false })}}>
+        <MenuItem onClick={handleBadgeClick}>
           <ListItemIcon>
             <BadgeIcon fontSize="small" />
           </ListItemIcon>

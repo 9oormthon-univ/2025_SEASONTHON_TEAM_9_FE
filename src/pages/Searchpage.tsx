@@ -7,7 +7,7 @@ import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import SearchCard from "@/components/SearchCard";
 import SearchGuideSection from "@/components/Search_initview";
 
-const tagname = ["키워드","텍스트","이미지"];
+const tagname = ["키워드", "텍스트", "이미지"];
 
 type Relationword = { word: string; bookmarking: boolean; tags: string[] };
 
@@ -32,14 +32,9 @@ export default function Searchpage() {
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement | null>(null);
   const taRef = useRef<HTMLTextAreaElement | null>(null);
-  const [isinit ,setisinit] = useState(true)
+  const [isinit, setisinit] = useState(true);
 
   const [selectedTag, setSelectedTag] = useState<number>(0);
-
-  const changeView = ()=>{
-    setisinit(false)
-  }
-
 
   // 새 메시지 도착 시 맨 아래로 스크롤
   useEffect(() => {
@@ -123,71 +118,75 @@ export default function Searchpage() {
     >
       {/*메세지 화면*/}
       <Wrap>
-        {isinit && <SearchGuideSection/>}
-        {!isinit && <Messages>
-          {msgs.map((m) => {
-            if (m.role === "user") {
-              return <Bubble key={m.id}>{m.text}</Bubble>;
-            } else if (m.role === "assistant1") {
-              return (
-                <Assistant1 key={m.id}>{m.name}님이 찾은 단어에요</Assistant1>
-              );
-            } else if (m.role === "assistant2") {
-              return (
-                <SearchCard
-                  key={m.id}
-                  id={m.id}
-                  title={m.title}
-                  bookmarking={m.bookmarking}
-                  description={m.description}
-                  tags={m.tags}
-                  comments={m.comments}
-                />
-              );
-            } else if (m.role === "assistant3") {
-              return <Assistant3 key={m.id}>연관단어 제시 텍스트</Assistant3>;
-            } else {
-              return (
-                <Assistant4 key={m.id}>
-                  {m.words.map((items, index) => (
-                    <div
-                      style={{
-                        flexDirection: "column",
-                        display: "flex",
-                        height: "180px",
-                        borderRadius: "5px",
-                        boxShadow: "0px 0px 2px 0px #00000033",
-                      }}
-                      key={index}
-                    >
-                      <Element_title>
-                        <text style={{ position: "absolute", left: "10px" }}>
-                          {items.word}
-                        </text>
-                        <img
-                          src={
-                            items.bookmarking ? bookmark_fill : bookmark_default
-                          }
-                          style={{ position: "absolute", right: "10px" }}
-                        ></img>
-                      </Element_title>
-                      <Element_tagbar>
-                        {items.tags.map((items2, index) => (
-                          <Element_tags key={index}>{items2}</Element_tags>
-                        ))}
-                      </Element_tagbar>
-                      <Element_button>
-                        <text>단어명</text>
-                        <img src={Vectoricon}></img>
-                      </Element_button>
-                    </div>
-                  ))}
-                </Assistant4>
-              );
-            }
-          })}
-          <div ref={endRef} />
-        </Messages>}
+        {isinit && <SearchGuideSection />}
+        {!isinit && (
+          <Messages>
+            {msgs.map((m) => {
+              if (m.role === "user") {
+                return <Bubble key={m.id}>{m.text}</Bubble>;
+              } else if (m.role === "assistant1") {
+                return (
+                  <Assistant1 key={m.id}>{m.name}님이 찾은 단어에요</Assistant1>
+                );
+              } else if (m.role === "assistant2") {
+                return (
+                  <SearchCard
+                    key={m.id}
+                    id={m.id}
+                    title={m.title}
+                    bookmarking={m.bookmarking}
+                    description={m.description}
+                    tags={m.tags}
+                    comments={m.comments}
+                  />
+                );
+              } else if (m.role === "assistant3") {
+                return <Assistant3 key={m.id}>연관단어 제시 텍스트</Assistant3>;
+              } else {
+                return (
+                  <Assistant4 key={m.id}>
+                    {m.words.map((items, index) => (
+                      <div
+                        style={{
+                          flexDirection: "column",
+                          display: "flex",
+                          height: "180px",
+                          borderRadius: "5px",
+                          boxShadow: "0px 0px 2px 0px #00000033",
+                        }}
+                        key={index}
+                      >
+                        <Element_title>
+                          <text style={{ position: "absolute", left: "10px" }}>
+                            {items.word}
+                          </text>
+                          <img
+                            src={
+                              items.bookmarking
+                                ? bookmark_fill
+                                : bookmark_default
+                            }
+                            style={{ position: "absolute", right: "10px" }}
+                          ></img>
+                        </Element_title>
+                        <Element_tagbar>
+                          {items.tags.map((items2, index) => (
+                            <Element_tags key={index}>{items2}</Element_tags>
+                          ))}
+                        </Element_tagbar>
+                        <Element_button>
+                          <text>단어명</text>
+                          <img src={Vectoricon}></img>
+                        </Element_button>
+                      </div>
+                    ))}
+                  </Assistant4>
+                );
+              }
+            })}
+            <div ref={endRef} />
+          </Messages>
+        )}
       </Wrap>
 
       {/*검색바*/}
@@ -215,14 +214,14 @@ export default function Searchpage() {
         >
           {tagname.map((items, index) => (
             <Tags
-            key={index}
-            $active={selectedTag === index}
-            onClick={() =>{
-              setSelectedTag(index); // 토글 기능
-            }
-              
-            }
-          >{items}</Tags>
+              key={index}
+              $active={selectedTag === index}
+              onClick={() => {
+                setSelectedTag(index); // 토글 기능
+              }}
+            >
+              {items}
+            </Tags>
           ))}
         </div>
         <div
@@ -241,10 +240,12 @@ export default function Searchpage() {
             value={input}
             onChange={search}
           ></Inputbar>
-          <Searchbtn onClick={()=>{
-            setisinit(false)
-            send();
-          }}>
+          <Searchbtn
+            onClick={() => {
+              setisinit(false);
+              send();
+            }}
+          >
             <img src={Searchicon}></img>
           </Searchbtn>
         </div>
@@ -402,7 +403,8 @@ const Tags = styled.div<{ $active?: boolean }>`
   margin-right: 10px;
   padding: 2px 12px;
   width: auto;
-  background-color: ${({ $active }) => ($active ? "rgba(2, 17, 34, 1)" : "#ffffff")};
+  background-color: ${({ $active }) =>
+    $active ? "rgba(2, 17, 34, 1)" : "#ffffff"};
   border-radius: 30px;
   border: 1px solid #f0f0f9;
   color: ${({ $active }) => ($active ? "#ffffff" : "#5f9ceb")};

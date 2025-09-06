@@ -228,7 +228,7 @@ export default function BookmarkPage() {
 
       <FolderGrid>
         {isLoading
-          ? Array.from({ length: 4 }).map((_, i) => (
+          ? Array.from({ length: 4 }).map(() => (
               <CardWrapper>
                 <img src={folderIcon} />
                 <InfoRow>

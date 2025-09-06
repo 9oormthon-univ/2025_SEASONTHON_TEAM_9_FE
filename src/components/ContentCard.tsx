@@ -54,6 +54,7 @@ const CardContainer = styled.div`
   display: flex;
   height: 250px;
   cursor: pointer;
+  font-size: 14px;
 `;
 
 const ElementImg = styled.img`

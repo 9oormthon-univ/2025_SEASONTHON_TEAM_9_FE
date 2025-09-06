@@ -20,7 +20,7 @@ export default function SearchCard({
   comments,
 }: AssistantCardProps) {
   return (
-    <CardWrapper>
+    <CardWrapper key={id}>
       <Header>
         {title}
         <BookmarkIcon
@@ -51,7 +51,7 @@ export default function SearchCard({
 const CardWrapper = styled.div`
   width: 100%;
   justify-self: start;
-  box-shadow: 0 0 0 2px #c8d6e8;
+  box-shadow: 0 0 0 1px #c8d6e8;
   border-radius: 25px;
   background-color: #fff;
   overflow: hidden;
@@ -83,21 +83,19 @@ const TagRow = styled.div`
   flex-direction: row;
   margin: 0 20px 20px 20px;
   flex-wrap: wrap;
+  gap: 8px;
 `;
 
 const Tag = styled.div`
-  margin-right: 10px;
-  margin-bottom: 8px;
-  padding: 2px 12px;
-  background-color: #ffffff;
-  border-radius: 30px;
-  border: 1px solid #f0f0f9;
+  padding: 0px 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f7f8fc;
+  border-radius: 6px;
   color: #5f9ceb;
   font-weight: 500;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 11px;
 `;
 
 const CommentBlock = styled.div`
