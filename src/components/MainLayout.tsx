@@ -1,5 +1,9 @@
+import { useState } from "react";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import styled from "styled-components";
+import BookmarkIcon from "@/assets/navbarIcon/bookmark_fill.png";
+import ProfileIcon from "@/assets/navbarIcon/profile.png";
+import NotificationIcon from "@/assets/navbarIcon/notification_fill.png";
 
 const navLinks = [
   { label: "단어", path: "/word" },
@@ -11,6 +15,7 @@ const navLinks = [
 const MainLayout = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem("accessToken");
 
   return (
     <>
@@ -49,12 +54,23 @@ const MainLayout = () => {
             })}
           </div>
 
-          <div
-            style={{ position: "absolute", right: "200px" }}
-            onClick={() => navigate(`/login`, { replace: false })}
-          >
-            로그인
-          </div>
+          {!accessToken ? (
+            <div
+              style={{ position: "absolute", right: "200px" }}
+              onClick={() => navigate(`/login`, { replace: false })}
+            >
+              로그인
+            </div>
+          ) : (
+            <NavbarRightBtn>
+              <img
+                src={BookmarkIcon}
+                onClick={() => navigate(`/bookmark`, { replace: false })}
+              ></img>
+              <img src={NotificationIcon}></img>
+              <img src={ProfileIcon}></img>
+            </NavbarRightBtn>
+          )}
         </Navbar>
       </div>
       <MainContent>
@@ -66,10 +82,19 @@ const MainLayout = () => {
 
 export default MainLayout;
 
+const NavbarRightBtn = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  right: 200px;
+  width: 110px;
+`;
+
 const MainContent = styled.main`
-  padding-top: 95px; /* 네비바 높이 */
   display: flex;
   justify-content: center;
+  padding-top:72px;
 `;
 
 const Navbar = styled.div`

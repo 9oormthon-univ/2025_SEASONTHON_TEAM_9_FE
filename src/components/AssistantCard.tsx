@@ -2,14 +2,29 @@ import styled from "styled-components";
 import Vectoricon from "@/assets/Vector.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
+import { useNavigate } from "react-router-dom";
 
 interface CardProps {
+  id: string;
   name: string;
   bookmarking: boolean;
   tags: string[];
+  definition: string;
 }
 
-export default function AssistantCard({ name, bookmarking, tags }: CardProps) {
+export default function AssistantCard({
+  id,
+  name,
+  bookmarking,
+  tags,
+  definition,
+}: CardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/word/${id}`);
+  };
+
   return (
     <CardWrapper>
       <Title>
@@ -26,8 +41,8 @@ export default function AssistantCard({ name, bookmarking, tags }: CardProps) {
         ))}
       </TagBar>
 
-      <ActionButton>
-        <span>단어명</span>
+      <ActionButton onClick={handleClick}>
+        <span>{definition}</span>
         <img src={Vectoricon} alt="vector" />
       </ActionButton>
     </CardWrapper>
@@ -37,9 +52,11 @@ export default function AssistantCard({ name, bookmarking, tags }: CardProps) {
 const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 180px;
-  border-radius: 5px;
+  height: 151px;
+  width: 260px;
+  border-radius: 20px;
   box-shadow: 0px 0px 2px 0px #00000033;
+  padding: 10px;
 `;
 
 const Title = styled.div`
@@ -81,22 +98,26 @@ const Tag = styled.div`
   font-weight: 500;
 `;
 
-const ActionButton = styled.div`
+const ActionButton = styled.button`
   margin: 20px 10px 0;
-  height: 60px;
+  height: 45px;
   padding: 0 12px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  border: none;
   border-radius: 10px;
   font-size: 18px;
   background-color: #f7f8fc;
   color: #1e202457;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
     background-color: #021122;
     color: #fff;
+    cursor: pointer;
   }
 `;

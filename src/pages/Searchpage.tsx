@@ -4,6 +4,7 @@ import Searchicon from "@/assets/Searchicon.png";
 import Vectoricon from "@/assets/Vector.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
+import SearchCard from "@/components/SearchCard";
 
 const tagname = ["단어", "이미지"];
 
@@ -15,9 +16,9 @@ type Assistant2 = {
   id: string;
   role: "assistant2";
   title: string;
-  discription: string;
+  description: string;
   tags: string[];
-  comment: string[];
+  comments: string[];
   bookmarking: boolean;
 };
 type Assistant3 = { id: string; role: "assistant3" };
@@ -37,7 +38,7 @@ export default function Searchpage() {
   }, [msgs]);
 
   // textarea 자동 높이
-  const search = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const search = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
@@ -60,10 +61,10 @@ export default function Searchpage() {
           id: crypto.randomUUID(),
           role: "assistant2",
           title: `CI/CD (Continuous Integration / Continuous Deployment)`,
-          discription:
+          description:
             "코드 변경 사항을 자동으로 테스트, 통합, 배포하는 개발 프로세스. 개발 효율성과 안정성을 높이는 데 필수적인 방식.단어 쓰이는 상황 / 예문",
           tags: ["Devops", "자동화", "배포"],
-          comment: [
+          comments: [
             "우리 팀은 GitHub Actions를 이용해서 CI/CD 파이프라인을 구축했어.",
             "CD 자동화가 잘 돼 있어서 코드 머지하면 바로 스테이징에 반영돼.",
           ],
@@ -123,61 +124,15 @@ export default function Searchpage() {
               );
             } else if (m.role === "assistant2") {
               return (
-                <Assistant2 key={m.id}>
-                  <div
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "600",
-                      margin: "20px 20px",
-                      position: "relative",
-                    }}
-                  >
-                    {m.title}
-                    <img
-                      src={m.bookmarking ? bookmark_fill : bookmark_default}
-                      style={{ position: "absolute", right: "20px" }}
-                    ></img>
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: "500",
-                      margin: "20px 20px",
-                    }}
-                  >
-                    {m.discription}
-                  </div>
-                  <div
-                    style={{
-                      flexDirection: "row",
-                      display: "flex",
-                      marginLeft: "20px",
-                    }}
-                  >
-                    {m.tags.map((v, i) => (
-                      <Tags key={i}>{v}</Tags>
-                    ))}
-                  </div>
-
-                  <Assistant2_secondblock>
-                    {m.comment.map((v, i) => (
-                      <div
-                        key={i}
-                        style={{
-                          color: "#1E202457",
-                          fontSize: "14px",
-                          marginLeft: "10px",
-                          padding: "10px 0px",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        {v}
-                      </div>
-                    ))}
-                  </Assistant2_secondblock>
-                  <div style={{ marginBottom: "20px" }}></div>
-                </Assistant2>
+                <SearchCard
+                  key={m.id}
+                  id={m.id}
+                  title={m.title}
+                  bookmarking={m.bookmarking}
+                  description={m.description}
+                  tags={m.tags}
+                  comments={m.comments}
+                />
               );
             } else if (m.role === "assistant3") {
               return <Assistant3 key={m.id}>연관단어 제시 텍스트</Assistant3>;
@@ -443,7 +398,7 @@ const Inputbar = styled.input`
   border: 1px solid #1e202457;
   border-radius: 8px;
   font-size: 14px;
-  box-sizing: border-box; /* padding, border 포함해서 100% */
+  box-sizing: border-box;
 
   &:focus {
     outline: none;

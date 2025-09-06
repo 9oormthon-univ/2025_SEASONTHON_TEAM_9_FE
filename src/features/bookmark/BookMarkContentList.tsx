@@ -7,15 +7,15 @@ export default function BookMarkContentList() {
   const [tab, setTab] = useState(0);
 
   const words = Array.from({ length: 9 }).map((_, i) => ({
-    id: i,
+    id: String(i),
     name: `단어명`,
     bookmarking: i % 2 === 0,
     tags: ["태그", "태그", "태그"],
     title: `단어명`,
     writer: `작성자`,
     date: `2025-01-01`,
-    imageurl: `https://via.placeholder.com/150`,
-    discription: `단어 설명`,
+    imageUrl: `https://via.placeholder.com/150`,
+    description: `단어 설명`,
   }));
 
   const categories = ["카테고리", "카테고리", "카테고리"];
