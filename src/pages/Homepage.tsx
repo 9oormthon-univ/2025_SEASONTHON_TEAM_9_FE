@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import styled from "styled-components";
 import Searchicon from "@/assets/Searchicon.png";
 import AssistantCard from "../components/AssistantCard";
+import { useNavigate } from "react-router-dom";
 
 const tags = ["프론트엔드", "백엔드", "리액트", "인공지능"];
 
@@ -38,6 +39,7 @@ const datas: RelationWord[] = [
 ];
 
 export default function Homepage() {
+  const navigate = useNavigate();
   const [searchcontent, setsearchcontent] = useState("");
 
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,6 +91,7 @@ export default function Homepage() {
           placeholder="원하는 검색어를 입력하세요"
           value={searchcontent}
           onChange={search}
+          onClick={()=>{navigate(`/search`, { replace: true })}}
         ></Inputbar>
         <Searchbtn>
           <img src={Searchicon}></img>
