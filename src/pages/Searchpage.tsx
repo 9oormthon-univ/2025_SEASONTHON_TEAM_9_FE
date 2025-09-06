@@ -8,6 +8,7 @@ import SearchGuideSection from "@/components/Search_initview";
 import searchIcon from "@/assets/search.svg";
 import submitIcon from "@/assets/submit.svg"; // ✅ 제출 버튼 아이콘
 import loadingIcon from "@/assets/loading.svg"; // ✅ 로딩 아이콘 추가
+import clucidChat from "@/assets/clucidChat.svg";
 
 const tagname = ["키워드", "텍스트", "이미지"];
 
@@ -125,7 +126,17 @@ export default function SearchPage() {
                 return <Bubble key={m.id}>{m.text}</Bubble>;
               } else if (m.role === "assistant1") {
                 return (
-                  <Assistant1 key={m.id}>{m.name}님이 찾은 단어에요</Assistant1>
+                  <div
+                    style={{
+                      flexDirection: "row",
+                      display: "flex",
+                      gap: "10px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img src={clucidChat} width={"33px"} height={"33px"} />
+                    <Assistant1>지금 찾은 키워드에요</Assistant1>
+                  </div>
                 );
               } else if (m.role === "assistant2") {
                 return (
@@ -183,8 +194,6 @@ export default function SearchPage() {
                 );
               }
             })}
-
-            {/* ✅ 로딩 아이콘 표시 */}
             {loading && (
               <LoadingBox>
                 <RotatingIcon src={loadingIcon} alt="loading..." />
@@ -195,8 +204,6 @@ export default function SearchPage() {
           </Messages>
         )}
       </Wrap>
-
-      {/* 검색바 */}
       <div
         style={{
           marginBottom: "30px",
