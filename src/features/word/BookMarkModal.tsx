@@ -11,7 +11,6 @@ import {
   IconButton,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import checkIcon from "@/assets/word/check.svg";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import { TokenReq } from "@/api/axiosInstance";
@@ -148,13 +147,6 @@ export default function BookMarkModal({
                       backgroundColor: "#F7F8FC",
                     }}
                   >
-                    <img
-                      src={checkIcon}
-                      alt="check"
-                      width={24}
-                      height={24}
-                      style={{ marginRight: "10px" }}
-                    />
                     <ListItemText primary={folder.name} />
                     <img
                       src={folder.isIn ? bookmark_fill : bookmark_default}
