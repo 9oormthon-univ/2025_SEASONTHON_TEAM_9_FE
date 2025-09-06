@@ -20,7 +20,7 @@ export default function SearchCard({
   comments,
 }: AssistantCardProps) {
   return (
-    <CardWrapper>
+    <CardWrapper key={id}>
       <Header>
         {title}
         <BookmarkIcon
