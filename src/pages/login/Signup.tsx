@@ -20,6 +20,7 @@ export default function Signuppage() {
         <Rules>{"(선택) 약관 동의"}</Rules>
         <Rules>{"(선택) 약관 동의"}</Rules>
         <Loginbtn onClick={()=>{navigate(`/signupsuccess`, { replace: false });}}>로그인</Loginbtn>
+        <div style={{marginBottom:"100px"}}></div>
     </Container>
 }
 
