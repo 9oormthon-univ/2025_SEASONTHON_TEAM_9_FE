@@ -1,10 +1,20 @@
 import { useState } from "react";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import styled from "styled-components";
+import {
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Divider,
+  Typography,
+} from "@mui/material";
 import BookmarkIcon from "@/assets/navbarIcon/bookmark_fill.png";
 import ProfileIcon from "@/assets/navbarIcon/profile.png";
 import NotificationIcon from "@/assets/navbarIcon/notification_fill.png";
 import clucidSvgLogo from "@/assets/clucidSvgLogo.svg";
+import BadgeIcon from "@mui/icons-material/EmojiEvents"; // 배지
+import SettingsIcon from "@mui/icons-material/Settings"; // 계정 설정
+import LogoutIcon from "@mui/icons-material/Logout"; // 로그아웃
 
 const navLinks = [
   { label: "단어", path: "/word" },
@@ -18,6 +28,23 @@ const MainLayout = () => {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
 
+  // 프로필 메뉴 상태
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenuOpen = (e: React.MouseEvent<HTMLImageElement>) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const signOut = () => {
+    localStorage.removeItem("accessToken");
+    navigate(`/`, { replace: false });
+  };
+
   return (
     <>
       <div style={{ flexDirection: "column" }}>
@@ -26,7 +53,7 @@ const MainLayout = () => {
             style={{ position: "absolute", left: "200px" }}
             onClick={() => navigate(`/`, { replace: false })}
           >
-            <img src={clucidSvgLogo}></img>
+            <img src={clucidSvgLogo} alt="logo" />
           </div>
           <div
             style={{
@@ -64,13 +91,64 @@ const MainLayout = () => {
               <img
                 src={BookmarkIcon}
                 onClick={() => navigate(`/bookmark`, { replace: false })}
-              ></img>
-              <img src={NotificationIcon}></img>
-              <img src={ProfileIcon}></img>
+                style={{ cursor: "pointer" }}
+                alt="bookmark"
+              />
+              <img src={NotificationIcon} alt="notification" />
+              <img
+                src={ProfileIcon}
+                alt="profile"
+                style={{ cursor: "pointer" }}
+                onClick={handleMenuOpen}
+              />
             </NavbarRightBtn>
           )}
         </Navbar>
       </div>
+
+      {/* 프로필 메뉴 */}
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleMenuClose}
+        PaperProps={{
+          elevation: 3,
+          sx: {
+            mt: 1.5,
+            borderRadius: "12px",
+            minWidth: 200,
+            overflow: "visible",
+            boxShadow: "0px 4px 12px rgba(0,0,0,0.08)",
+          },
+        }}
+      >
+        <MenuItem disabled>
+          <Typography fontWeight={600}>신혁수</Typography>
+        </MenuItem>
+        <Divider />
+
+        <MenuItem onClick={handleMenuClose}>
+          <ListItemIcon>
+            <BadgeIcon fontSize="small" />
+          </ListItemIcon>
+          배지
+        </MenuItem>
+
+        <MenuItem onClick={handleMenuClose}>
+          <ListItemIcon>
+            <SettingsIcon fontSize="small" />
+          </ListItemIcon>
+          계정 설정
+        </MenuItem>
+
+        <MenuItem onClick={signOut}>
+          <ListItemIcon>
+            <LogoutIcon fontSize="small" />
+          </ListItemIcon>
+          로그아웃
+        </MenuItem>
+      </Menu>
+
       <MainContent>
         <Outlet />
       </MainContent>
@@ -80,6 +158,7 @@ const MainLayout = () => {
 
 export default MainLayout;
 
+/* styled-components */
 const NavbarRightBtn = styled.div`
   display: flex;
   justify-content: space-between;

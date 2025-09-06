@@ -6,6 +6,9 @@ import ContentCard from "@/components/ContentCard";
 import styled from "styled-components";
 import Bg from "@/components/Banner";
 import Footer from "@/components/Footer";
+import nextImg from "@/assets/nextjs2.png";
+import dbImg from "@/assets/db.jpg";
+import bojImg from "@/assets/boj.png";
 
 type Content = {
   id: string;
@@ -18,21 +21,21 @@ type Content = {
   description: string;
 };
 
-const datas: Content[] = [
+const dummyData: Content[] = [
   {
     id: "1",
-    title: "프론트엔드",
-    imageUrl: "s",
-    tags: ["개발", "디자인", "리액트"],
+    title: "알고리즘",
+    imageUrl: bojImg,
+    tags: ["프로그래밍", "자료구조", "bfs"],
     bookmarking: false,
-    writer: "홍길동",
+    writer: "채현후",
     date: "2025-09-04",
     description: "sd",
   },
   {
     id: "2",
-    title: "프론트엔드",
-    imageUrl: "s",
+    title: "nextjs",
+    imageUrl: nextImg,
     tags: ["개발", "디자인", "리액트"],
     bookmarking: false,
     writer: "홍길동",
@@ -41,59 +44,49 @@ const datas: Content[] = [
   },
   {
     id: "3",
-    title: "프론트엔드",
-    imageUrl: "s",
-    tags: ["개발", "디자인", "리액트"],
+    title: "데이터베이스",
+    imageUrl: dbImg,
+    tags: ["개발", "데이터", "sql"],
     bookmarking: true,
-    writer: "홍길동",
-    date: "2025-09-04",
-    description: "sd",
-  },
-  {
-    id: "4",
-    title: "프론트엔드",
-    imageUrl: "s",
-    tags: ["개발", "디자인", "리액트"],
-    bookmarking: false,
-    writer: "홍길동",
+    writer: "신혁수",
     date: "2025-09-04",
     description: "sd",
   },
 ];
 
 export default function Contentspage() {
-  const [select, setselect] = useState(false);
+  const [select, setSelect] = useState(false);
 
-  const [contentsdata, setcontentsdata] = useState<Content[]>(datas);
+  const [contentsData, setContentsData] = useState<Content[]>(dummyData);
 
-  const [detaildatas, setdetaildatas] = useState<Content | null>(null);
+  const [detailData, setDetailData] = useState<Content | null>(null);
 
-  async function fetchData() {
-    try {
-      const res = await TokenReq.get("/데이터가져오는url");
-      console.log("✅ 응답:", res.data);
-      setcontentsdata(res.data);
-    } catch (err) {
-      console.error("❌ 에러:", err);
-    }
-  }
+  // async function fetchData() {
+  //   try {
+  //     const res = await TokenReq.get("/데이터가져오는url");
+  //     console.log("✅ 응답:", res.data);
+  //     setContentsData(res.data);
+  //   } catch (err) {
+  //     console.error("❌ 에러:", err);
+  //   }
+  // }
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   return !select ? (
     <Container>
       <Bg />
       <ContentsContainer>
         <Title>타이틀</Title>
-        <Gridcontainer>
-          {contentsdata.map((items, index) => (
-            <ContentCard item={items} onSelect={setdetaildatas} />
+        <GridContainer>
+          {contentsData.map((items) => (
+            <ContentCard item={items} onSelect={setDetailData} />
           ))}
-        </Gridcontainer>
+        </GridContainer>
       </ContentsContainer>
-      <Footer/>
+      <Footer />
     </Container>
   ) : (
     //detail view
@@ -103,20 +96,20 @@ export default function Contentspage() {
           <div
             style={{ marginRight: "20px" }}
             onClick={() => {
-              setselect(false);
+              setSelect(false);
             }}
           >
             {"<"}
           </div>
         </Backbar>
         <Detail_title>
-          <text>{detaildatas?.title}</text>
+          <text>{detailData?.title}</text>
           <img
-            src={detaildatas?.bookmarking ? bookmark_fill : bookmark_default}
+            src={detailData?.bookmarking ? bookmark_fill : bookmark_default}
             style={{ position: "absolute", right: "10px" }}
           ></img>
         </Detail_title>
-        <Detail_writer>{detaildatas?.writer}</Detail_writer>
+        <Detail_writer>{detailData?.writer}</Detail_writer>
         <div
           style={{
             width: "100%",
@@ -126,9 +119,9 @@ export default function Contentspage() {
             backgroundColor: "",
           }}
         >
-          <Detail_date>{detaildatas?.date}</Detail_date>
+          <Detail_date>{detailData?.date}</Detail_date>
           <Detail_tags>
-            {detaildatas?.tags.map((items, index) => (
+            {detailData?.tags.map((items, index) => (
               <Element_tags key={index}>{items}</Element_tags>
             ))}
           </Detail_tags>
@@ -140,8 +133,8 @@ export default function Contentspage() {
             borderBottom: "1px solid #DFE1E5",
           }}
         ></div>
-        <Detail_image></Detail_image>
-        <Detail_discription>{detaildatas?.description}</Detail_discription>
+        <Detail_image src={detailData?.imageUrl} />
+        <Detail_discription>{detailData?.description}</Detail_discription>
         <div style={{ marginBottom: "200px" }}></div>
       </Detail_container>
     </Container>
@@ -156,7 +149,7 @@ const Container = styled.div`
 `;
 
 const ContentsContainer = styled.div`
-  width: 1000px;
+  width: 900px;
   height: 900px;
   margin-top: 50px;
 `;
@@ -167,36 +160,13 @@ const Title = styled.div`
   font-size: 18px;
 `;
 
-const Gridcontainer = styled.div`
+const GridContainer = styled.div`
   margin-top: 50px;
   width: 100%;
   display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(3, 1fr); /* 2열 그리드 */
+  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto;
-`;
-
-const Element_img = styled.div`
-  width: 100%;
-  height: 150px;
-  background-color: blue;
-  border-radius: 5px;
-`;
-
-const Element_title = styled.div`
-  width: 100%;
-  margin-top: 10px;
-  height: 30px;
-  display: flex;
-  flex-direction: row;
-  position: relative;
-`;
-const Element_tagbar = styled.div`
-  width: 100%;
-  height: 30px;
-  margin-top: 10px;
-  display: flex;
-  flex-direction: row;
 `;
 
 const Element_tags = styled.div`
@@ -231,10 +201,9 @@ const Detail_tags = styled.div`
   display: flex;
   flex-direction: row;
 `;
-const Detail_image = styled.div`
+const Detail_image = styled.img`
   width: 100%;
   height: 300px;
-  background-color: grey;
   margin-top: 60px;
   border-radius: 10px;
 `;

@@ -31,12 +31,11 @@ export default function SkeletonWordList() {
   );
 }
 
-/* =============== styled-components =============== */
-
 const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 🔥 3열 */
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+  width: 900px;
 `;
 
 const CardWrapper = styled.div`
