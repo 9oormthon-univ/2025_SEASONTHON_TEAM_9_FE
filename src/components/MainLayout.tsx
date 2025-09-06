@@ -94,6 +94,7 @@ const NavbarRightBtn = styled.div`
 const MainContent = styled.main`
   display: flex;
   justify-content: center;
+  padding-top:72px;
 `;
 
 const Navbar = styled.div`
