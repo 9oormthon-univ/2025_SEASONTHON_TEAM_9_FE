@@ -5,6 +5,7 @@ import Vectoricon from "@/assets/Vector.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import SearchCard from "@/components/SearchCard";
+import SearchGuideSection from "@/components/Search_initview";
 
 const tagname = ["키워드","텍스트","이미지"];
 
@@ -31,8 +32,13 @@ export default function Searchpage() {
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement | null>(null);
   const taRef = useRef<HTMLTextAreaElement | null>(null);
+  const [isinit ,setisinit] = useState(true)
 
   const [selectedTag, setSelectedTag] = useState<number>(0);
+
+  const changeView = ()=>{
+    setisinit(false)
+  }
 
 
   // 새 메시지 도착 시 맨 아래로 스크롤
@@ -117,7 +123,8 @@ export default function Searchpage() {
     >
       {/*메세지 화면*/}
       <Wrap>
-        <Messages>
+        {isinit && <SearchGuideSection/>}
+        {!isinit && <Messages>
           {msgs.map((m) => {
             if (m.role === "user") {
               return <Bubble key={m.id}>{m.text}</Bubble>;
@@ -180,7 +187,7 @@ export default function Searchpage() {
             }
           })}
           <div ref={endRef} />
-        </Messages>
+        </Messages>}
       </Wrap>
 
       {/*검색바*/}
@@ -234,7 +241,10 @@ export default function Searchpage() {
             value={input}
             onChange={search}
           ></Inputbar>
-          <Searchbtn onClick={send}>
+          <Searchbtn onClick={()=>{
+            setisinit(false)
+            send();
+          }}>
             <img src={Searchicon}></img>
           </Searchbtn>
         </div>
