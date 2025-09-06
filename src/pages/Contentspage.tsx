@@ -116,9 +116,6 @@ const dummyData: Content[] = [
 
 export default function Contentspage() {
   const [select, setSelect] = useState(false);
-
-  const [contentsData, setContentsData] = useState<Content[]>(dummyData);
-
   const [detailData, setDetailData] = useState<Content | null>(null);
 
   // async function fetchData() {
@@ -177,7 +174,7 @@ export default function Contentspage() {
           </Box>
         </Title>
         <GridContainer>
-          {contentsData.map((items) => (
+          {dummyData.map((items) => (
             <ContentCard item={items} onSelect={setDetailData} />
           ))}
         </GridContainer>

@@ -124,6 +124,7 @@ const Title = styled.div`
   position: relative;
   align-items: center;
   padding: 0 10px;
+  font-size: 14px;
 
   span {
     position: absolute;
@@ -169,7 +170,7 @@ const ActionButton = styled.button`
   justify-content: space-between;
   border: none;
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 12px;
   background-color: #f7f8fc;
   color: #1e202457;
   white-space: nowrap;

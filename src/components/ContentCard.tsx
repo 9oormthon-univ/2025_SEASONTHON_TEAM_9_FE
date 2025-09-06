@@ -70,6 +70,7 @@ const ElementTitle = styled.div`
   display: flex;
   flex-direction: row;
   position: relative;
+  font-weight: 600;
 `;
 
 const ElementTagbar = styled.div`
@@ -82,7 +83,8 @@ const ElementTagbar = styled.div`
 
 const ElementTag = styled.div`
   margin-right: 10px;
-  padding: 2px 12px;
+  padding: 6px;
+  font-size: 10px;
   width: auto;
   background-color: #f0f0f9;
   border-radius: 10px;

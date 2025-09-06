@@ -9,6 +9,7 @@ import searchIcon from "@/assets/search.svg";
 import submitIcon from "@/assets/submit.svg";
 import loadingIcon from "@/assets/loading.svg";
 import clucidChat from "@/assets/clucidChat.svg";
+import AssistantCard from "@/components/AssistantCard";
 
 const tagname = ["키워드", "텍스트", "이미지"];
 
@@ -87,19 +88,19 @@ export default function SearchPage() {
           role: "assistant4",
           words: [
             {
-              word: "리액트",
+              word: "프론트엔드",
               bookmarking: false,
-              tags: ["프론트엔드", "ai", "개발"],
+              tags: ["리액트", "플러터", "코틀린"],
             },
             {
-              word: "리액트",
+              word: "백엔드",
               bookmarking: false,
-              tags: ["프론트엔드", "ai", "개발"],
+              tags: ["nodejs", "CI/CD", "스레드"],
             },
             {
-              word: "리액트",
+              word: "AI",
               bookmarking: true,
-              tags: ["프론트엔드", "ai", "개발"],
+              tags: ["트랜스포머", "GPT", "인공지능"],
             },
           ],
         },
@@ -107,10 +108,42 @@ export default function SearchPage() {
     }, 2000);
   };
 
+  type RelationWord = {
+    id: string;
+    name: string;
+    tags: string[];
+    isBookmarked: boolean;
+    definition: string;
+  };
+
+  const datas: RelationWord[] = [
+    {
+      id: "13e754a0-da7a-45c8-a841-51d0da658429",
+      name: "프론트엔드",
+      tags: ["리액트", "플러터", "코틀린"],
+      isBookmarked: false,
+      definition: "랜더링의 원리",
+    },
+    {
+      id: "13e754a0-da7a-45c8-a841-51d0da658429",
+      name: "백엔드",
+      tags: ["nodejs", "CI/CD", "스레드"],
+      isBookmarked: false,
+      definition: "백엔드 개발의 원리",
+    },
+    {
+      id: "13e754a0-da7a-45c8-a841-51d0da658429",
+      name: "AI",
+      tags: ["트랜스포머", "GPT", "인공지능"],
+      isBookmarked: false,
+      definition: "인공지능의 원리",
+    },
+  ];
+
   return (
     <div
       style={{
-        width: "800px",
+        width: "1100px",
         height: "calc(100vh - 95px)",
         flexDirection: "column",
         display: "flex",
@@ -151,46 +184,23 @@ export default function SearchPage() {
                   />
                 );
               } else if (m.role === "assistant3") {
-                return <Assistant3 key={m.id}>연관단어 제시 텍스트</Assistant3>;
+                return (
+                  <Assistant3 key={m.id}>함께 알면 좋은 키워드</Assistant3>
+                );
               } else {
                 return (
-                  <Assistant4 key={m.id}>
-                    {m.words.map((items, index) => (
-                      <div
-                        style={{
-                          flexDirection: "column",
-                          display: "flex",
-                          height: "180px",
-                          borderRadius: "5px",
-                          boxShadow: "0px 0px 2px 0px #00000033",
-                        }}
+                  <GridContainer>
+                    {datas.map((items, index) => (
+                      <AssistantCard
                         key={index}
-                      >
-                        <Element_title>
-                          <text style={{ position: "absolute", left: "10px" }}>
-                            {items.word}
-                          </text>
-                          <img
-                            src={
-                              items.bookmarking
-                                ? bookmark_fill
-                                : bookmark_default
-                            }
-                            style={{ position: "absolute", right: "10px" }}
-                          />
-                        </Element_title>
-                        <Element_tagbar>
-                          {items.tags.map((items2, index) => (
-                            <Element_tags key={index}>{items2}</Element_tags>
-                          ))}
-                        </Element_tagbar>
-                        <Element_button>
-                          <text>단어명</text>
-                          <img src={Vectoricon} />
-                        </Element_button>
-                      </div>
+                        id={items.id}
+                        name={items.name}
+                        isBookmarked={items.isBookmarked}
+                        tags={items.tags}
+                        definition={items.definition}
+                      />
                     ))}
-                  </Assistant4>
+                  </GridContainer>
                 );
               }
             })}
@@ -265,7 +275,7 @@ export default function SearchPage() {
             <img
               src={searchIcon}
               style={{
-                position:"absolute",
+                position: "absolute",
                 left: "20px",
                 width: 20,
                 height: 20,
@@ -316,10 +326,11 @@ const Messages = styled.main`
 const Bubble = styled.div<{ $me?: boolean }>`
   max-width: min(78%, 680px);
   justify-self: end;
-  background: #111827;
-  color: white;
+  background: #f0f0f9;
+  color: rgba(30, 32, 36, 0.66);
   padding: 5px 12px;
-  border-radius: 16px;
+  border-radius: 5px;
+  font-size: 14px;
   white-space: pre-wrap;
 `;
 
@@ -380,8 +391,8 @@ const Element_button = styled.div`
   height: 60px;
   margin-top: 20px;
   padding: 0 12px;
-  margin-left:10px;
-  margin-right:10px;
+  margin-left: 10px;
+  margin-right: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -411,16 +422,16 @@ const InputBar = styled.input`
   width: 100%;
   height: 50px;
   border: 1px solid #1e202457;
-  border-radius:20px 20px 20px 20px;
+  border-radius: 20px 20px 20px 20px;
   font-size: 14px;
-  padding-left: 35px;
+  padding-left: 45px;
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px #dfe1e5;
-  };
+  }
   &::placeholder {
-    color: #1e202457; 
-  };
+    color: #1e202457;
+  }
 `;
 
 const Searchbtn = styled.button`
@@ -464,4 +475,13 @@ const RotatingIcon = styled.img`
       filter: brightness(1.1);
     }
   }
+`;
+
+const GridContainer = styled.div`
+  margin-top: 50px;
+  width: 1000px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
 `;

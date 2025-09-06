@@ -103,7 +103,7 @@ const Headline = styled.h2`
 const Sub = styled.p`
   margin: 0;
   color: rgba(0, 0, 0, 0.56);
-  font-size:16px;
+  font-size: 16px;
 `;
 
 const Grid = styled.div`
@@ -126,24 +126,12 @@ const Right = styled.div`
 
 const Left = styled.div`
   display: none;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   @media (min-width: 840px) {
     display: flex;
     align-items: center;
   }
-`;
-
-const LabelPill = styled.span`
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
-  font-weight: 600;
-  backdrop-filter: blur(6px);
 `;
 
 const Card = styled.div`

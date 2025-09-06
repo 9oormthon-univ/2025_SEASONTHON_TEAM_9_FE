@@ -17,7 +17,7 @@ type Term = {
   id: string;
   nameKr: string;
   nameEn: string;
-  definition: string;
+  definitions: string[];
   imgUrl?: string;
   tags: Tag[];
   isBookmarked: boolean;
@@ -115,7 +115,7 @@ export default function BookMarkWordList() {
               name={w.nameKr || w.nameEn}
               isBookmarked={w.isBookmarked}
               tags={w.tags.map((t) => t.name)}
-              definition={w.definition}
+              definition={w.definitions[0]}
             />
           ))}
         </CardGrid>
