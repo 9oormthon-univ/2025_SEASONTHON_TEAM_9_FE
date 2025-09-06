@@ -9,4 +9,14 @@ const TokenReq: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
+TokenReq.interceptors.request.use((config) => {
+  if (!config.headers.Authorization) {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  return config;
+});
+
 export { TokenReq };

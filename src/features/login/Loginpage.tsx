@@ -15,9 +15,11 @@ export default function Loginpage() {
       const res = await TokenReq.post("/login", { email, password });
 
       if (res.status === 200) {
-        console.log(res.headers);
         const token = res.headers["authorization"];
-        TokenReq.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        if (token) {
+          localStorage.setItem("accessToken", token);
+          TokenReq.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        }
 
         setError(null);
         navigate(`/`, { replace: true });

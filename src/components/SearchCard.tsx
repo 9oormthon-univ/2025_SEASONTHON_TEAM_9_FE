@@ -48,10 +48,6 @@ export default function SearchCard({
   );
 }
 
-//
-// styled-components
-//
-
 const CardWrapper = styled.div`
   width: 100%;
   justify-self: start;

@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { TokenReq } from "@/api/axiosInstance";
 import type { Term, Word } from "@/types/type";
 
-// 더미 comments (API에는 없음 → 예시 문장/상황만 수동으로)
 const dummyComments = [
   "우리 팀은 GitHub Actions를 이용해서 CI/CD 파이프라인을 구축했어.",
   "CD 자동화가 잘 돼 있어서 코드 머지하면 바로 스테이징에 반영돼.",
@@ -129,5 +128,4 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
-  justify-items: center;
 `;

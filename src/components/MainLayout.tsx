@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import styled from "styled-components";
-import BookmarkIcon from "@/assets/navbaricon/bookmark_fill.png"
-import ProfileIcon from "@/assets/navbaricon/profile.png"
-import NotificationIcon from "@/assets/navbaricon/notification_fill.png"
-
-
+import BookmarkIcon from "@/assets/navbarIcon/bookmark_fill.png";
+import ProfileIcon from "@/assets/navbarIcon/profile.png";
+import NotificationIcon from "@/assets/navbarIcon/notification_fill.png";
 
 const navLinks = [
   { label: "단어", path: "/word" },
@@ -17,8 +15,7 @@ const navLinks = [
 const MainLayout = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
-  const [loginstate,setloginstate] = useState(true)
+  const accessToken = localStorage.getItem("accessToken");
 
   return (
     <>
@@ -57,17 +54,23 @@ const MainLayout = () => {
             })}
           </div>
 
-          {!loginstate && <div
-            style={{ position: "absolute", right: "200px" }}
-            onClick={() => navigate(`/login`, { replace: false })}
-          >
-            로그인
-          </div>}
-          {loginstate && <NavbarRightbtn>
-            <img src={BookmarkIcon} onClick={()=>navigate(`/bookmark`, { replace: false })}></img>
-            <img src={NotificationIcon}></img>
-            <img src={ProfileIcon}></img>
-            </NavbarRightbtn>}
+          {!accessToken ? (
+            <div
+              style={{ position: "absolute", right: "200px" }}
+              onClick={() => navigate(`/login`, { replace: false })}
+            >
+              로그인
+            </div>
+          ) : (
+            <NavbarRightBtn>
+              <img
+                src={BookmarkIcon}
+                onClick={() => navigate(`/bookmark`, { replace: false })}
+              ></img>
+              <img src={NotificationIcon}></img>
+              <img src={ProfileIcon}></img>
+            </NavbarRightBtn>
+          )}
         </Navbar>
       </div>
       <MainContent>
@@ -79,14 +82,14 @@ const MainLayout = () => {
 
 export default MainLayout;
 
-const NavbarRightbtn = styled.div`
-display:flex;
-justify-content:space-between;
-align-items:center;
-position: absolute;
-right: 200px;
-width:110px;
-`
+const NavbarRightBtn = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  right: 200px;
+  width: 110px;
+`;
 
 const MainContent = styled.main`
   display: flex;
