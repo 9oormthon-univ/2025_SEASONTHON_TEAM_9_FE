@@ -41,6 +41,7 @@ const MainLayout = () => {
   };
 
   const signOut = () => {
+    setAnchorEl(null);
     localStorage.removeItem("accessToken");
     navigate(`/`, { replace: false });
   };
