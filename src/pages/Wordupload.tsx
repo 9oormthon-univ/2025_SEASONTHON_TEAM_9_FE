@@ -2,33 +2,22 @@
 import React, { useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Notifyicon from "@/assets/pin_2_fill.png"
+import Uploadimgicon from "@/assets/Uploadimgicon.png"
+import { TokenReq } from "@/api/axiosInstance";
 
 type TagKey =
-    | "개발" | "기획" | "UX/UI" | "디자인" | "마케팅"
+    | "프론트엔드" | "백엔드" | "기획" | "UX/UI" | "디자인" | "마케팅"
     | "데이터" | "AI" | "비즈니스" | "커뮤니케이션";
 
-const ALL_TAGS: TagKey[] = ["개발", "기획", "UX/UI", "디자인", "마케팅", "데이터", "AI", "비즈니스", "커뮤니케이션"];
+const ALL_TAGS: TagKey[] = ["프론트엔드", "백엔드", "기획", "UX/UI", "디자인", "마케팅", "데이터", "AI", "비즈니스", "커뮤니케이션"];
 
 export default function KeywordRequestForm() {
     const [keywordName, setKeywordName] = useState("");
     const [keywordDef, setKeywordDef] = useState("생성 버튼을 누르면 자동으로 생성돼요");
-    const [selected, setSelected] = useState<Set<TagKey>>(new Set(["개발"]));
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [isGenLoading, setGenLoading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-    const canSubmit = useMemo(() => {
-        return keywordName.trim().length > 0 && keywordDef.trim().length > 0 && selected.size > 0;
-    }, [keywordName, keywordDef, selected]);
-
-    const onToggle = (t: TagKey) => {
-        setSelected(prev => {
-            const s = new Set(prev);
-            s.has(t) ? s.delete(t) : s.add(t);
-            return s;
-        });
-    };
 
     const onUpload = (f?: File) => {
         if (!f) return;
@@ -42,35 +31,26 @@ export default function KeywordRequestForm() {
         if (e.dataTransfer.files && e.dataTransfer.files[0]) onUpload(e.dataTransfer.files[0]);
     };
 
-    const handleGenerate = async () => {
-        // 샘플: 키워드 정의 자동 생성(실서비스에서는 API 호출 지점)
-        setGenLoading(true);
-        await new Promise(r => setTimeout(r, 600)); // demo delay
-        if (!keywordDef.trim())
-            setKeywordDef(`"${keywordName}" 키워드에 대한 간단한 설명을 여기에 작성하세요.`);
-        setGenLoading(false);
-    };
-
-    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-        e.preventDefault();
-        // 제출 payload 예시
-        const payload = {
-            name: keywordName.trim(),
-            definition: keywordDef.trim(),
-            tags: Array.from(selected),
-            image: imageFile,
-        };
-        console.log("SUBMIT", payload);
-        alert("제출되었습니다! (콘솔을 확인하세요)");
-    };
-
     const changename = (e: any) => {
         setKeywordName(e.target.value)
     }
 
+    const sendKeyword = async () => {
+        try {
+            const res = await TokenReq.post("/키워드생성", { keywordName });
+
+            if (res.status === 200) {
+                console.log(res.data)
+                setKeywordDef(res.data)
+            }
+        } catch (err: any) {
+            Error("에러");
+        }
+    };
+
     return (
 
-        <Card as="form" onSubmit={handleSubmit}>
+        <Card>
             <Title>새로운 키워드 요청하기</Title>
             <Hint style={{ marginTop: "30px" }}>원하는 키워드가 없을 경우 직접 키워드를 제안할 수 있어요.</Hint>
             <Hint style={{}}>제안해주신 키워드는 클루시드팀에서 검토 후 등록할 예정이에요.</Hint>
@@ -89,9 +69,11 @@ export default function KeywordRequestForm() {
                         onChange={changename}
                     ></Namebar>
                     <Definitionbar>
-                        <div style={{width:"90%",color:"rgba(30, 32, 36, 0.34)",minHeight:"100px",marginTop:"10px",fontSize:"16px"}}>{keywordDef}</div>
-                        <div style={{width:"90%",height:"35px",margin:"10px 0px",display:"flex",justifyContent:"end"}}>
-                            <div style={{borderRadius:"10px",width:"50px",height:"100%",backgroundColor:"rgba(2, 17, 34, 1)",color:"white",display:"flex",justifyContent:"center",alignItems:"center"}}>생성</div>
+                        <div style={{ width: "90%", color: "rgba(30, 32, 36, 0.34)", minHeight: "100px", marginTop: "10px", fontSize: "16px" }}>{keywordDef}</div>
+                        <div style={{ width: "90%", height: "35px", margin: "10px 0px", display: "flex", justifyContent: "end" }}>
+                            <div
+                                onClick={() => { sendKeyword() }}
+                                style={{ borderRadius: "10px", width: "50px", height: "100%", backgroundColor: "rgba(2, 17, 34, 1)", color: "white", display: "flex", justifyContent: "center", alignItems: "center" }}>생성</div>
                         </div>
                     </Definitionbar>
                     <Tagbar>
@@ -101,33 +83,36 @@ export default function KeywordRequestForm() {
                         <img src={Notifyicon} style={{ marginLeft: "10px" }}></img>
                         <div style={{ marginLeft: "10px", fontSize: "12px", color: "rgba(30, 32, 36, 0.66)" }}>키워드 정의 생성이 완료되면 자동으로 태그가 선택돼요. </div>
                     </Notifybar>
-                    <Imguploadbar>
-                        <UploadBox
-                            onDragOver={(e) => e.preventDefault()}
-                            onDrop={handleDrop}
-                            onClick={() => fileInputRef.current?.click()}
-                            role="button"
-                            tabIndex={0}
-                        >
-                            {imageUrl ? (
-                                <Preview>
-                                    <img src={imageUrl} alt="미리보기" />
-                                </Preview>
-                            ) : (
-                                <>
-                                    <UploadIcon aria-hidden>🖼️</UploadIcon>
-                                    <UploadText>이미지를 끌어놓거나 클릭하여 업로드하세요 (PNG/JPG)</UploadText>
-                                </>
-                            )}
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                accept="image/*"
-                                style={{ display: "none" }}
-                                onChange={(e) => e.target.files && onUpload(e.target.files[0])}
-                            />
-                        </UploadBox>
-                    </Imguploadbar>
+
+                    <UploadBox
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={handleDrop}
+                        onClick={() => fileInputRef.current?.click()}
+                        role="button"
+                        tabIndex={0}
+                    >
+                        {imageUrl ? (
+                            <Preview>
+                                <img src={imageUrl} alt="미리보기" />
+                            </Preview>
+                        ) : (
+                            <>
+                                <UploadText>
+                                    키워드와 관련된 이미지를 첨부해주세요.<br></br>
+                                    파일크기는 최대 10MB 입니다.
+                                </UploadText>
+                                <img src={Uploadimgicon} style={{marginLeft:"20px"}}></img>
+                            </>
+                        )}
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            style={{ display: "none" }}
+                            onChange={(e) => e.target.files && onUpload(e.target.files[0])}
+                        />
+                    </UploadBox>
+
                 </Rightbar>
 
             </Field>
@@ -353,6 +338,7 @@ const Label = styled.label`
   color: #1e2024;
   margin-bottom: 8px;
   font-weight: 600;
+  
 `;
 
 const LabelRow = styled.div`
@@ -448,7 +434,18 @@ background-color:rgba(247, 248, 252, 1);
 `;
 
 const UploadBox = styled.div`
-  
+  flex-direction:row;
+  display:flex;
+  width:220px;
+  height: 30px;
+  margin-top: 12px;
+  border: 1.5px dashed #cbd5e1;
+  padding: 18px;
+  text-align: center;
+  outline: none;
+  user-select: none;
+  background-color:rgba(240, 240, 249, 1);
+  border-radius: 12px;
 `;
 
 const UploadIcon = styled.div`
@@ -456,9 +453,9 @@ const UploadIcon = styled.div`
   margin-bottom: 8px;
 `;
 
-const UploadText = styled.div`
-  font-size: 13px;
-  color: #64748b;
+const UploadText = styled.text`
+  font-size: 10px;
+  color: rgba(30, 32, 36, 0.34);
 `;
 
 const Preview = styled.div`
