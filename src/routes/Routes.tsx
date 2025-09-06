@@ -14,6 +14,7 @@ import BookMarkWordDetailPage from "@/pages/BookMarkWordDetailPage";
 import BookMarkContentDetailPage from "@/pages/BookMarkContentDetailPage";
 import ContentsDetailPage from "@/pages/ContentsDetailPage";
 import WordDetailPage from "@/pages/WordDetailPage";
+import KeywordRequestForm from "@/pages/Wordupload";
 import BadgePage from "@/pages/BadgePage";
 
 const routes = createBrowserRouter([
@@ -74,9 +75,13 @@ const routes = createBrowserRouter([
         element: <WordDetailPage />,
       },
       {
-        path: "badge",
-        element: <BadgePage />,
+        path:"wordupload",
+        element:<KeywordRequestForm/>
       },
+      {
+        path:"badge",
+        element:<BadgePage/>
+      }
     ],
   },
 ]);

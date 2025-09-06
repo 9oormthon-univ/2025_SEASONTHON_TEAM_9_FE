@@ -61,7 +61,7 @@ const MainLayout = () => {
           </div>
           <div
             style={{
-              width: "600px",
+              width: "400px",
               height: "40px",
               alignItems: "center",
               justifyContent: "space-between",
@@ -191,7 +191,7 @@ const NavbarRightBtn = styled.div`
 const MainContent = styled.main`
   display: flex;
   justify-content: center;
-  padding-top: 72px;
+  padding-top: 64px;
 `;
 
 const Navbar = styled.div`
@@ -202,7 +202,7 @@ const Navbar = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 72px;
+  height: 64px;
   background-color: white;
   border-bottom: 1px solid #f0f0f9;
   z-index: 100;
@@ -213,10 +213,10 @@ const NavButton = styled.div<{ $active: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 16px;
   font-family: "Gothic A1", sans-serif;
   font-weight: 500;
-  color: ${({ $active }) => ($active ? "#111827" : "#11182757")};
+  color: ${({ $active }) => ($active ? "rgba(30, 32, 36, 1)" : "rgba(30, 32, 36, 0.2)")};
   padding-bottom: 4px;
 
   &:hover {
@@ -228,13 +228,13 @@ const Loginbtn = styled.div`
   position: absolute;
   right: 200px;
   width: 70px;
-  height: 40px;
+  height: 34px;
   background-color: rgba(30, 32, 36, 1);
   color: rgba(247, 248, 252, 1);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   border-radius: 10px;
   &:hover {
