@@ -15,6 +15,7 @@ import FilterIcon from "@/assets/word/filter.svg";
 import Footer from "@/components/Footer";
 import WordListing from "./WordListing";
 import useWordDetail from "@/hooks/useWordDetail";
+import yellowfilter from "@/assets/yellowfilter.svg";
 
 const categories = ["전체", "UI/UX", "Frontend"];
 
@@ -81,9 +82,23 @@ export default function WordList() {
               sx={{ color: "#1E2024" }}
               endIcon={
                 <img
+                  src={yellowfilter}
+                  alt="filter"
+                  style={{ width: 20, height: 20 }}
+                />
+              }
+            >
+              A
+            </Button>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ color: "#1E2024" }}
+              endIcon={
+                <img
                   src={FilterIcon}
                   alt="filter"
-                  style={{ width: 10, height: 10 }}
+                  style={{ width: 20, height: 20 }}
                 />
               }
             >
@@ -97,10 +112,12 @@ export default function WordList() {
                 <img
                   src={SortIcon}
                   alt="sort"
-                  style={{ width: 10, height: 10 }}
+                  style={{ width: 15, height: 15 }}
                 />
               }
-            ></Button>
+            >
+              가나다순
+            </Button>
           </Box>
         </ToolbarWrapper>
 
