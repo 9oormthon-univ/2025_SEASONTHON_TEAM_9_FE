@@ -40,7 +40,10 @@ export default function BookmarkPage() {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedFolder, setSelectedFolder] = useState<Folder | null>(null);
-  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false); // ✅ 삭제 모달 상태
+
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false); // ✅ 수정 모달 상태
+  const [editName, setEditName] = useState(""); // ✅ 수정 이름
 
   const navigate = useNavigate();
 
@@ -99,10 +102,29 @@ export default function BookmarkPage() {
     setAnchorEl(null);
   };
 
-  // ✅ 폴더 수정
+  // ✅ 폴더 수정 열기
   const handleEdit = () => {
-    toast.info(`폴더 수정: ${selectedFolder?.name}`);
+    if (selectedFolder) {
+      setEditName(selectedFolder.name);
+      setEditOpen(true);
+    }
     handleMenuClose();
+  };
+
+  // ✅ 폴더 수정 API 호출
+  const handleEditConfirm = async () => {
+    if (!selectedFolder) return;
+    try {
+      await TokenReq.patch(`/bookmarks/folders/${selectedFolder.id}`, {
+        name: editName,
+      });
+      toast.success("폴더 수정 성공");
+      fetchFolders();
+      setEditOpen(false);
+      setSelectedFolder(null);
+    } catch (err) {
+      toast.error("폴더 수정 실패");
+    }
   };
 
   // ✅ 폴더 삭제 버튼 → 모달 열기
@@ -129,7 +151,6 @@ export default function BookmarkPage() {
 
   return (
     <PageWrapper>
-      {/* 폴더 추가 모달 */}
       <Dialog
         open={addFolder}
         onClose={() => setAddFolder(false)}
@@ -142,34 +163,24 @@ export default function BookmarkPage() {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginBottom: "20px",
-          }}
-        >
-          <DialogContent>
-            <TextField
-              sx={{ height: "100%", padding: "0px" }}
-              autoFocus
-              fullWidth
-              placeholder="폴더 이름을 입력하세요"
-              value={addFoldername}
-              onChange={(e) => setAddFoldername(e.target.value)}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              variant="contained"
-              onClick={handleAddFolder}
-              disabled={!addFoldername.trim()}
-              sx={{ height: "52px", marginRight: "20px", width: "110px" }}
-            >
-              확인
-            </Button>
-          </DialogActions>
-        </div>
+        <DialogContent>
+          <TextField
+            autoFocus
+            fullWidth
+            placeholder="폴더 이름을 입력하세요"
+            value={addFoldername}
+            onChange={(e) => setAddFoldername(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            onClick={handleAddFolder}
+            disabled={!addFoldername.trim()}
+          >
+            확인
+          </Button>
+        </DialogActions>
       </Dialog>
 
       {/* 제목 + 탭 */}
@@ -261,11 +272,13 @@ export default function BookmarkPage() {
           삭제하기
         </MenuItem>
       </Menu>
+
+      {/* ✅ 폴더 수정 모달 */}
       <Dialog
-        open={deleteConfirmOpen}
-        onClose={() => setDeleteConfirmOpen(false)}
-        maxWidth="xs"
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
         fullWidth
+        maxWidth="xs"
       >
         <DialogTitle
           sx={{
@@ -274,6 +287,63 @@ export default function BookmarkPage() {
             marginTop: "10px",
             position: "relative",
           }}
+        >
+          폴더 수정하기
+          <IconButton
+            onClick={() => setEditOpen(false)}
+            size="small"
+            sx={{ position: "absolute", right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ textAlign: "center" }}>
+          <Typography sx={{ color: "#555", marginBottom: "40px" }}>
+            새로운 폴더 이름을 입력해주세요
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder="폴더 이름"
+            value={editName}
+            sx={{
+              height: "44px",
+            }}
+            onChange={(e) => setEditName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center" }}>
+          <Button
+            variant="contained"
+            onClick={handleEditConfirm}
+            disabled={!editName.trim()}
+            sx={{
+              backgroundColor: "#111827",
+              "&:hover": { backgroundColor: "#1f2937" },
+              "&.Mui-disabled": {
+                backgroundColor: "#F7F8FC",
+                color: "rgba(30, 32, 36, 0.34)",
+              },
+              borderRadius: "8px",
+              width: "240px",
+              height: "50px",
+              marginBottom: "20px",
+              boxShadow: "none",
+            }}
+          >
+            수정하기
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* 삭제 확인 모달 */}
+      <Dialog
+        open={deleteConfirmOpen}
+        onClose={() => setDeleteConfirmOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle
+          sx={{ fontWeight: "600", textAlign: "center", marginTop: "10px" }}
         >
           폴더 삭제하기
           <IconButton
@@ -284,12 +354,10 @@ export default function BookmarkPage() {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-
         <DialogContent sx={{ textAlign: "center", color: "#555" }}>
           한번 삭제한 폴더는 다시 되돌릴 수 없어요 <br />
           정말 삭제하실 건가요?
         </DialogContent>
-
         <DialogActions sx={{ justifyContent: "center" }}>
           <Button
             variant="contained"
@@ -310,8 +378,6 @@ export default function BookmarkPage() {
     </PageWrapper>
   );
 }
-
-/* ================= styles ================= */
 
 const Header = styled.div`
   display: flex;
