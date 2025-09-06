@@ -2,7 +2,7 @@ import styled from "styled-components";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton, Typography } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface Props {
   children: React.ReactNode;
@@ -10,8 +10,9 @@ interface Props {
 
 export default function BookmarkLayout({ children }: Props) {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const folderName = `폴더이름 ${id}`;
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const folderName = params.get("folderName");
 
   return (
     <LayoutContainer>

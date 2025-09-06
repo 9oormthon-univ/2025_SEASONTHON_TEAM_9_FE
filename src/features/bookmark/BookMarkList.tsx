@@ -63,11 +63,11 @@ export default function BookmarkPage() {
     fetchFolders();
   }, []);
 
-  const handleNavigate = (id: string) => {
+  const handleNavigate = (id: string, folderName: string) => {
     if (tab === 0) {
-      navigate(`word/${id}`);
+      navigate(`word/${id}?folderName=${folderName}`);
     } else {
-      navigate(`contents/${id}`);
+      navigate(`contents/${id}?folderName=${folderName}`);
     }
   };
 
@@ -217,7 +217,7 @@ export default function BookmarkPage() {
       {/* 폴더 카드들 */}
       <FolderGrid>
         {folders.map((f) => (
-          <CardWrapper key={f.id} onClick={() => handleNavigate(f.id)}>
+          <CardWrapper key={f.id} onClick={() => handleNavigate(f.id, f.name)}>
             <FolderBox />
             <InfoRow>
               <div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState, lazy } from "react";
 import styled from "styled-components";
 import {
   TextField,
@@ -12,39 +12,15 @@ import Bg from "@/components/Banner";
 import SearchIcon from "@/assets/word/search.svg";
 import SortIcon from "@/assets/word/sort.svg";
 import FilterIcon from "@/assets/word/filter.svg";
-import AssistantCard from "@/components/AssistantCard";
-import { TokenReq } from "@/api/axiosInstance";
-import type { Term, Word } from "@/types/type";
 import Footer from "@/components/Footer";
+import WordListing from "./WordListing";
+import useWordDetail from "@/hooks/useWordDetail";
 
 const categories = ["전체", "UI/UX", "Frontend"];
 
 export default function WordList() {
   const [value, setValue] = useState(0);
-  const [words, setWords] = useState<Word[]>([]);
-
-  async function fetchTerms() {
-    try {
-      const res = await TokenReq.get<{ terms: Term[] }>("/terms");
-      console.log("✅ 응답:", res.data);
-
-      const mapped: Word[] = res.data.terms.map((t) => ({
-        id: t.id,
-        name: t.nameKr,
-        isBookmarked: t.isBookmarked,
-        definition: t.definition,
-        tags: t.tags.map((tag) => tag.name),
-      }));
-
-      setWords(mapped);
-    } catch (err) {
-      console.error("❌ 에러:", err);
-    }
-  }
-
-  useEffect(() => {
-    fetchTerms();
-  }, []);
+  const { words, loading } = useWordDetail();
 
   return (
     <Container>
@@ -128,19 +104,7 @@ export default function WordList() {
           </Box>
         </ToolbarWrapper>
 
-        {/* 카드 그리드 */}
-        <Grid>
-          {words.map((w) => (
-            <AssistantCard
-              key={w.id}
-              id={w.id}
-              name={w.name}
-              isBookmarked={w.isBookmarked}
-              tags={w.tags}
-              definition={w.definition}
-            />
-          ))}
-        </Grid>
+        <WordListing words={words} loading={loading} />
 
         {/* 더보기 버튼 */}
         <LoadMore>
@@ -157,14 +121,10 @@ export default function WordList() {
           </Button>
         </LoadMore>
       </PageWrapper>
-      <Footer/>
+      <Footer />
     </Container>
   );
 }
-
-//
-// 🔹 styled-components
-//
 
 const Container = styled.div`
   width: 100%;
@@ -194,11 +154,4 @@ const LoadMore = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 40px;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
-  gap: 5px;
 `;

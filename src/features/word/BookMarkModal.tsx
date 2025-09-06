@@ -42,7 +42,7 @@ export default function BookMarkModal({
   setFolders,
 }: Props) {
   const [addFoldername, setAddFoldername] = useState("");
-  const [mode, setMode] = useState<"list" | "add">("list"); // ✅ 화면 모드
+  const [mode, setMode] = useState<"list" | "add">("list");
 
   const fetchFolders = async () => {
     try {
@@ -53,6 +53,14 @@ export default function BookMarkModal({
     } catch (err) {
       toast.error("폴더 목록 불러오기 실패");
     }
+  };
+
+  const handleAllBookmarksCleared = (folders: Folder[]) => {
+    const allCleared = folders.length > 0 && folders.every((f) => !f.isIn);
+    if (allCleared) {
+      window.location.reload();
+    }
+    setOpen(false);
   };
 
   // 북마크 추가/삭제 토글
@@ -91,7 +99,12 @@ export default function BookMarkModal({
   };
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="xs">
+    <Dialog
+      open={open}
+      onClose={() => handleAllBookmarksCleared(folders)}
+      fullWidth
+      maxWidth="xs"
+    >
       {mode === "list" ? (
         <>
           <DialogTitle>
@@ -107,7 +120,7 @@ export default function BookMarkModal({
               <Button
                 variant="text"
                 size="small"
-                onClick={() => setMode("add")} // ✅ 추가 모드로 전환
+                onClick={() => setMode("add")}
                 sx={{
                   color: "#5F9CEB !important",
                   backgroundColor: "#F0F0F9",

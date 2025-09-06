@@ -1,18 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Box, Tabs, Tab, Typography } from "@mui/material";
 import AssistantCard from "@/components/AssistantCard";
+import { TokenReq } from "@/api/axiosInstance";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+
+type Tag = {
+  id: string;
+  name: string;
+};
+
+type Term = {
+  id: string;
+  nameKr: string;
+  nameEn: string;
+  definition: string;
+  imgUrl?: string;
+  tags: Tag[];
+  isBookmarked: boolean;
+};
 
 export default function BookMarkWordList() {
   const [tab, setTab] = useState(0);
+  const [words, setWords] = useState<Term[]>([]);
+  const { id } = useParams();
 
-  const words = Array.from({ length: 9 }).map((_, i) => ({
-    id: String(i),
-    name: `단어명`,
-    isBookmarked: i % 2 === 0,
-    tags: ["태그", "태그", "태그"],
-    definition: "",
-  }));
+  const fetchBookmarks = async () => {
+    try {
+      const res = await TokenReq.get<{ terms: Term[] }>("/bookmarks", {
+        params: { folderId: id },
+      });
+      console.log(res.data);
+      setWords(res.data.terms);
+    } catch (err) {
+      toast.error("북마크 단어 불러오기 실패");
+    }
+  };
+
+  useEffect(() => {
+    fetchBookmarks();
+  }, [id]);
 
   const categories = ["카테고리", "카테고리", "카테고리"];
 
@@ -58,9 +86,9 @@ export default function BookMarkWordList() {
           <AssistantCard
             id={w.id}
             key={w.id}
-            name={w.name}
+            name={w.nameKr || w.nameEn}
             isBookmarked={w.isBookmarked}
-            tags={w.tags}
+            tags={w.tags.map((t) => t.name)}
             definition={w.definition}
           />
         ))}

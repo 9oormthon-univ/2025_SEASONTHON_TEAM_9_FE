@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import QuestionIcon from "@/assets/word/question.svg";
 import SearchCard from "@/components/SearchCard";
-import AssistantCard from "@/components/AssistantCard";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { TokenReq } from "@/api/axiosInstance";
-import type { Term, Word } from "@/types/type";
+import WordListing from "./WordListing";
+import useWordDetail from "@/hooks/useWordDetail";
+import SkeletonSearchCard from "../search/SkeletonSearchCard";
 
 const dummyComments = [
   "우리 팀은 GitHub Actions를 이용해서 CI/CD 파이프라인을 구축했어.",
@@ -14,42 +13,8 @@ const dummyComments = [
 
 export default function WordDetail() {
   const { id } = useParams();
-  const [word, setWord] = useState<Word | null>(null);
-  const [relatedWords, setRelatedWords] = useState<Word[]>([]);
 
-  async function fetchTerms() {
-    try {
-      const res = await TokenReq.get<{ terms: Term[] }>("/terms", {
-        params: { ids: id },
-      });
-      console.log("✅ 응답:", res.data);
-
-      // 첫 번째 term 상세 데이터
-      const mappedWord: Word = {
-        id: res.data.terms[0].id,
-        name: res.data.terms[0].nameKr,
-        isBookmarked: res.data.terms[0].isBookmarked,
-        definition: res.data.terms[0].definition,
-        tags: res.data.terms[0].tags.map((tag) => tag.name),
-      };
-      setWord(mappedWord);
-
-      const mappedRelations = res.data.terms.map((r) => ({
-        id: r.id,
-        name: r.nameKr,
-        isBookmarked: r.isBookmarked,
-        definition: r.definition,
-        tags: r.tags.map((tag) => tag.name),
-      }));
-      setRelatedWords(mappedRelations);
-    } catch (err) {
-      console.error("❌ 에러:", err);
-    }
-  }
-
-  useEffect(() => {
-    if (id) fetchTerms();
-  }, [id]);
+  const { words, mappedWord, loading } = useWordDetail(id);
 
   return (
     <Wrapper>
@@ -58,27 +23,24 @@ export default function WordDetail() {
           <KeyWordDetail>키워드 자세히 보기</KeyWordDetail>
           <img src={QuestionIcon} alt="question" width={24} height={24} />
         </Header>
-
-        {/* 상세 카드 */}
-        {word && (
-          <SearchCard
-            id={String(word.id)}
-            title={word.name}
-            description={word.definition}
-            tags={word.tags}
-            comments={dummyComments}
-            bookmarking={word.isBookmarked}
-          />
+        {loading ? (
+          <SkeletonSearchCard />
+        ) : (
+          mappedWord && (
+            <SearchCard
+              id={String(mappedWord.id)}
+              title={mappedWord.name}
+              description={mappedWord.definition}
+              tags={mappedWord.tags}
+              comments={dummyComments}
+              bookmarking={mappedWord.isBookmarked}
+            />
+          )
         )}
 
         <SubHeader>함께 알면 좋은 키워드</SubHeader>
 
-        {/* 연관 키워드 */}
-        <Grid>
-          {relatedWords.map((card) => (
-            <AssistantCard key={card.id} {...card} />
-          ))}
-        </Grid>
+        <WordListing words={words} loading={loading} />
       </Content>
     </Wrapper>
   );
