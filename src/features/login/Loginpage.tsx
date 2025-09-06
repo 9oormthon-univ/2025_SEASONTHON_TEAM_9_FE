@@ -6,7 +6,8 @@ import { TokenReq } from "@/api/axiosInstance"; // axios 인스턴스 import
 import Kakaoicon from "@/assets/loginicon/kakaoicon.png";
 import Appleicon from "@/assets/loginicon/appleicon.png";
 import Navericon from "@/assets/loginicon/navericon.png";
-import Clucidlogo_loginpage from "@/assets/loginicon/Clucidlogo_loginpage.png";
+import clucidLogo from "@/assets/clucidSvglogo.svg";
+
 import { toast } from "react-toastify";
 
 export default function Loginpage() {
@@ -38,7 +39,7 @@ export default function Loginpage() {
 
   return (
     <Container>
-      <Imagecontainer src={Clucidlogo_loginpage}></Imagecontainer>
+      <Imagecontainer src={clucidLogo} />
 
       <Bar1>이메일</Bar1>
       <InputBar

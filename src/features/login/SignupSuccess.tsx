@@ -21,10 +21,10 @@ export default function SignupSuccess() {
       <Imagecontainer src={congratude} />
       <Loginbtn
         onClick={() => {
-          navigate(`/`, { replace: true });
+          navigate(`/login`, { replace: true });
         }}
       >
-        홈으로
+        로그인하러 가기
       </Loginbtn>
     </Container>
   );

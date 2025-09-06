@@ -177,16 +177,6 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Bg = styled.div`
-  width: 100%;
-  height: 400px;
-  background-color: #d9d9d9;
-  flex-direction: column;
-  display: flex;
-  align-items: center;
-  color: #1e2024a8;
-`;
-
 const InputBar = styled.input`
   width: 100%;
   height: 50px;
