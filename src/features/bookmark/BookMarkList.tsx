@@ -408,7 +408,7 @@ const Header = styled.div`
 
 const PageWrapper = styled.div`
   width: 100%;
-  max-width: 1100px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 40px 20px;
 `;

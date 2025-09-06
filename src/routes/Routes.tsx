@@ -12,10 +12,11 @@ import SignupSuccess from "@/features/login/SignupSuccess";
 import BookMarkPage from "@/pages/BookMarkPage";
 import BookMarkWordDetailPage from "@/pages/BookMarkWordDetailPage";
 import BookMarkContentDetailPage from "@/pages/BookMarkContentDetailPage";
-import BookmarkLayout from "@/components/BookmarkLayout";
 import ContentsDetailPage from "@/pages/ContentsDetailPage";
 import WordDetailPage from "@/pages/WordDetailPage";
 import KeywordRequestForm from "@/pages/Wordupload";
+import BadgePage from "@/pages/BadgePage";
+
 
 const routes = createBrowserRouter([
   {
@@ -77,7 +78,11 @@ const routes = createBrowserRouter([
       {
         path:"wordupload",
         element:<KeywordRequestForm/>
-      }
+      },
+      {
+        path: "badge",
+        element: <BadgePage />,
+      },
     ],
   },
 ]);

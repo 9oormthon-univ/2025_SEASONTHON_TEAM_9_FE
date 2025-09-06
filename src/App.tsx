@@ -9,15 +9,12 @@ function App() {
     <>
       <Globalstyle />
       <ToastContainer
-        position="top-right"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar
         closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
+        draggable={false}
+        pauseOnHover={false}
         theme="light"
       />
       <RouterProvider router={routes}></RouterProvider>
