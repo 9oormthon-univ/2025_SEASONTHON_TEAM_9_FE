@@ -4,6 +4,7 @@ import Searchicon from "@/assets/Searchicon.png";
 import AssistantCard from "../components/AssistantCard";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/Footer";
+import bannerLogo from "@/assets/mainBanner.png";
 
 const tags = ["프론트엔드", "백엔드", "리액트", "인공지능"];
 
@@ -49,36 +50,7 @@ export default function Homepage() {
 
   return (
     <Container>
-      <Bg>
-        <text
-          style={{
-            marginTop: "70px",
-            color: "#1E2024",
-            fontWeight: "600",
-            fontSize: "22px",
-          }}
-        >
-          클루시드
-        </text>
-        <text style={{ marginTop: "70px" }}>
-          원장은 국회의 동의를 얻어 대통령이 임명하고, 그 임기는 4년으로 하며,
-          1차에 한하여 중임할 수 있다.
-        </text>
-        <text>
-          대통령은 법률이 정하는 바에 의하여 사면·감형 또는 복권을 명할 수 있다.
-        </text>
-        <text style={{ marginTop: "40px" }}>
-          선거에 있어서 최고득표자가 2인 이상인 때에는 국회의 재적의원 과반수가
-          출석한 공개회의에서 다수표를 얻은 자를 당선자로 한다.{" "}
-        </text>
-        <text>
-          대통령은 전시·사변 또는 이에 준하는 국가비상사태에 있어서 병력으로써
-          군사상의 필요에 응하거나 공공의 안녕질서를 유지할 필요
-        </text>
-        <text>
-          가 있을 때에는 법률이 정하는 바에 의하여 계엄을 선포할 수 있다.
-        </text>
-      </Bg>
+      <img src={bannerLogo} height={"460px"} width={"100%"} />
       <div
         style={{
           width: "30%",

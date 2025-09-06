@@ -2,16 +2,63 @@ import { useState } from "react";
 import { Box, Tabs, Tab, Card, CardContent, Typography } from "@mui/material";
 import styled from "styled-components";
 
-// 더미 데이터
 const badges = [
-  { id: 1, name: "배지", description: "배지", acquired: true },
-  { id: 2, name: "배지", description: "배지", acquired: false },
-  { id: 3, name: "배지", description: "배지", acquired: false },
-  { id: 4, name: "배지", description: "배지", acquired: true },
-  { id: 5, name: "배지", description: "배지", acquired: true },
-  { id: 6, name: "배지", description: "배지", acquired: false },
-  { id: 7, name: "배지", description: "배지", acquired: false },
-  { id: 8, name: "배지", description: "배지", acquired: true },
+  {
+    id: 1,
+    name: "반짝임의 순간",
+    description: "검색 시작하기",
+    acquired: true,
+    imgUrl: "src/assets/badgeDummy/1.png",
+  },
+  {
+    id: 2,
+    name: "고뇌의 흔적",
+    description: "키워드 검색 30회 돌파",
+    acquired: true,
+    imgUrl: "src/assets/badgeDummy/2.png",
+  },
+  {
+    id: 3,
+    name: "탐험가",
+    description: "키워드 검색 100회 돌파",
+    acquired: false,
+    imgUrl: "src/assets/badgeDummy/3.png",
+  },
+  {
+    id: 4,
+    name: "인사이트 오픈",
+    description: "첫 콘텐츠 열람",
+    acquired: false,
+    imgUrl: "src/assets/badgeDummy/4.png",
+  },
+  {
+    id: 5,
+    name: "인사이트 모험가",
+    description: "콘텐츠 10개 이상 열람",
+    acquired: false,
+    imgUrl: "src/assets/badgeDummy/5.png",
+  },
+  {
+    id: 6,
+    name: "인사이트 수집가",
+    description: "콘텐츠 5회 이상 저장",
+    acquired: true,
+    imgUrl: "src/assets/badgeDummy/6.png",
+  },
+  {
+    id: 7,
+    name: "폴더 마스터",
+    description: "폴더 5개 이상 생성",
+    acquired: true,
+    imgUrl: "src/assets/badgeDummy/7.png",
+  },
+  {
+    id: 8,
+    name: "꾸준함의 시작",
+    description: "7일 연속 이용",
+    acquired: false,
+    imgUrl: "src/assets/badgeDummy/8.png",
+  },
 ];
 
 export default function BadgeList() {
@@ -62,7 +109,7 @@ export default function BadgeList() {
       <Grid>
         {filteredBadges.map((badge) => (
           <CardWrapper $acquired={badge.acquired}>
-            <Circle $acquired={badge.acquired} />
+            <Circle src={badge.imgUrl} />
             <CardContent sx={{ textAlign: "center" }}>
               <Typography
                 fontWeight={600}
@@ -71,7 +118,7 @@ export default function BadgeList() {
                 {badge.name}
               </Typography>
               <Typography
-                fontSize={14}
+                fontSize={12}
                 color={badge.acquired ? "#555" : "#d1d5db"}
               >
                 {badge.description}
@@ -92,7 +139,8 @@ const Wrapper = styled.div`
 const CardWrapper = styled(Card)<{ $acquired: boolean }>`
   border-radius: 16px;
   padding-top: 20px;
-  box-shadow: 0px 0px 14.53px 0px rgba(162, 196, 240, 0.3);
+  box-shadow: ${({ $acquired }) =>
+    $acquired ? "0 0 8.3px 0 rgba(246, 190, 79, 0.5)" : "rgba(0, 0, 0, 0.10)"};
   background-color: #fff;
   border: 1px solid #f3f4f6;
   display: flex;
@@ -103,11 +151,10 @@ const CardWrapper = styled(Card)<{ $acquired: boolean }>`
   opacity: ${({ $acquired }) => ($acquired ? 1 : 0.5)};
 `;
 
-const Circle = styled.div<{ $acquired: boolean }>`
+const Circle = styled.img`
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background-color: ${({ $acquired }) => ($acquired ? "#5F9CEB" : "#E5E7EB")};
 `;
 
 const CountBox = styled.span`

@@ -267,7 +267,6 @@ const LayoutWrapper = styled.div`
   max-width: 1000px;
   padding: 0 16px;
   box-sizing: border-box;
-  background-color: #fff;
 `;
 
 const ContentWrapper = styled.div`

@@ -17,7 +17,7 @@ import SettingsIcon from "@mui/icons-material/Settings"; // 계정 설정
 import LogoutIcon from "@mui/icons-material/Logout"; // 로그아웃
 
 const navLinks = [
-  { label: "단어", path: "/word" },
+  { label: "키워드", path: "/word" },
   { label: "콘텐츠", path: "/contents" },
   { label: "커뮤니티", path: "/community" },
   { label: "검색", path: "/search" },
@@ -192,6 +192,7 @@ const MainContent = styled.main`
   display: flex;
   justify-content: center;
   padding-top: 64px;
+  background: linear-gradient(180deg, #f6faff 0%, #fefeff 100%);
 `;
 
 const Navbar = styled.div`
@@ -215,8 +216,9 @@ const NavButton = styled.div<{ $active: boolean }>`
   justify-content: center;
   font-size: 16px;
   font-family: "Gothic A1", sans-serif;
-  font-weight: 500;
-  color: ${({ $active }) => ($active ? "rgba(30, 32, 36, 1)" : "rgba(30, 32, 36, 0.2)")};
+  font-weight: 700;
+  color: ${({ $active }) =>
+    $active ? "rgba(30, 32, 36, 1)" : "rgba(30, 32, 36, 0.2)"};
   padding-bottom: 4px;
 
   &:hover {

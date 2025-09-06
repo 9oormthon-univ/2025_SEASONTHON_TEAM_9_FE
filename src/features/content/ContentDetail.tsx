@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { Box, Typography, Chip, IconButton } from "@mui/material";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 
 export default function ContentDetail() {
@@ -134,6 +133,7 @@ const Wrapper = styled.div`
   max-width: 900px;
   margin: 0 auto;
   padding: 40px 20px;
+  background: linear-gradient(180deg, #f6faff 0%, #fefeff 100%);
 `;
 
 const MetaRow = styled.div`
