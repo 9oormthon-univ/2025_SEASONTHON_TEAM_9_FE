@@ -78,6 +78,7 @@ export default function Signuppage() {
       <Rules>{"(선택) 약관 동의"}</Rules>
 
       <Loginbtn onClick={handleSignup}>회원가입</Loginbtn>
+      <div style={{marginBottom:"100px"}}></div>
     </Container>
   );
 }
