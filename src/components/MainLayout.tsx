@@ -143,7 +143,9 @@ const MainLayout = () => {
         </MenuItem>
         <Divider />
 
-        <MenuItem onClick={handleMenuClose}>
+        <MenuItem onClick={() => {
+          handleMenuClose();
+          navigate(`/badge`, { replace: false })}}>
           <ListItemIcon>
             <BadgeIcon fontSize="small" />
           </ListItemIcon>
