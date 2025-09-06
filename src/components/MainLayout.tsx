@@ -4,6 +4,7 @@ import styled from "styled-components";
 import BookmarkIcon from "@/assets/navbarIcon/bookmark_fill.png";
 import ProfileIcon from "@/assets/navbarIcon/profile.png";
 import NotificationIcon from "@/assets/navbarIcon/notification_fill.png";
+import Clucidlogo_navbar from "@/assets/Clucidlogo_navbar.png"
 
 const navLinks = [
   { label: "단어", path: "/word" },
@@ -25,7 +26,7 @@ const MainLayout = () => {
             style={{ position: "absolute", left: "200px" }}
             onClick={() => navigate(`/`, { replace: false })}
           >
-            이미지
+            <img src={Clucidlogo_navbar}></img>
           </div>
           <div
             style={{

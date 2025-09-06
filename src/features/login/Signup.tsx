@@ -44,7 +44,7 @@ export default function Signuppage() {
 
   return (
     <Container>
-      <div style={{ marginTop: "50px" }}>회원가입</div>
+      <div style={{ marginTop: "50px",fontWeight:"600",fontsize:"18px" }}>회원가입</div>
 
       <Bar1>이메일</Bar1>
       <Inputbar

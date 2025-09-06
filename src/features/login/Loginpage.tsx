@@ -6,6 +6,7 @@ import { TokenReq } from "@/api/axiosInstance"; // axios 인스턴스 import
 import Kakaoicon from "@/assets/loginicon/kakaoicon.png"
 import Appleicon from "@/assets/loginicon/appleicon.png"
 import Navericon from "@/assets/loginicon/navericon.png"
+import Clucidlogo_loginpage from "@/assets/loginicon/Clucidlogo_loginpage.png"
 
 export default function Loginpage() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function Loginpage() {
 
   return (
     <Container>
-      <Imagecontainer></Imagecontainer>
+      <Imagecontainer src={Clucidlogo_loginpage}></Imagecontainer>
 
       <Bar1>이메일</Bar1>
       <Inputbar
@@ -96,11 +97,9 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Imagecontainer = styled.div`
-  width: 100%;
-  background-color: lightgray;
-  margin-top: 50px;
-  height: 200px;
+const Imagecontainer = styled.img`
+  margin-top: 100px;
+  margin-bottom: 50px;
 `;
 
 const Bar1 = styled.div`
