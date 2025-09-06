@@ -194,7 +194,7 @@ export default function Homepage() {
         </div>
       </div>
       <div style={{ marginBottom: "200px" }}></div>
-      <Footer></Footer>
+      <Footer/>
     </Container>
   );
 }

@@ -93,7 +93,7 @@ export default function Contentspage() {
           ))}
         </Gridcontainer>
       </ContentsContainer>
-      <Footer></Footer>
+      <Footer/>
     </Container>
   ) : (
     //detail view

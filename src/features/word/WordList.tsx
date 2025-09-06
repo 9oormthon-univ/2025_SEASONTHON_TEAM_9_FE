@@ -161,7 +161,7 @@ export default function WordList() {
           </Button>
         </LoadMore>
       </PageWrapper>
-      <Footer></Footer>
+      <Footer/>
     </Container>
   );
 }
