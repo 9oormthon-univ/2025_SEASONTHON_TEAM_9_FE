@@ -1,6 +1,7 @@
 // KeywordRequestForm.tsx
 import React, { useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
+import Notifyicon from "@/assets/pin_2_fill.png"
 
 type TagKey =
     | "개발" | "기획" | "UX/UI" | "디자인" | "마케팅"
@@ -63,7 +64,7 @@ export default function KeywordRequestForm() {
         alert("제출되었습니다! (콘솔을 확인하세요)");
     };
 
-    const changename = (e:any) =>{
+    const changename = (e: any) => {
         setKeywordName(e.target.value)
     }
 
@@ -75,7 +76,12 @@ export default function KeywordRequestForm() {
             <Hint style={{}}>제안해주신 키워드는 클루시드팀에서 검토 후 등록할 예정이에요.</Hint>
             <div style={{ marginTop: "30px", borderBottom: "1px solid rgba(240, 240, 249, 1)", width: "100%" }}></div>
             <Field>
-                <Leftbar></Leftbar>
+                <Leftbar style={{ fontSize: "18px", fontWeight: "500" }}>
+                    <text style={{ marginTop: "10px" }}>제안 키워드명</text>
+                    <text style={{ marginTop: "30px" }}>키워드 정의</text>
+                    <text style={{ marginTop: "130px" }}>태그 선택</text>
+                    <text style={{ marginTop: "150px" }}>이미지 첨부</text>
+                </Leftbar>
                 <Rightbar>
                     <Namebar
                         placeholder="원하는 검색어를 입력하세요"
@@ -83,9 +89,48 @@ export default function KeywordRequestForm() {
                         onChange={changename}
                     ></Namebar>
                     <Definitionbar></Definitionbar>
+                    <Tagbar>
+                        {ALL_TAGS.map((v, i) => (<Tags key={i}>{v}</Tags>))}
+                    </Tagbar>
+                    <Notifybar>
+                        <img src={Notifyicon} style={{ marginLeft: "10px" }}></img>
+                        <div style={{ marginLeft: "10px", fontSize: "12px", color: "rgba(30, 32, 36, 0.66)" }}>키워드 정의 생성이 완료되면 자동으로 태그가 선택돼요. </div>
+                    </Notifybar>
+                    <Imguploadbar>
+                        <UploadBox
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={handleDrop}
+                            onClick={() => fileInputRef.current?.click()}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            {imageUrl ? (
+                                <Preview>
+                                    <img src={imageUrl} alt="미리보기" />
+                                </Preview>
+                            ) : (
+                                <>
+                                    <UploadIcon aria-hidden>🖼️</UploadIcon>
+                                    <UploadText>이미지를 끌어놓거나 클릭하여 업로드하세요 (PNG/JPG)</UploadText>
+                                </>
+                            )}
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                style={{ display: "none" }}
+                                onChange={(e) => e.target.files && onUpload(e.target.files[0])}
+                            />
+                        </UploadBox>
+                    </Imguploadbar>
                 </Rightbar>
 
             </Field>
+            <div style={{ width: "100%", height: "50px", borderBottom: "1px solid rgba(240, 240, 249, 1)" }}></div>
+            <div style={{ width: "100%", justifyContent: "center", marginTop: "50px", display: "flex", justifySelf: "center", height: "50px" }}>
+                <GenButton>완료</GenButton>
+            </div>
+            <div style={{ marginBottom: "100px" }}></div>
             {/* <Title>새로운 키워드 요청하기</Title>
         <Hint>원하는 키워드가 없을 경우 직접 키워드를 제안할 수 있어요. 아래 양식에 맞추어 제안해주시면 내부 검토 후 키워드를 등록할 예정이에요.</Hint>
 
@@ -201,8 +246,6 @@ const Hint = styled.div`
 const Field = styled.div`
   margin-top: 30px;
   width:100%;
-  height:400px;
-  background-color:red;
   display:flex;
   flex-direction:row;
 `;
@@ -211,20 +254,18 @@ const Leftbar = styled.div`
 width:120px;
 display:flex;
   flex-direction:column;
-  background-color:blue;
 `
 const Rightbar = styled.div`
 width:480px;
 display:flex;
   flex-direction:column;
-  background-color:pink;
 `
 const Namebar = styled.input`
 width: 100%;
   height: 50px;
   padding: 0 12px;
   border: 1px solid #1e202457;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 14px;
   box-sizing: border-box;
 
@@ -242,24 +283,60 @@ const Definitionbar = styled.div`
 width: 100%;
 height: 150px;
 background-color:rgba(240, 240, 249, 1);
-  border-radius: 8px;
+  border-radius: 12px;
   margin-top:10px;
 `
 
 const Tagbar = styled.div`
-width: 100%;
-height: 150px;
-background-color:rgba(240, 240, 249, 1);
-  border-radius: 8px;
-  margin-top:10px;
-`
+box-sizing: border-box;
+  width: 100%;
+  min-height: 100px;
+  margin-top: 10px;
+
+  display: flex;
+  flex-wrap: wrap;   /* 한 줄에 다 안 들어가면 다음 줄로 */
+  gap: 10px;         /* 태그들 간격 */
+  align-items: flex-start;
+  padding: 10px;
+`;
+
+const Tags = styled.div<{ $active?: boolean }>`
+  padding: 6px 14px;   /* 글자 수에 맞춰 여백 */
+  background-color: ${({ $active }) => ($active ? "rgba(2, 17, 34, 1)" : "#ffffff")};
+  border-radius: 30px;
+  border: 1px solid #f0f0f9;
+  color: ${({ $active }) => ($active ? "#ffffff" : "rgba(30, 32, 36, 0.34)")};
+  font-weight: 500;
+  display: inline-flex; /* 내부 글자 크기에 맞춰짐 */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+`;
 
 const Notifybar = styled.div`
-
+width: 100%;
+height: 50px;
+background-color:rgba(240, 240, 249, 1);
+  margin-top:10px;
+  border-radius: 12px;
+align-items:center;
+display:flex;
+flex-direction:row;
 `
 
 const Imguploadbar = styled.div`
-
+width: 50%;
+height: 100px;
+margin-top: 12px;
+  border: 1.5px dashed #cbd5e1;
+  padding: 18px;
+  text-align: center;
+  outline: none;
+  user-select: none;
+background-color:rgba(240, 240, 249, 1);
+  border-radius: 12px;
 `
 
 const Label = styled.label`
@@ -351,28 +428,19 @@ const NoticeIcon = styled.span`
   margin-top: 2px;
 `;
 
-const GenButton = styled.button`
-  padding: 8px 14px;
-  font-size: 13px;
-  border-radius: 10px;
-  border: 1px solid #1f2937;
-  background: #111826;
-  color: #fff;
-  cursor: pointer;
-  &:disabled {
-    opacity: .5; cursor: not-allowed;
-  }
+const GenButton = styled.div`
+width:360px;
+height:100%;
+background-color:rgba(247, 248, 252, 1);
+ border-radius: 12px;
+ display:flex;
+ align-items: center;
+  justify-content: center;
+ color:rgba(30, 32, 36, 0.34);
 `;
 
 const UploadBox = styled.div`
-  margin-top: 6px;
-  border: 1.5px dashed #cbd5e1;
-  border-radius: 14px;
-  padding: 18px;
-  text-align: center;
-  background: #fafbff;
-  outline: none;
-  user-select: none;
+  
 `;
 
 const UploadIcon = styled.div`

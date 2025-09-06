@@ -255,7 +255,7 @@ const Tags = styled.div`
   margin-right: 10px;
   padding: 2px 12px;
   width: auto;
-  background-color: #f0f0f9;
+  background-color: #f7f8fc;
   border-radius: 10px;
   color: #5f9ceb;
   font-weight: 500;
