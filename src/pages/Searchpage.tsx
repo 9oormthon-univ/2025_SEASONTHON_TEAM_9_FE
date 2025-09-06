@@ -6,7 +6,7 @@ import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import SearchCard from "@/components/SearchCard";
 
-const tagname = ["단어", "이미지"];
+const tagname = ["키워드","텍스트","이미지"];
 
 type Relationword = { word: string; bookmarking: boolean; tags: string[] };
 
@@ -31,6 +31,9 @@ export default function Searchpage() {
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement | null>(null);
   const taRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const [selectedTag, setSelectedTag] = useState<number>(0);
+
 
   // 새 메시지 도착 시 맨 아래로 스크롤
   useEffect(() => {
@@ -204,7 +207,15 @@ export default function Searchpage() {
           }}
         >
           {tagname.map((items, index) => (
-            <Tags key={index}>{items}</Tags>
+            <Tags
+            key={index}
+            $active={selectedTag === index}
+            onClick={() =>{
+              setSelectedTag(index); // 토글 기능
+            }
+              
+            }
+          >{items}</Tags>
           ))}
         </div>
         <div
@@ -377,18 +388,21 @@ const Element_button = styled.div`
 
 /* ========================================== */
 
-const Tags = styled.div`
+const Tags = styled.div<{ $active?: boolean }>`
   margin-right: 10px;
   padding: 2px 12px;
   width: auto;
-  background-color: #ffffff;
-  border-radius: 30px 30px 30px 30px;
+  background-color: ${({ $active }) => ($active ? "rgba(2, 17, 34, 1)" : "#ffffff")};
+  border-radius: 30px;
   border: 1px solid #f0f0f9;
-  color: #5f9ceb;
+  color: ${({ $active }) => ($active ? "#ffffff" : "#5f9ceb")};
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
 `;
 
 const Inputbar = styled.input`
