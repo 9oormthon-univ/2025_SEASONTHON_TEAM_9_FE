@@ -265,8 +265,8 @@ export default function SearchPage() {
             <img
               src={searchIcon}
               style={{
-                position: "absolute",
-                left: "8px",
+                position:"absolute",
+                left: "20px",
                 width: 20,
                 height: 20,
                 pointerEvents: "none",
@@ -411,16 +411,16 @@ const InputBar = styled.input`
   width: 100%;
   height: 50px;
   border: 1px solid #1e202457;
-  border-radius: 8px;
+  border-radius:20px 20px 20px 20px;
   font-size: 14px;
   padding-left: 35px;
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px #dfe1e5;
-  }
+  };
   &::placeholder {
-    color: #1e202457;
-  }
+    color: #1e202457; 
+  };
 `;
 
 const Searchbtn = styled.button`

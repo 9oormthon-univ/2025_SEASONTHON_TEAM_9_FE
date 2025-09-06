@@ -44,6 +44,7 @@ const MainLayout = () => {
     setAnchorEl(null);
     localStorage.removeItem("accessToken");
     navigate(`/`, { replace: false });
+    window.location.reload();
   };
 
   const handleBadgeClick = () => {
