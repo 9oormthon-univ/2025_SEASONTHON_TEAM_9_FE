@@ -199,7 +199,7 @@ export default function SearchPage() {
       {/* 검색바 */}
       <div
         style={{
-          marginBottom: "30px",
+          marginBottom: "0px",
           width: "100%",
           height: "140px",
           backgroundColor: "#F7F8FC",
@@ -373,7 +373,8 @@ const Element_button = styled.div`
   height: 60px;
   margin-top: 20px;
   padding: 0 12px;
-  margin: 0 10px;
+  margin-left:10px;
+  margin-right:10px;
   display: flex;
   align-items: center;
   justify-content: space-between;

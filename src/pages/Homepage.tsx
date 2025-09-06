@@ -78,7 +78,7 @@ export default function Homepage() {
         ))}
       </Tagbar>
 
-      <Bar>연관단어 제시 텍스트</Bar>
+      <Bar>새로 등록된 키워드</Bar>
       <GridContainer>
         {datas.map((items, index) => (
           <AssistantCard
@@ -182,7 +182,7 @@ const InputBar = styled.input`
   height: 50px;
   padding: 0 12px;
   border: 1px solid #1e202457;
-  border-radius: 8px;
+  border-radius: 25px 25px 25px 25px;
   font-size: 14px;
   box-sizing: border-box;
 
@@ -233,7 +233,7 @@ const Bar = styled.div`
 `;
 
 const GridContainer = styled.div`
-  margin-top: 40px;
+  margin-top: 20px;
   width: 1000px;
   display: grid;
   gap: 10px;
