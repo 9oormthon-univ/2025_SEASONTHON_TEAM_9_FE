@@ -5,6 +5,7 @@ import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import ContentCard from "@/components/ContentCard";
 import styled from "styled-components";
 import Bg from "@/components/Banner";
+import Footer from "@/components/Footer";
 
 type Content = {
   id: string;
@@ -92,6 +93,7 @@ export default function Contentspage() {
           ))}
         </Gridcontainer>
       </ContentsContainer>
+      <Footer></Footer>
     </Container>
   ) : (
     //detail view
