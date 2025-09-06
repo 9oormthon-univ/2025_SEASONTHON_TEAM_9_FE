@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Searchicon from "@/assets/Searchicon.png";
 import AssistantCard from "../components/AssistantCard";
 import { useNavigate } from "react-router-dom";
+import Footer from "@/components/Footer";
 
 const tags = ["프론트엔드", "백엔드", "리액트", "인공지능"];
 
@@ -190,6 +191,7 @@ export default function Homepage() {
         </div>
       </div>
       <div style={{ marginBottom: "200px" }}></div>
+      <Footer/>
     </Container>
   );
 }
