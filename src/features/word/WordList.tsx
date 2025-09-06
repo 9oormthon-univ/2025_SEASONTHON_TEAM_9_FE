@@ -15,6 +15,7 @@ import FilterIcon from "@/assets/word/filter.svg";
 import AssistantCard from "@/components/AssistantCard";
 import { TokenReq } from "@/api/axiosInstance";
 import type { Term, Word } from "@/types/type";
+import Footer from "@/components/Footer";
 
 const categories = ["전체", "UI/UX", "Frontend"];
 
@@ -160,6 +161,7 @@ export default function WordList() {
           </Button>
         </LoadMore>
       </PageWrapper>
+      <Footer/>
     </Container>
   );
 }

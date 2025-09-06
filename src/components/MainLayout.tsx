@@ -4,6 +4,7 @@ import styled from "styled-components";
 import BookmarkIcon from "@/assets/navbarIcon/bookmark_fill.png";
 import ProfileIcon from "@/assets/navbarIcon/profile.png";
 import NotificationIcon from "@/assets/navbarIcon/notification_fill.png";
+import Clucidlogo_navbar from "@/assets/Clucidlogo_navbar.png"
 
 const navLinks = [
   { label: "단어", path: "/word" },
@@ -25,7 +26,7 @@ const MainLayout = () => {
             style={{ position: "absolute", left: "200px" }}
             onClick={() => navigate(`/`, { replace: false })}
           >
-            이미지
+            <img src={Clucidlogo_navbar}></img>
           </div>
           <div
             style={{
@@ -55,12 +56,11 @@ const MainLayout = () => {
           </div>
 
           {!accessToken ? (
-            <div
-              style={{ position: "absolute", right: "200px" }}
+            <Loginbtn 
               onClick={() => navigate(`/login`, { replace: false })}
             >
               로그인
-            </div>
+            </Loginbtn>
           ) : (
             <NavbarRightBtn>
               <img
@@ -126,3 +126,21 @@ const NavButton = styled.div<{ $active: boolean }>`
     cursor: pointer;
   }
 `;
+
+const Loginbtn = styled.div`
+position: absolute;
+right: 200px;
+width:70px;
+height:40px;
+background-color:rgba(30, 32, 36, 1);
+color:rgba(247, 248, 252, 1);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:16px;
+font-weight:600;
+border-radius:10px;
+&:hover{
+cursor:pointer;
+}
+`

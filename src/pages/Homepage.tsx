@@ -5,6 +5,8 @@ import Vectoricon from "@/assets/Vector.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import AssistantCard from "../components/AssistantCard";
+import { useNavigate } from "react-router-dom";
+import Footer from "@/components/Footer";
 
 const tags = ["프론트엔드", "백엔드", "리액트", "인공지능"];
 
@@ -41,6 +43,7 @@ const datas: RelationWord[] = [
 ];
 
 export default function Homepage() {
+  const navigate = useNavigate();
   const [searchcontent, setsearchcontent] = useState("");
 
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,6 +95,7 @@ export default function Homepage() {
           placeholder="원하는 검색어를 입력하세요"
           value={searchcontent}
           onChange={search}
+          onClick={()=>{navigate(`/search`, { replace: true })}}
         ></Inputbar>
         <Searchbtn>
           <img src={Searchicon}></img>
@@ -190,6 +194,7 @@ export default function Homepage() {
         </div>
       </div>
       <div style={{ marginBottom: "200px" }}></div>
+      <Footer/>
     </Container>
   );
 }
