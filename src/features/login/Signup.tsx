@@ -13,7 +13,14 @@ export default function Signuppage() {
   const [error, setError] = useState<string | null>(null);
 
   const handleSignup = async () => {
-    // 1. 비밀번호 일치 여부 확인
+
+    // 1. 공백 여부 확인
+    if(password === "" || email === "" || confirmPassword === ""){
+      setError("공백을 허용하지 않습니다.");
+      return;
+    }
+
+    // 2. 비밀번호 일치 여부 확인
     if (password !== confirmPassword) {
       setError("비밀번호가 일치하지 않습니다.");
       return;
@@ -37,7 +44,7 @@ export default function Signuppage() {
 
   return (
     <Container>
-      <div style={{ marginTop: "50px" }}>회원가입</div>
+      <div style={{ marginTop: "50px",fontWeight:"600",fontSize:"18px" }}>회원가입</div>
 
       <Bar1>이메일</Bar1>
       <Inputbar
@@ -78,6 +85,7 @@ export default function Signuppage() {
       <Rules>{"(선택) 약관 동의"}</Rules>
 
       <Loginbtn onClick={handleSignup}>회원가입</Loginbtn>
+      <div style={{marginBottom:"100px"}}></div>
     </Container>
   );
 }
