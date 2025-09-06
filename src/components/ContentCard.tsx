@@ -83,7 +83,7 @@ const ElementTagbar = styled.div`
 
 const ElementTag = styled.div`
   margin-right: 10px;
-  padding: 6px;
+  padding: 7px;
   font-size: 10px;
   width: auto;
   background-color: #f0f0f9;

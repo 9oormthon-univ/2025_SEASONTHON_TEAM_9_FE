@@ -242,7 +242,7 @@ const Container = styled.div`
 `;
 
 const ContentsContainer = styled.div`
-  width: 900px;
+  width: 1000px;
   height: 900px;
   margin-top: 50px;
 `;
