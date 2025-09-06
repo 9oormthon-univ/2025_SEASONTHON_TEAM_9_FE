@@ -176,9 +176,17 @@ export default function BookmarkPage() {
             onChange={(e) => setAddFoldername(e.target.value)}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: "20px",
+          }}
+        >
           <Button
             variant="contained"
+            size="medium"
             onClick={handleAddFolder}
             disabled={!addFoldername.trim()}
           >
