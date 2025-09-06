@@ -4,7 +4,7 @@ import styled from "styled-components";
 import BookmarkIcon from "@/assets/navbarIcon/bookmark_fill.png";
 import ProfileIcon from "@/assets/navbarIcon/profile.png";
 import NotificationIcon from "@/assets/navbarIcon/notification_fill.png";
-import Clucidlogo_navbar from "@/assets/Clucidlogo_navbar.png"
+import clucidSvgLogo from "@/assets/clucidSvgLogo.svg";
 
 const navLinks = [
   { label: "단어", path: "/word" },
@@ -26,7 +26,7 @@ const MainLayout = () => {
             style={{ position: "absolute", left: "200px" }}
             onClick={() => navigate(`/`, { replace: false })}
           >
-            <img src={Clucidlogo_navbar}></img>
+            <img src={clucidSvgLogo}></img>
           </div>
           <div
             style={{
@@ -56,9 +56,7 @@ const MainLayout = () => {
           </div>
 
           {!accessToken ? (
-            <Loginbtn 
-              onClick={() => navigate(`/login`, { replace: false })}
-            >
+            <Loginbtn onClick={() => navigate(`/login`, { replace: false })}>
               로그인
             </Loginbtn>
           ) : (
@@ -94,7 +92,7 @@ const NavbarRightBtn = styled.div`
 const MainContent = styled.main`
   display: flex;
   justify-content: center;
-  padding-top:72px;
+  padding-top: 72px;
 `;
 
 const Navbar = styled.div`
@@ -108,7 +106,7 @@ const Navbar = styled.div`
   height: 72px;
   background-color: white;
   border-bottom: 1px solid #f0f0f9;
-  z-index: 9999;
+  z-index: 100;
   box-sizing: border-box;
 `;
 
@@ -128,19 +126,19 @@ const NavButton = styled.div<{ $active: boolean }>`
 `;
 
 const Loginbtn = styled.div`
-position: absolute;
-right: 200px;
-width:70px;
-height:40px;
-background-color:rgba(30, 32, 36, 1);
-color:rgba(247, 248, 252, 1);
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:16px;
-font-weight:600;
-border-radius:10px;
-&:hover{
-cursor:pointer;
-}
-`
+  position: absolute;
+  right: 200px;
+  width: 70px;
+  height: 40px;
+  background-color: rgba(30, 32, 36, 1);
+  color: rgba(247, 248, 252, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+`;

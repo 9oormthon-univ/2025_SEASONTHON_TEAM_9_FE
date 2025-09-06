@@ -1,53 +1,103 @@
+import { useState } from "react";
 import styled from "styled-components";
 import Vectoricon from "@/assets/Vector.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import { useNavigate } from "react-router-dom";
+import { TokenReq } from "@/api/axiosInstance";
+import { toast } from "react-toastify";
+import BookMarkModal from "@/features/word/BookMarkModal";
 
 interface CardProps {
   id: string;
   name: string;
-  bookmarking: boolean;
+  isBookmarked: boolean;
   tags: string[];
   definition: string;
 }
 
+type Folder = {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  isIn: boolean;
+};
+
 export default function AssistantCard({
   id,
   name,
-  bookmarking,
+  isBookmarked,
   tags,
   definition,
 }: CardProps) {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [folders, setFolders] = useState<Folder[]>([]);
 
-  const handleClick = () => {
+  const handleClickCard = () => {
     navigate(`/word/${id}`);
   };
 
+  // 북마크 클릭 → 무조건 모달 열기
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    fetchFolders();
+    setOpen(true);
+  };
+
+  // 폴더 목록 가져오기
+  const fetchFolders = async () => {
+    try {
+      const res = await TokenReq.get<Folder[]>("/bookmarks/folder/in", {
+        params: { termId: id },
+      });
+      console.log(" 응답!:", res.data);
+      setFolders(res.data);
+    } catch (err) {
+      toast.error("폴더 목록 불러오기 실패");
+    }
+  };
+
   return (
-    <CardWrapper>
-      <Title>
-        <span>{name}</span>
-        <Bookmark
-          src={bookmarking ? bookmark_fill : bookmark_default}
-          alt="bookmark"
-        />
-      </Title>
+    <>
+      <CardWrapper>
+        <Title>
+          <span>{name}</span>
+          <Bookmark
+            src={isBookmarked ? bookmark_fill : bookmark_default}
+            alt="bookmark"
+            onClick={handleBookmarkClick}
+          />
+        </Title>
 
-      <TagBar>
-        {tags.map((tag, i) => (
-          <Tag key={i}>{tag}</Tag>
-        ))}
-      </TagBar>
+        <TagBar>
+          {tags.map((tag, i) => (
+            <Tag key={i}>{tag}</Tag>
+          ))}
+        </TagBar>
 
-      <ActionButton onClick={handleClick}>
-        <span>{definition}</span>
-        <img src={Vectoricon} alt="vector" />
-      </ActionButton>
-    </CardWrapper>
+        <ActionButton onClick={handleClickCard}>
+          <span>
+            {definition.slice(0, 12)}
+            {definition.length > 12 && "..."}
+          </span>
+          <img src={Vectoricon} alt="vector" />
+        </ActionButton>
+      </CardWrapper>
+
+      <BookMarkModal
+        id={id}
+        open={open}
+        setOpen={setOpen}
+        folders={folders}
+        setFolders={setFolders}
+      />
+    </>
   );
 }
+
+/* ================= styles ================= */
 
 const CardWrapper = styled.div`
   display: flex;
@@ -57,6 +107,7 @@ const CardWrapper = styled.div`
   border-radius: 20px;
   box-shadow: 0px 0px 2px 0px #00000033;
   padding: 10px;
+  cursor: pointer;
 `;
 
 const Title = styled.div`
@@ -78,6 +129,7 @@ const Title = styled.div`
 const Bookmark = styled.img`
   position: absolute;
   right: 25px;
+  cursor: pointer;
 `;
 
 const TagBar = styled.div`
@@ -102,7 +154,6 @@ const ActionButton = styled.button`
   margin: 20px 10px 0;
   height: 45px;
   padding: 0 12px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;

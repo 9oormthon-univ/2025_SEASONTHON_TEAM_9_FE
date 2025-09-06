@@ -1,9 +1,6 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import Searchicon from "@/assets/Searchicon.png";
-import Vectoricon from "@/assets/Vector.png";
-import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
-import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import AssistantCard from "../components/AssistantCard";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/Footer";
@@ -14,7 +11,7 @@ type RelationWord = {
   id: string;
   name: string;
   tags: string[];
-  bookmarking: boolean;
+  isBookmarked: boolean;
   definition: string;
 };
 
@@ -23,21 +20,21 @@ const datas: RelationWord[] = [
     id: "1",
     name: "프론트엔드",
     tags: ["리액트", "플러터", "코틀린"],
-    bookmarking: true,
+    isBookmarked: true,
     definition: "",
   },
   {
     id: "2",
     name: "백엔드",
     tags: ["nodejs", "CI/CD", "스레드"],
-    bookmarking: false,
+    isBookmarked: false,
     definition: "",
   },
   {
     id: "3",
     name: "AI",
     tags: ["트랜스포머", "GPT", "인공지능"],
-    bookmarking: true,
+    isBookmarked: true,
     definition: "",
   },
 ];
@@ -114,7 +111,7 @@ export default function Homepage() {
             key={index}
             id={items.id}
             name={items.name}
-            bookmarking={items.bookmarking}
+            isBookmarked={items.isBookmarked}
             tags={items.tags}
             definition={items.definition}
           />
@@ -223,7 +220,7 @@ const Inputbar = styled.input`
   border: 1px solid #1e202457;
   border-radius: 8px;
   font-size: 14px;
-  box-sizing: border-box; /* padding, border 포함해서 100% */
+  box-sizing: border-box;
 
   &:focus {
     outline: none;

@@ -28,19 +28,18 @@ export default function WordDetail() {
       const mappedWord: Word = {
         id: res.data.terms[0].id,
         name: res.data.terms[0].nameKr,
-        bookmarking: false,
+        isBookmarked: res.data.terms[0].isBookmarked,
         definition: res.data.terms[0].definition,
         tags: res.data.terms[0].tags.map((tag) => tag.name),
       };
       setWord(mappedWord);
 
-      // relations → 관련 키워드로 AssistantCard 뿌리기
-      const mappedRelations = res.data.terms[0].relations.map((r) => ({
+      const mappedRelations = res.data.terms.map((r) => ({
         id: r.id,
         name: r.nameKr,
-        bookmarking: false,
+        isBookmarked: r.isBookmarked,
         definition: r.definition,
-        tags: [],
+        tags: r.tags.map((tag) => tag.name),
       }));
       setRelatedWords(mappedRelations);
     } catch (err) {
@@ -68,7 +67,7 @@ export default function WordDetail() {
             description={word.definition}
             tags={word.tags}
             comments={dummyComments}
-            bookmarking={word.bookmarking}
+            bookmarking={word.isBookmarked}
           />
         )}
 

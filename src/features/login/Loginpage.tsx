@@ -22,8 +22,12 @@ export default function Loginpage() {
       if (res.status === 200) {
         const token = res.headers["authorization"];
         if (token) {
-          localStorage.setItem("accessToken", token);
-          TokenReq.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+          const pureToken = token.replace(/^Bearer\s+/i, "");
+
+          localStorage.setItem("accessToken", pureToken);
+          TokenReq.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${pureToken}`;
         }
 
         setError(null);

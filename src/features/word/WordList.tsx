@@ -25,15 +25,13 @@ export default function WordList() {
 
   async function fetchTerms() {
     try {
-      const res = await TokenReq.get<{ terms: Term[] }>("/terms", {
-        params: { ids: "13e754a0-da7a-45c8-a841-51d0da658429" },
-      });
+      const res = await TokenReq.get<{ terms: Term[] }>("/terms");
       console.log("✅ 응답:", res.data);
 
       const mapped: Word[] = res.data.terms.map((t) => ({
         id: t.id,
-        name: t.nameKr, // 카드에 보일 이름
-        bookmarking: false, // 기본값
+        name: t.nameKr,
+        isBookmarked: t.isBookmarked,
         definition: t.definition,
         tags: t.tags.map((tag) => tag.name),
       }));
@@ -126,9 +124,7 @@ export default function WordList() {
                   style={{ width: 10, height: 10 }}
                 />
               }
-            >
-              가나다순
-            </Button>
+            ></Button>
           </Box>
         </ToolbarWrapper>
 
@@ -139,7 +135,7 @@ export default function WordList() {
               key={w.id}
               id={w.id}
               name={w.name}
-              bookmarking={w.bookmarking}
+              isBookmarked={w.isBookmarked}
               tags={w.tags}
               definition={w.definition}
             />
@@ -204,5 +200,5 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto;
-  gap: 20px;
+  gap: 5px;
 `;
