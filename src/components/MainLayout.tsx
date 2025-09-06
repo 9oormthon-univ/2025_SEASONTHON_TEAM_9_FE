@@ -11,7 +11,7 @@ import {
 import BookmarkIcon from "@/assets/navbarIcon/bookmark_fill.png";
 import ProfileIcon from "@/assets/profile.jpg";
 import NotificationIcon from "@/assets/navbarIcon/notification_fill.png";
-import clucidSvgLogo from "@/assets/Clucidlogo_navbar.png";
+import clucidSvgLogo from "@/assets/clucidSvgLogo.svg";
 import BadgeIcon from "@mui/icons-material/EmojiEvents"; // 배지
 import SettingsIcon from "@mui/icons-material/Settings"; // 계정 설정
 import LogoutIcon from "@mui/icons-material/Logout"; // 로그아웃
