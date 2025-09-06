@@ -105,8 +105,9 @@ const CardWrapper = styled.div`
   height: 151px;
   width: 260px;
   border-radius: 20px;
+  background-color: #fff;
   box-shadow: 0px 0px 2px 0px #00000033;
-  padding: 10px;
+  padding: 12px 14px 14px 14px;
   cursor: pointer;
 `;
 
@@ -134,7 +135,7 @@ const Bookmark = styled.img`
 
 const TagBar = styled.div`
   width: 100%;
-  height: 30px;
+  height: 25px;
   margin-top: 10px;
   display: flex;
   flex-direction: row;
@@ -143,11 +144,15 @@ const TagBar = styled.div`
 `;
 
 const Tag = styled.div`
-  padding: 2px 12px;
-  background-color: #f0f0f9;
-  border-radius: 10px;
+  padding: 0px 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f7f8fc;
+  border-radius: 6px;
   color: #5f9ceb;
   font-weight: 500;
+  font-size: 11px;
 `;
 
 const ActionButton = styled.button`

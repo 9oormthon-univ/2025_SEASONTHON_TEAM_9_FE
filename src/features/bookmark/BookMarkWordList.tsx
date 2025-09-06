@@ -1,29 +1,60 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Box, Tabs, Tab, Typography } from "@mui/material";
 import AssistantCard from "@/components/AssistantCard";
+import { TokenReq } from "@/api/axiosInstance";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import SkeletonWordList from "../word/SkeletonWordList";
+import noIcon from "@/assets/bookmarkicon/no.svg";
+
+type Tag = {
+  id: string;
+  name: string;
+};
+
+type Term = {
+  id: string;
+  nameKr: string;
+  nameEn: string;
+  definition: string;
+  imgUrl?: string;
+  tags: Tag[];
+  isBookmarked: boolean;
+};
 
 export default function BookMarkWordList() {
   const [tab, setTab] = useState(0);
+  const [words, setWords] = useState<Term[]>([]);
+  const { id } = useParams();
+  const [loading, setLoading] = useState(false);
 
-  const words = Array.from({ length: 9 }).map((_, i) => ({
-    id: String(i),
-    name: `단어명`,
-    isBookmarked: i % 2 === 0,
-    tags: ["태그", "태그", "태그"],
-    definition: "",
-  }));
+  const fetchBookmarks = async () => {
+    try {
+      setLoading(true);
+      const res = await TokenReq.get<{ terms: Term[] }>("/bookmarks", {
+        params: { folderId: id },
+      });
+      console.log(res.data);
+      setWords(res.data.terms);
+    } catch (err) {
+      toast.error("북마크 단어 불러오기 실패");
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchBookmarks();
+  }, [id]);
 
   const categories = ["카테고리", "카테고리", "카테고리"];
 
   return (
     <PageWrapper>
-      {/* 단어 개수 */}
       <Typography sx={{ fontWeight: 600, mb: 2 }}>
         {words.length}개의 단어
       </Typography>
 
-      {/* 카테고리 탭 */}
       <Box sx={{ display: "flex", mb: 4 }}>
         <Tabs
           value={tab}
@@ -53,18 +84,42 @@ export default function BookMarkWordList() {
       </Box>
 
       {/* 카드 그리드 */}
-      <CardGrid>
-        {words.map((w) => (
-          <AssistantCard
-            id={w.id}
-            key={w.id}
-            name={w.name}
-            isBookmarked={w.isBookmarked}
-            tags={w.tags}
-            definition={w.definition}
-          />
-        ))}
-      </CardGrid>
+      {loading ? (
+        <SkeletonWordList />
+      ) : words.length === 0 ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            flexDirection: "column",
+            gap: "2px",
+          }}
+        >
+          <img src={noIcon} />
+          <p style={{ color: "rgba(30, 32, 36, 0.66)", fontSize: "20px" }}>
+            아직 저장된 키워드가 없어요
+          </p>
+          <p style={{ fontSize: "14px", color: "rgba(30, 32, 36, 0.34)" }}>
+            폴더를 만들면 중요한 키워드를 볼 수 있어요
+          </p>
+        </div>
+      ) : (
+        <CardGrid>
+          {words.map((w) => (
+            <AssistantCard
+              id={w.id}
+              key={w.id}
+              name={w.nameKr || w.nameEn}
+              isBookmarked={w.isBookmarked}
+              tags={w.tags.map((t) => t.name)}
+              definition={w.definition}
+            />
+          ))}
+        </CardGrid>
+      )}
     </PageWrapper>
   );
 }

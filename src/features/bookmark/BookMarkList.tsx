@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import {
   Box,
   Tabs,
@@ -16,6 +16,7 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
+  Skeleton,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
@@ -25,6 +26,7 @@ import { TokenReq } from "@/api/axiosInstance";
 import { toast } from "react-toastify";
 import EditIcon from "@/assets/bookmarkicon/edit.svg";
 import DeleteIcon from "@/assets/bookmarkicon/delete.svg";
+import folderIcon from "@/assets/folder.svg";
 
 type Folder = {
   id: string;
@@ -40,7 +42,7 @@ export default function BookmarkPage() {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedFolder, setSelectedFolder] = useState<Folder | null>(null);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false); // ✅ 수정 모달 상태
   const [editName, setEditName] = useState(""); // ✅ 수정 이름
@@ -49,6 +51,7 @@ export default function BookmarkPage() {
 
   // ✅ 폴더 목록 가져오기
   const fetchFolders = async () => {
+    setIsLoading(true);
     try {
       const res = await TokenReq.get<{ folders: Folder[] }>(
         "/bookmarks/folders"
@@ -57,17 +60,18 @@ export default function BookmarkPage() {
     } catch (err) {
       toast.error("폴더 목록 불러오기 실패");
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
     fetchFolders();
   }, []);
 
-  const handleNavigate = (id: string) => {
+  const handleNavigate = (id: string, folderName: string) => {
     if (tab === 0) {
-      navigate(`word/${id}`);
+      navigate(`word/${id}?folderName=${folderName}`);
     } else {
-      navigate(`contents/${id}`);
+      navigate(`contents/${id}?folderName=${folderName}`);
     }
   };
 
@@ -172,9 +176,17 @@ export default function BookmarkPage() {
             onChange={(e) => setAddFoldername(e.target.value)}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: "20px",
+          }}
+        >
           <Button
             variant="contained"
+            size="medium"
             onClick={handleAddFolder}
             disabled={!addFoldername.trim()}
           >
@@ -214,45 +226,62 @@ export default function BookmarkPage() {
         </Box>
       </Header>
 
-      {/* 폴더 카드들 */}
       <FolderGrid>
-        {folders.map((f) => (
-          <CardWrapper key={f.id} onClick={() => handleNavigate(f.id)}>
-            <FolderBox />
-            <InfoRow>
-              <div>
-                <Typography variant="subtitle1" fontWeight={500}>
-                  {f.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  생성일: {new Date(f.createdAt).toLocaleDateString()}
-                </Typography>
-              </div>
-              <IconButton size="small" onClick={(e) => handleMenuOpen(e, f)}>
-                <MoreVertIcon fontSize="small" />
-              </IconButton>
-            </InfoRow>
-          </CardWrapper>
-        ))}
+        {isLoading
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <CardWrapper>
+                <img src={folderIcon} />
+                <InfoRow>
+                  <div style={{ flex: 1 }}>
+                    <Skeleton variant="text" width="60%" height={24} />
+                    <Skeleton variant="text" width="40%" height={20} />
+                  </div>
+                </InfoRow>
+              </CardWrapper>
+            ))
+          : folders.map((f) => (
+              <CardWrapper
+                key={f.id}
+                onClick={() => handleNavigate(f.id, f.name)}
+              >
+                <img src={folderIcon} />
+                <InfoRow>
+                  <div>
+                    <Typography variant="subtitle1" fontWeight={500}>
+                      {f.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      생성일: {new Date(f.createdAt).toLocaleDateString()}
+                    </Typography>
+                  </div>
+                  <IconButton
+                    size="small"
+                    onClick={(e) => handleMenuOpen(e, f)}
+                  >
+                    <MoreVertIcon fontSize="small" />
+                  </IconButton>
+                </InfoRow>
+              </CardWrapper>
+            ))}
 
-        {/* 추가하기 버튼 */}
-        <AddCard>
-          <Button
-            onClick={() => setAddFolder(true)}
-            variant="text"
-            startIcon={<AddIcon />}
-            sx={{
-              flexDirection: "column",
-              color: "#9ca3af",
-              height: "100%",
-              fontWeight: 500,
-            }}
-          >
-            추가하기
-          </Button>
-        </AddCard>
+        {!isLoading && (
+          <AddCard>
+            <Button
+              onClick={() => setAddFolder(true)}
+              variant="text"
+              startIcon={<AddIcon />}
+              sx={{
+                flexDirection: "column",
+                color: "#9ca3af",
+                height: "100%",
+                fontWeight: 500,
+              }}
+            >
+              추가하기
+            </Button>
+          </AddCard>
+        )}
       </FolderGrid>
-
       {/* 옵션 메뉴 */}
       <Menu
         anchorEl={anchorEl}
@@ -272,8 +301,6 @@ export default function BookmarkPage() {
           삭제하기
         </MenuItem>
       </Menu>
-
-      {/* ✅ 폴더 수정 모달 */}
       <Dialog
         open={editOpen}
         onClose={() => setEditOpen(false)}
@@ -389,7 +416,7 @@ const Header = styled.div`
 
 const PageWrapper = styled.div`
   width: 100%;
-  max-width: 1100px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 40px 20px;
 `;
@@ -410,13 +437,6 @@ const CardWrapper = styled(Card)`
   cursor: pointer;
 `;
 
-const FolderBox = styled.div`
-  width: 100%;
-  height: 120px;
-  border-radius: 16px;
-  background: linear-gradient(144.37deg, #ddebfc 8.53%, #c1d9f8 88.88%);
-`;
-
 const InfoRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -426,7 +446,7 @@ const InfoRow = styled.div`
 const AddCard = styled(Card)`
   border-radius: 16px !important;
   background-color: #f9fafb !important;
-  height: 120px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;

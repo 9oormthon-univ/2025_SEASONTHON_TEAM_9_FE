@@ -31,7 +31,7 @@ export default function ContentCard({ item, onSelect }: ContentCardProps) {
 
   return (
     <CardContainer onClick={handleClick}>
-      <ElementImg />
+      <ElementImg src={item.imageUrl} />
       <ElementTitle>
         <span>{item.title}</span>
         <img
@@ -54,12 +54,12 @@ const CardContainer = styled.div`
   display: flex;
   height: 250px;
   cursor: pointer;
+  font-size: 14px;
 `;
 
-const ElementImg = styled.div`
+const ElementImg = styled.img`
   width: 100%;
   height: 150px;
-  background-color: blue;
   border-radius: 5px;
 `;
 

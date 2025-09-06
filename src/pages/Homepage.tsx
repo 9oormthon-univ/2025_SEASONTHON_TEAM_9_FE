@@ -17,34 +17,34 @@ type RelationWord = {
 
 const datas: RelationWord[] = [
   {
-    id: "1",
+    id: "13e754a0-da7a-45c8-a841-51d0da658429",
     name: "프론트엔드",
     tags: ["리액트", "플러터", "코틀린"],
     isBookmarked: true,
-    definition: "",
+    definition: "랜더링의 원리",
   },
   {
-    id: "2",
+    id: "13e754a0-da7a-45c8-a841-51d0da658429",
     name: "백엔드",
     tags: ["nodejs", "CI/CD", "스레드"],
     isBookmarked: false,
-    definition: "",
+    definition: "백엔드 개발의 원리",
   },
   {
-    id: "3",
+    id: "13e754a0-da7a-45c8-a841-51d0da658429",
     name: "AI",
     tags: ["트랜스포머", "GPT", "인공지능"],
     isBookmarked: true,
-    definition: "",
+    definition: "인공지능의 원리",
   },
 ];
 
 export default function Homepage() {
   const navigate = useNavigate();
-  const [searchcontent, setsearchcontent] = useState("");
+  const [searchContent, setSearchContent] = useState("");
 
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setsearchcontent(e.target.value);
+    setSearchContent(e.target.value);
   };
 
   return (
@@ -88,12 +88,14 @@ export default function Homepage() {
           display: "flex",
         }}
       >
-        <Inputbar
+        <InputBar
           placeholder="원하는 검색어를 입력하세요"
-          value={searchcontent}
+          value={searchContent}
           onChange={search}
-          onClick={()=>{navigate(`/search`, { replace: true })}}
-        ></Inputbar>
+          onClick={() => {
+            navigate(`/search`, { replace: true });
+          }}
+        ></InputBar>
         <Searchbtn>
           <img src={Searchicon}></img>
         </Searchbtn>
@@ -105,7 +107,7 @@ export default function Homepage() {
       </Tagbar>
 
       <Bar>연관단어 제시 텍스트</Bar>
-      <Gridcontainer>
+      <GridContainer>
         {datas.map((items, index) => (
           <AssistantCard
             key={index}
@@ -116,7 +118,7 @@ export default function Homepage() {
             definition={items.definition}
           />
         ))}
-      </Gridcontainer>
+      </GridContainer>
       <div
         style={{
           width: "1000px",
@@ -191,7 +193,7 @@ export default function Homepage() {
         </div>
       </div>
       <div style={{ marginBottom: "200px" }}></div>
-      <Footer/>
+      <Footer />
     </Container>
   );
 }
@@ -213,7 +215,7 @@ const Bg = styled.div`
   color: #1e2024a8;
 `;
 
-const Inputbar = styled.input`
+const InputBar = styled.input`
   width: 100%;
   height: 50px;
   padding: 0 12px;
@@ -255,7 +257,7 @@ const Tags = styled.div`
   margin-right: 10px;
   padding: 2px 12px;
   width: auto;
-  background-color: #f0f0f9;
+  background-color: #f7f8fc;
   border-radius: 10px;
   color: #5f9ceb;
   font-weight: 500;
@@ -268,60 +270,11 @@ const Bar = styled.div`
   font-size: 20px;
 `;
 
-const Gridcontainer = styled.div`
+const GridContainer = styled.div`
   margin-top: 40px;
   width: 1000px;
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(3, 1fr); /* 2열 그리드 */
   grid-template-rows: auto;
-`;
-
-const Element_title = styled.div`
-  width: 100%;
-  margin-top: 10px;
-  height: 30px;
-  display: flex;
-  flex-direction: row;
-  position: relative;
-`;
-const Element_tagbar = styled.div`
-  width: 100%;
-  height: 30px;
-  margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-`;
-
-const Element_tags = styled.div`
-  margin-left: 10px;
-  padding: 2px 12px;
-  width: auto;
-  background-color: #f0f0f9;
-  border-radius: 10px;
-  color: #5f9ceb;
-  font-weight: 500;
-`;
-
-const Element_button = styled.div`
-  width: auto;
-  height: 60px;
-  margin-top: 20px;
-  padding: 0 12px;
-  margin-left: 10px;
-  margin-right: 10px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  border-radius: 10px;
-  font-size: 18px;
-  background-color: #f7f8fc;
-  color: #1e202457;
-
-  &:hover {
-    background-color: #021122;
-    color: #fff;
-  }
 `;

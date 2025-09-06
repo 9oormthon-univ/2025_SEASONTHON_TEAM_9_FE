@@ -3,17 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { TokenReq } from "@/api/axiosInstance"; // axios 인스턴스 import
 
-import Kakaoicon from "@/assets/loginicon/kakaoicon.png"
-import Appleicon from "@/assets/loginicon/appleicon.png"
-import Navericon from "@/assets/loginicon/navericon.png"
-import Clucidlogo_loginpage from "@/assets/loginicon/Clucidlogo_loginpage.png"
+import Kakaoicon from "@/assets/loginicon/kakaoicon.png";
+import Appleicon from "@/assets/loginicon/appleicon.png";
+import Navericon from "@/assets/loginicon/navericon.png";
+import Clucidlogo_loginpage from "@/assets/loginicon/Clucidlogo_loginpage.png";
+import { toast } from "react-toastify";
 
 export default function Loginpage() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async () => {
     try {
@@ -29,12 +29,10 @@ export default function Loginpage() {
             "Authorization"
           ] = `Bearer ${pureToken}`;
         }
-
-        setError(null);
         navigate(`/`, { replace: true });
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || "로그인 실패");
+      toast.warn("로그인 실패");
     }
   };
 
@@ -43,21 +41,19 @@ export default function Loginpage() {
       <Imagecontainer src={Clucidlogo_loginpage}></Imagecontainer>
 
       <Bar1>이메일</Bar1>
-      <Inputbar
+      <InputBar
         placeholder="이메일을 입력해주세요"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
 
       <Bar1>비밀번호</Bar1>
-      <Inputbar
+      <InputBar
         placeholder="비밀번호를 입력해주세요"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-
-      {error && <ErrorMsg>{error}</ErrorMsg>}
 
       <Btncontainer>
         <Btn
@@ -89,7 +85,7 @@ export default function Loginpage() {
         <img src={Navericon}></img>
         <img src={Appleicon}></img>
       </Btncontainer2>
-      <div style={{marginBottom:"100px"}}></div>
+      <div style={{ marginBottom: "100px" }}></div>
     </Container>
   );
 }
@@ -112,7 +108,7 @@ const Bar1 = styled.div`
   margin-top: 10px;
 `;
 
-const Inputbar = styled.input`
+const InputBar = styled.input`
   width: 100%;
   height: 50px;
   padding: 0 12px;
@@ -142,6 +138,7 @@ const Btn = styled.button`
   width: 48%;
   height: 100%;
   border: none;
+  cursor: pointer;
   border-radius: 10px;
   font-size: 18px;
   background-color: #f7f8fc;
