@@ -41,6 +41,11 @@ export default function AssistantCard({
 
   // 북마크 클릭 → 무조건 모달 열기
   const handleBookmarkClick = (e: React.MouseEvent) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      toast.warn("로그인 후 이용하실 수 있습니다.");
+      return;
+    }
     e.stopPropagation();
     fetchFolders();
     setOpen(true);

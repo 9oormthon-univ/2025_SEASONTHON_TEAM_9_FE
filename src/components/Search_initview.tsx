@@ -1,60 +1,74 @@
 import styled from "styled-components";
-import Arrowicon from "@/assets/arrow_right_circle_fill.png"
+import Arrowicon from "@/assets/arrow_right_circle_fill.png";
 
 export default function SearchGuideSection() {
-    const items: RowItem[] = [
-        { label: "키워드", title: "키워드는 알지만 정확한 의미가 궁금할 때", hints: ["온보딩 CI/CD"] },
-        { label: "텍스트 검색", title: "적용 상황은 알지만 정확한 키워드를 모를 때", hints: ["신규 유저가 앱에 처음 접속했을 때 보여주는 화면이 뭐였지?"] },
-        { label: "이미지 검색", title: "스크린샷에서 궁금한 부분이 있을 때", hints: ["이미지와 함께 궁금한 부분을 설명하면 해당 맥락에 맞는 키워드를 제안해드려요"] },
-    ];
+  const items: RowItem[] = [
+    {
+      label: "키워드",
+      title: "키워드는 알지만 정확한 의미가 궁금할 때",
+      hints: ["온보딩 CI/CD"],
+    },
+    {
+      label: "텍스트 검색",
+      title: "적용 상황은 알지만 정확한 키워드를 모를 때",
+      hints: ["신규 유저가 앱에 처음 접속했을 때 보여주는 화면이 뭐였지?"],
+    },
+    {
+      label: "이미지 검색",
+      title: "스크린샷에서 궁금한 부분이 있을 때",
+      hints: [
+        "이미지와 함께 궁금한 부분을 설명하면 해당 맥락에 맞는 키워드를 제안해드려요",
+      ],
+    },
+  ];
 
-    return (
-        <Section>
-            <Wrapper>
-                <Header>
-                    <Headline>
-                        클루시드에서는 아래와 같은 방식으로 궁금한 키워드를 쉽게 찾을 수 있어요.
-                    </Headline>
-                    <Sub>
-                        정확한 키워드를 모르더라도, 상황 설명이나 이미지 하나면 충분해요.
-                    </Sub>
-                </Header>
+  return (
+    <Section>
+      <Wrapper>
+        <Header>
+          <Headline>
+            클루시드에서는 아래와 같은 방식으로 궁금한 키워드를 쉽게 찾을 수
+            있어요.
+          </Headline>
+          <Sub>
+            정확한 키워드를 모르더라도, 상황 설명이나 이미지 하나면 충분해요.
+          </Sub>
+        </Header>
 
-                <Grid>
-                    {items.map((it, idx) => (
-                        <Row key={it.label} isEven={idx % 2 === 0}>
-                            <Right>
-                                <Card>
-                                    <Left>
-                                        {it.label}
-                                    </Left>
-                                    <CardBody>
-                                        <CardText>{it.title}</CardText>
-                                        <HintLine>
-                                            <img src={Arrowicon} />
-                                            <HintText>{it.hints}</HintText>
-                                        </HintLine>
-                                    </CardBody>
-                                </Card>
-                            </Right>
-                        </Row>
-                    ))}
-                </Grid>
+        <Grid>
+          {items.map((it, idx) => (
+            <Row key={it.label} isEven={idx % 2 === 0}>
+              <Right>
+                <Card>
+                  <Left>{it.label}</Left>
+                  <CardBody>
+                    <CardText>{it.title}</CardText>
+                    <HintLine>
+                      <img src={Arrowicon} />
+                      <HintText>{it.hints}</HintText>
+                    </HintLine>
+                  </CardBody>
+                </Card>
+              </Right>
+            </Row>
+          ))}
+        </Grid>
 
-                <FootNote>
-                    <Dot small aria-hidden />
-                    이미지 검색은 로그인 회원에 한하여 하루에 최대 다섯 번까지 이용이 가능해요.
-                </FootNote>
-            </Wrapper>
-        </Section>
-    );
+        <FootNote>
+          <Dot small aria-hidden />
+          이미지 검색은 로그인 회원에 한하여 하루에 최대 다섯 번까지 이용이
+          가능해요.
+        </FootNote>
+      </Wrapper>
+    </Section>
+  );
 }
 
 // ---------- Types ----------
 interface RowItem {
-    label: string;
-    title: string;
-    hints: string[];
+  label: string;
+  title: string;
+  hints: string[];
 }
 
 // ---------- Styled ----------
@@ -71,6 +85,7 @@ const Wrapper = styled.div`
   @media (min-width: 768px) {
     padding: 64px 32px 72px;
   }
+  background: linear-gradient(180deg, #f6faff 0%, #fefeff 100%);
 `;
 
 const Header = styled.div`
@@ -113,8 +128,8 @@ const Right = styled.div`
 
 const Left = styled.div`
   display: none;
-  font-size:18px;
-  font-weight:600;
+  font-size: 18px;
+  font-weight: 600;
   @media (min-width: 840px) {
     display: flex;
     align-items: center;
@@ -189,7 +204,7 @@ const FootNote = styled.p`
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  justify-content:center;
+  justify-content: center;
 `;
 
 const Dot = styled.span<{ small?: boolean }>`

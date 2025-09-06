@@ -20,7 +20,6 @@ import useWordDetail from "@/hooks/useWordDetail";
 import type { Word } from "@/types/type";
 import PlusIcon from "@/assets/plus.svg";
 
-
 function getKoreanInitial(char: string): string {
   const KOR_BEGIN_UNICODE = 44032;
   const KOR_END_UNICODE = 55203;
@@ -306,6 +305,7 @@ export default function WordList() {
 const Container = styled.div`
   width: 100%;
   margin: 0 auto;
+  background: linear-gradient(180deg, #f6faff 0%, #fefeff 100%);
 `;
 
 const PageWrapper = styled.div`

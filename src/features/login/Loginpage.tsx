@@ -6,7 +6,8 @@ import { TokenReq } from "@/api/axiosInstance"; // axios 인스턴스 import
 import Kakaoicon from "@/assets/loginicon/kakaoicon.png";
 import Appleicon from "@/assets/loginicon/appleicon.png";
 import Navericon from "@/assets/loginicon/navericon.png";
-import Clucidlogo_loginpage from "@/assets/loginicon/Clucidlogo_loginpage.png";
+import clucidLogo from "@/assets/clucidSvglogo.svg";
+
 import { toast } from "react-toastify";
 
 export default function Loginpage() {
@@ -38,7 +39,7 @@ export default function Loginpage() {
 
   return (
     <Container>
-      <Imagecontainer src={Clucidlogo_loginpage}></Imagecontainer>
+      <Imagecontainer src={clucidLogo} />
 
       <Bar1>이메일</Bar1>
       <InputBar
@@ -68,24 +69,36 @@ export default function Loginpage() {
         </Btn>
       </Btncontainer>
 
-      <div
-        style={{ marginTop: "30px", textAlign: "center", color: "#1E2024A8" }}
+      <p
+        style={{
+          marginTop: "30px",
+          textAlign: "center",
+          color: "#1E2024A8",
+          textDecoration: "underline",
+          fontSize: "14px",
+        }}
       >
         아이디/비밀번호 찾기
-      </div>
+      </p>
 
-      <div
-        style={{ marginTop: "60px", textAlign: "center", color: "#1E2024A8" }}
+      <p
+        style={{
+          textAlign: "center",
+          color: "#1E2024A8",
+          fontWeight: "500",
+          fontSize: "18px",
+          marginTop: "30px",
+        }}
       >
-        소셜 로그인
-      </div>
+        소셜 로그인하기
+      </p>
 
       <Btncontainer2>
         <img src={Kakaoicon}></img>
         <img src={Navericon}></img>
         <img src={Appleicon}></img>
       </Btncontainer2>
-      <div style={{ marginBottom: "100px" }}></div>
+      <div style={{ marginBottom: "80px" }}></div>
     </Container>
   );
 }
@@ -100,12 +113,14 @@ const Container = styled.div`
 const Imagecontainer = styled.img`
   margin-top: 100px;
   margin-bottom: 50px;
+  height: 64px;
 `;
 
 const Bar1 = styled.div`
   width: 100%;
   height: 30px;
-  margin-top: 10px;
+  margin-top: 20px;
+  font-weight: 500;
 `;
 
 const InputBar = styled.input`
@@ -151,14 +166,8 @@ const Btn = styled.button`
 
 const Btncontainer2 = styled.div`
   width: 250px;
-  margin-top: 40px;
+  margin-top: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`;
-
-const ErrorMsg = styled.div`
-  color: red;
-  font-size: 14px;
-  margin-top: 10px;
 `;

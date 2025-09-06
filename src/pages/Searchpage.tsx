@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import Searchicon from "@/assets/Searchicon.png";
 import Vectoricon from "@/assets/Vector.png";
 import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import SearchCard from "@/components/SearchCard";
 import SearchGuideSection from "@/components/Search_initview";
+import searchIcon from "@/assets/search.svg";
+import submitIcon from "@/assets/submit.svg"; // ✅ 제출 버튼 아이콘
+import loadingIcon from "@/assets/loading.svg"; // ✅ 로딩 아이콘 추가
 
 const tagname = ["키워드", "텍스트", "이미지"];
 
@@ -25,27 +27,28 @@ type Assistant2 = {
 type Assistant3 = { id: string; role: "assistant3" };
 type Assistant4 = { id: string; role: "assistant4"; words: Relationword[] };
 
-export default function Searchpage() {
+export default function SearchPage() {
   const [msgs, setMsgs] = useState<
     (User | Assistant1 | Assistant2 | Assistant3 | Assistant4)[]
   >([]);
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement | null>(null);
   const taRef = useRef<HTMLTextAreaElement | null>(null);
-  const [isinit, setisinit] = useState(true);
-
+  const [isInit, setIsInit] = useState(true);
+  const [loading, setLoading] = useState(false); // ✅ 로딩 상태 추가
   const [selectedTag, setSelectedTag] = useState<number>(0);
 
   // 새 메시지 도착 시 맨 아래로 스크롤
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [msgs]);
+  }, [msgs, loading]);
 
-  // textarea 자동 높이
+  // 입력 핸들러
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
+  // 메시지 전송
   const send = () => {
     const text = input.trim();
     if (!text) return;
@@ -53,11 +56,14 @@ export default function Searchpage() {
     setMsgs((prev) => [...prev, newMsg]);
     setInput("");
     if (taRef.current) {
-      taRef.current.style.height = "44px"; // 기본 높이로 리셋
+      taRef.current.style.height = "44px";
     }
 
-    // 데모용: 어시스턴트 에코
+    setLoading(true); // ✅ 로딩 시작
+
+    // 2초 뒤에 로딩 끝 + 결과 표시
     setTimeout(() => {
+      setLoading(false);
       setMsgs((prev) => [
         ...prev,
         { id: crypto.randomUUID(), role: "assistant1", name: `00` },
@@ -74,7 +80,7 @@ export default function Searchpage() {
           ],
           bookmarking: false,
         },
-        { id: crypto.randomUUID(), role: "assistant3", text: `세번째박스` },
+        { id: crypto.randomUUID(), role: "assistant3" },
         {
           id: crypto.randomUUID(),
           role: "assistant4",
@@ -97,15 +103,8 @@ export default function Searchpage() {
           ],
         },
       ]);
-    }, 400);
+    }, 2000);
   };
-
-  //   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-  //     if (e.key === "Enter" && !e.shiftKey) {
-  //       e.preventDefault();
-  //       send();
-  //     }
-  //   };
 
   return (
     <div
@@ -116,10 +115,10 @@ export default function Searchpage() {
         display: "flex",
       }}
     >
-      {/*메세지 화면*/}
+      {/* 메시지 화면 */}
       <Wrap>
-        {isinit && <SearchGuideSection />}
-        {!isinit && (
+        {isInit && <SearchGuideSection />}
+        {!isInit && (
           <Messages>
             {msgs.map((m) => {
               if (m.role === "user") {
@@ -167,7 +166,7 @@ export default function Searchpage() {
                                 : bookmark_default
                             }
                             style={{ position: "absolute", right: "10px" }}
-                          ></img>
+                          />
                         </Element_title>
                         <Element_tagbar>
                           {items.tags.map((items2, index) => (
@@ -176,7 +175,7 @@ export default function Searchpage() {
                         </Element_tagbar>
                         <Element_button>
                           <text>단어명</text>
-                          <img src={Vectoricon}></img>
+                          <img src={Vectoricon} />
                         </Element_button>
                       </div>
                     ))}
@@ -184,12 +183,20 @@ export default function Searchpage() {
                 );
               }
             })}
+
+            {/* ✅ 로딩 아이콘 표시 */}
+            {loading && (
+              <LoadingBox>
+                <RotatingIcon src={loadingIcon} alt="loading..." />
+              </LoadingBox>
+            )}
+
             <div ref={endRef} />
           </Messages>
         )}
       </Wrap>
 
-      {/*검색바*/}
+      {/* 검색바 */}
       <div
         style={{
           marginBottom: "30px",
@@ -198,7 +205,7 @@ export default function Searchpage() {
           backgroundColor: "#F7F8FC",
           flexDirection: "column",
           display: "flex",
-          borderRadius: "30px 30px 30px 30px",
+          borderRadius: "30px",
           border: "1px solid #F0F0F9",
         }}
       >
@@ -216,14 +223,13 @@ export default function Searchpage() {
             <Tags
               key={index}
               $active={selectedTag === index}
-              onClick={() => {
-                setSelectedTag(index); // 토글 기능
-              }}
+              onClick={() => setSelectedTag(index)}
             >
               {items}
             </Tags>
           ))}
         </div>
+
         <div
           style={{
             width: "auto",
@@ -235,19 +241,42 @@ export default function Searchpage() {
             alignItems: "center",
           }}
         >
-          <Inputbar
+          <InputBar
             placeholder="원하는 단어를 검색하세요"
             value={input}
             onChange={search}
-          ></Inputbar>
-          <Searchbtn
-            onClick={() => {
-              setisinit(false);
-              send();
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                setIsInit(false);
+                send();
+              }
             }}
-          >
-            <img src={Searchicon}></img>
-          </Searchbtn>
+          />
+          {/* 왼쪽 search 아이콘 */}
+          {!input.trim() && (
+            <img
+              src={searchIcon}
+              style={{
+                position: "absolute",
+                left: "8px",
+                width: 20,
+                height: 20,
+                pointerEvents: "none",
+              }}
+            />
+          )}
+          {/* 입력 시에만 submit 버튼 표시 */}
+          {input.trim() && (
+            <Searchbtn
+              onClick={() => {
+                setIsInit(false);
+                send();
+              }}
+            >
+              <img src={submitIcon} style={{ width: 30, height: 30 }} />
+            </Searchbtn>
+          )}
         </div>
       </div>
     </div>
@@ -261,10 +290,9 @@ const Wrap = styled.div`
   overflow-y: auto;
   min-height: 0;
   * {
-    scrollbar-width: none; /* FF */
-    -ms-overflow-style: none; /* IE/old Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
-  /* Chrome, Safari, Opera, Edge(Chromium) */
   *::-webkit-scrollbar {
     width: 0px;
     height: 0px;
@@ -275,8 +303,6 @@ const Messages = styled.main`
   padding: 12px 12px 0 12px;
   display: grid;
   gap: 10px;
-
-  /* iOS 사파리 바운스 여백 보완 */
   overscroll-behavior: contain;
 `;
 
@@ -285,17 +311,12 @@ const Bubble = styled.div<{ $me?: boolean }>`
   justify-self: end;
   background: #111827;
   color: white;
-  border: 1px solid #e5e7eb;
-  border-color: transparent;
   padding: 5px 12px;
   border-radius: 16px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   white-space: pre-wrap;
-  line-height: 1.56;
 `;
 
 const Assistant1 = styled.div`
-  width: auto;
   height: 50px;
   justify-self: start;
   display: flex;
@@ -308,32 +329,11 @@ const Assistant2 = styled.div`
   width: 780px;
   justify-self: start;
   box-shadow: 0 0 0 4px #c8d6e8;
-  border-radius: 25px 25px 25px 25px;
-`;
-
-const Assistant2_firstblock = styled.div`
-  margin: 0px 20px;
-  margin-top: 20px;
-  background-color: blue;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Assistant2_secondblock = styled.div`
-  margin: 0px 20px;
-  margin-top: 40px;
-  padding: 10px 0px;
-  background-color: #f8f9fd;
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px 5px 5px 5px;
+  border-radius: 25px;
 `;
 
 const Assistant3 = styled.div`
   margin-top: 50px;
-  width: auto;
-  height: 30px;
-  justify-self: start;
   font-size: 18px;
   font-weight: 500;
 `;
@@ -344,30 +344,25 @@ const Assistant4 = styled.div`
   justify-self: start;
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(3, 1fr); /* 2열 그리드 */
-  grid-template-rows: auto;
+  grid-template-columns: repeat(3, 1fr);
 `;
 
 const Element_title = styled.div`
-  width: 100%;
   margin-top: 10px;
   height: 30px;
   display: flex;
-  flex-direction: row;
   position: relative;
 `;
+
 const Element_tagbar = styled.div`
-  width: 100%;
   height: 30px;
   margin-top: 10px;
   display: flex;
-  flex-direction: row;
 `;
 
 const Element_tags = styled.div`
   margin-left: 10px;
   padding: 2px 12px;
-  width: auto;
   background-color: #f0f0f9;
   border-radius: 10px;
   color: #5f9ceb;
@@ -375,62 +370,46 @@ const Element_tags = styled.div`
 `;
 
 const Element_button = styled.div`
-  width: auto;
   height: 60px;
   margin-top: 20px;
   padding: 0 12px;
-  margin-left: 10px;
-  margin-right: 10px;
-
+  margin: 0 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   border-radius: 10px;
   font-size: 18px;
   background-color: #f7f8fc;
   color: #1e202457;
-
   &:hover {
     background-color: #021122;
     color: #fff;
   }
 `;
 
-/* ========================================== */
-
 const Tags = styled.div<{ $active?: boolean }>`
   margin-right: 10px;
-  padding: 2px 12px;
-  width: auto;
-  background-color: ${({ $active }) =>
-    $active ? "rgba(2, 17, 34, 1)" : "#ffffff"};
+  padding: 5px 12px;
   border-radius: 30px;
   border: 1px solid #f0f0f9;
+  background-color: ${({ $active }) =>
+    $active ? "rgba(2, 17, 34, 1)" : "#ffffff"};
   color: ${({ $active }) => ($active ? "#ffffff" : "#5f9ceb")};
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-
-  transition: all 0.2s ease;
 `;
 
-const Inputbar = styled.input`
+const InputBar = styled.input`
   width: 100%;
   height: 50px;
-  padding: 0 12px;
   border: 1px solid #1e202457;
   border-radius: 8px;
   font-size: 14px;
-  box-sizing: border-box;
-
+  padding-left: 35px;
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px #dfe1e5;
   }
-
   &::placeholder {
     color: #1e202457;
   }
@@ -441,7 +420,40 @@ const Searchbtn = styled.button`
   position: absolute;
   right: 20px;
   background-color: transparent;
-  &:hover {
-    cursor: pointer;
+  cursor: pointer;
+`;
+
+const LoadingBox = styled.div`
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+`;
+
+const RotatingIcon = styled.img`
+  width: 175px;
+  height: 175px;
+
+  /* 회전 + 은은한 밝기 */
+  animation: spin 1.5s linear infinite,
+    softGlow 2s ease-in-out infinite alternate;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes softGlow {
+    from {
+      filter: brightness(0.9);
+    }
+    to {
+      filter: brightness(1.1);
+    }
   }
 `;
