@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import type { Term, Word } from "@/types/type";
-import { TokenReq } from "@/api/axiosInstance";
+import type { Word } from "@/types/type";
 import AssistantCard from "@/components/AssistantCard";
 import styled from "styled-components";
 import SkeletonWordList from "./SkeletonWordList";
@@ -35,5 +33,5 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto;
-  gap: 5px;
+  gap: 20px;
 `;

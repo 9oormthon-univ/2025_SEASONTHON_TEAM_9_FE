@@ -5,6 +5,7 @@ import AssistantCard from "@/components/AssistantCard";
 import { TokenReq } from "@/api/axiosInstance";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import SkeletonWordList from "../word/SkeletonWordList";
 
 type Tag = {
   id: string;
@@ -25,9 +26,11 @@ export default function BookMarkWordList() {
   const [tab, setTab] = useState(0);
   const [words, setWords] = useState<Term[]>([]);
   const { id } = useParams();
+  const [loading, setLoading] = useState(false);
 
   const fetchBookmarks = async () => {
     try {
+      setLoading(true);
       const res = await TokenReq.get<{ terms: Term[] }>("/bookmarks", {
         params: { folderId: id },
       });
@@ -36,6 +39,7 @@ export default function BookMarkWordList() {
     } catch (err) {
       toast.error("북마크 단어 불러오기 실패");
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -81,18 +85,22 @@ export default function BookMarkWordList() {
       </Box>
 
       {/* 카드 그리드 */}
-      <CardGrid>
-        {words.map((w) => (
-          <AssistantCard
-            id={w.id}
-            key={w.id}
-            name={w.nameKr || w.nameEn}
-            isBookmarked={w.isBookmarked}
-            tags={w.tags.map((t) => t.name)}
-            definition={w.definition}
-          />
-        ))}
-      </CardGrid>
+      {loading ? (
+        <SkeletonWordList />
+      ) : (
+        <CardGrid>
+          {words.map((w) => (
+            <AssistantCard
+              id={w.id}
+              key={w.id}
+              name={w.nameKr || w.nameEn}
+              isBookmarked={w.isBookmarked}
+              tags={w.tags.map((t) => t.name)}
+              definition={w.definition}
+            />
+          ))}
+        </CardGrid>
+      )}
     </PageWrapper>
   );
 }

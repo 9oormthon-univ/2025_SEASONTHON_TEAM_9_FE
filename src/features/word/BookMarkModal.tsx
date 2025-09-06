@@ -17,6 +17,7 @@ import bookmark_default from "@/assets/bookmarkicon/bookmark_default.png";
 import { TokenReq } from "@/api/axiosInstance";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Folder = {
   id: string;
@@ -43,6 +44,7 @@ export default function BookMarkModal({
 }: Props) {
   const [addFoldername, setAddFoldername] = useState("");
   const [mode, setMode] = useState<"list" | "add">("list");
+  const navigate = useNavigate();
 
   const fetchFolders = async () => {
     try {
@@ -58,12 +60,11 @@ export default function BookMarkModal({
   const handleAllBookmarksCleared = (folders: Folder[]) => {
     const allCleared = folders.length > 0 && folders.every((f) => !f.isIn);
     if (allCleared) {
-      window.location.reload();
+      navigate(0);
     }
     setOpen(false);
   };
 
-  // 북마크 추가/삭제 토글
   const toggleBookmark = async (folderId: string, isIn: boolean) => {
     try {
       if (isIn) {
@@ -76,6 +77,7 @@ export default function BookMarkModal({
         toast.success("북마크 추가 성공");
       }
       fetchFolders();
+      navigate(location);
     } catch (err) {
       toast.error("북마크 변경 실패");
     }
@@ -91,7 +93,7 @@ export default function BookMarkModal({
         setAddFoldername("");
         toast.success("폴더 생성 성공");
         fetchFolders();
-        setMode("list"); // ✅ 다시 목록 화면으로
+        setMode("list");
       }
     } catch (err: any) {
       toast.error("폴더 생성 실패");
