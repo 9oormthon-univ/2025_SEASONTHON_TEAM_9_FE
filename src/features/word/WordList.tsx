@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState, lazy } from "react";
+import { useMemo, useState } from "react";
 import styled from "styled-components";
 import {
   TextField,
@@ -17,11 +17,17 @@ import WordListing from "./WordListing";
 import useWordDetail from "@/hooks/useWordDetail";
 import yellowfilter from "@/assets/yellowfilter.svg";
 
-const categories = ["전체", "UI/UX", "Frontend"];
-
 export default function WordList() {
   const [value, setValue] = useState(0);
-  const { words, loading } = useWordDetail();
+  const { words = [], loading } = useWordDetail();
+
+  const tags = useMemo(() => {
+    const dic = new Set<string>();
+    words.forEach((w) => w.tags?.forEach((t: string) => dic.add(t)));
+    return Array.from(dic);
+  }, [words]);
+
+  const safeValue = value >= tags.length ? 0 : value;
 
   return (
     <Container>
@@ -51,7 +57,7 @@ export default function WordList() {
         {/* 탭 & 필터 */}
         <ToolbarWrapper>
           <Tabs
-            value={value}
+            value={safeValue}
             onChange={(_, newValue) => setValue(newValue)}
             TabIndicatorProps={{ style: { display: "none" } }}
             sx={{
@@ -64,15 +70,14 @@ export default function WordList() {
                 textTransform: "none",
                 fontWeight: 500,
               },
-              "& .Mui-selected": {
-                backgroundColor: "#111827",
-                color: "white",
-              },
+              "& .Mui-selected": { backgroundColor: "#111827", color: "white" },
             }}
           >
-            {categories.map((c, i) => (
-              <Tab label={c} key={i} />
-            ))}
+            {tags.length === 0 ? (
+              <Tab label="전체" />
+            ) : (
+              tags.map((c, i) => <Tab label={c} key={c + i} />)
+            )}
           </Tabs>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -83,7 +88,7 @@ export default function WordList() {
               endIcon={
                 <img
                   src={yellowfilter}
-                  alt="filter"
+                  alt="filter-a"
                   style={{ width: 20, height: 20 }}
                 />
               }
@@ -142,6 +147,8 @@ export default function WordList() {
     </Container>
   );
 }
+
+/* ---------------- styled-components: 반드시 백틱 사용 ---------------- */
 
 const Container = styled.div`
   width: 100%;
