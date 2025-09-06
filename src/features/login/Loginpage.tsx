@@ -121,6 +121,7 @@ const Bar1 = styled.div`
   height: 30px;
   margin-top: 20px;
   font-weight: 500;
+  color: "#1E2024";
 `;
 
 const InputBar = styled.input`

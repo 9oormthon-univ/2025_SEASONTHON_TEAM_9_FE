@@ -3,6 +3,8 @@ import React, { useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Notifyicon from "@/assets/pin_2_fill.png"
 import Uploadimgicon from "@/assets/Uploadimgicon.png"
+import Uploadcompleteicon from "@/assets/Uploadcomplete.png"
+import { useNavigate } from "react-router-dom";
 import { TokenReq } from "@/api/axiosInstance";
 
 type TagKey =
@@ -12,12 +14,19 @@ type TagKey =
 const ALL_TAGS: TagKey[] = ["프론트엔드", "백엔드", "기획", "UX/UI", "디자인", "마케팅", "데이터", "AI", "비즈니스", "커뮤니케이션"];
 
 export default function KeywordRequestForm() {
-    const [keywordName, setKeywordName] = useState("");
-    const [keywordDef, setKeywordDef] = useState("생성 버튼을 누르면 자동으로 생성돼요");
+    const [keywordNameKR, setKeywordNameKR] = useState("");
+    const [keywordNameEN, setKeywordNameEN] = useState("");
+    const [keyExamples, setkeyExamples] = useState<string[]>([])
+    const [keywordDef, setKeywordDef] = useState<String[]>(["생성 버튼을 누르면 자동으로 생성돼요"]);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [isGenLoading, setGenLoading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [selectedtags, setselectedTag] = useState<string[]>([])
+    const [completed, setcompleted] = useState(false)
+
+
+    const navigate = useNavigate();
 
     const onUpload = (f?: File) => {
         if (!f) return;
@@ -32,25 +41,50 @@ export default function KeywordRequestForm() {
     };
 
     const changename = (e: any) => {
-        setKeywordName(e.target.value)
+        setKeywordNameKR(e.target.value)
     }
 
     const sendKeyword = async () => {
         try {
-            const res = await TokenReq.post("/키워드생성", { keywordName });
+            const res = await TokenReq.post(`/terms/test?term=${keywordNameKR}`, {});
 
             if (res.status === 200) {
                 console.log(res.data)
-                setKeywordDef(res.data)
+                setKeywordNameKR(res.data.termKr)
+                setKeywordNameEN(res.data.termEn)
+                setKeywordDef(res.data.definitions)
+                setkeyExamples(res.data.examples)
+                setselectedTag(res.data.tags.filter((t: string) => ALL_TAGS.includes(t as TagKey)));
             }
         } catch (err: any) {
             Error("에러");
         }
     };
 
-    return (
+    const makeWord = async () => {
+        try {
+            const res = await TokenReq.post(`/terms/create`, {
+                term: keywordNameEN,
+                termKr: keywordNameKR,
+                termEn: keywordNameEN,
+                definitions: keywordDef,
+                tags: selectedtags,
+                imgUrl: imageUrl,
+                examples: keyExamples
+            });
 
-        <Card>
+            if (res.status === 200) {
+                console.log(res.data)
+                setcompleted(true)
+            }
+        } catch (err: any) {
+            Error("에러");
+        }
+    }
+
+
+    return (
+        !completed ? <Card>
             <Title>새로운 키워드 요청하기</Title>
             <Hint style={{ marginTop: "30px" }}>원하는 키워드가 없을 경우 직접 키워드를 제안할 수 있어요.</Hint>
             <Hint style={{}}>제안해주신 키워드는 클루시드팀에서 검토 후 등록할 예정이에요.</Hint>
@@ -59,25 +93,31 @@ export default function KeywordRequestForm() {
                 <Leftbar style={{ fontSize: "18px", fontWeight: "500" }}>
                     <text style={{ marginTop: "10px" }}>제안 키워드명</text>
                     <text style={{ marginTop: "30px" }}>키워드 정의</text>
-                    <text style={{ marginTop: "130px" }}>태그 선택</text>
+                    <text style={{ marginTop: "150px" }}>태그 선택</text>
                     <text style={{ marginTop: "150px" }}>이미지 첨부</text>
                 </Leftbar>
                 <Rightbar>
                     <Namebar
                         placeholder="원하는 검색어를 입력하세요"
-                        value={keywordName}
+                        value={keywordNameKR}
                         onChange={changename}
                     ></Namebar>
                     <Definitionbar>
-                        <div style={{ width: "90%", color: "rgba(30, 32, 36, 0.34)", minHeight: "100px", marginTop: "10px", fontSize: "16px" }}>{keywordDef}</div>
-                        <div style={{ width: "90%", height: "35px", margin: "10px 0px", display: "flex", justifyContent: "end" }}>
+                        <div style={{ width: "90%", color: "rgba(30, 32, 36, 0.34)", minHeight: "100px", marginTop: "10px", fontSize: "16px" }}>
+                            {keywordDef.map((v, i) => (<text key={i}>{v}</text>))}
+                        </div>
+                        <div style={{ width: "95%", height: "35px", margin: "10px 0px", display: "flex", justifyContent: "end" }}>
                             <div
                                 onClick={() => { sendKeyword() }}
                                 style={{ borderRadius: "10px", width: "50px", height: "100%", backgroundColor: "rgba(2, 17, 34, 1)", color: "white", display: "flex", justifyContent: "center", alignItems: "center" }}>생성</div>
                         </div>
                     </Definitionbar>
                     <Tagbar>
-                        {ALL_TAGS.map((v, i) => (<Tags key={i}>{v}</Tags>))}
+                        {ALL_TAGS.map((v, i) => (
+                            <Tags key={i} $active={selectedtags.includes(v)}>
+                                {v}
+                            </Tags>
+                        ))}
                     </Tagbar>
                     <Notifybar>
                         <img src={Notifyicon} style={{ marginLeft: "10px" }}></img>
@@ -101,7 +141,7 @@ export default function KeywordRequestForm() {
                                     키워드와 관련된 이미지를 첨부해주세요.<br></br>
                                     파일크기는 최대 10MB 입니다.
                                 </UploadText>
-                                <img src={Uploadimgicon} style={{marginLeft:"20px"}}></img>
+                                <img src={Uploadimgicon} style={{ marginLeft: "20px" }}></img>
                             </>
                         )}
                         <input
@@ -118,104 +158,46 @@ export default function KeywordRequestForm() {
             </Field>
             <div style={{ width: "100%", height: "50px", borderBottom: "1px solid rgba(240, 240, 249, 1)" }}></div>
             <div style={{ width: "100%", justifyContent: "center", marginTop: "50px", display: "flex", justifySelf: "center", height: "50px" }}>
-                <GenButton>완료</GenButton>
+                <GenButton onClick={() => { makeWord() }}>완료</GenButton>
             </div>
             <div style={{ marginBottom: "100px" }}></div>
-            {/* <Title>새로운 키워드 요청하기</Title>
-        <Hint>원하는 키워드가 없을 경우 직접 키워드를 제안할 수 있어요. 아래 양식에 맞추어 제안해주시면 내부 검토 후 키워드를 등록할 예정이에요.</Hint>
-
-        <Field>
-          <Label>제안 키워드 명</Label>
-          <Input
-            placeholder="제안하고 싶은 키워드를 입력해주세요"
-            value={keywordName}
-            onChange={e => setKeywordName(e.target.value)}
-            maxLength={50}
-          />
-          <Count>{keywordName.length}/50</Count>
-        </Field>
-
-        <Field>
-          <LabelRow>
-            <Label>키워드 정의</Label>
-            <GenButton type="button" onClick={handleGenerate} disabled={!keywordName || isGenLoading}>
-              {isGenLoading ? "생성 중..." : "생성"}
-            </GenButton>
-          </LabelRow>
-          <Textarea
-            placeholder="생성 버튼을 눌러 키워드 정의를 작성해주세요"
-            value={keywordDef}
-            onChange={e => setKeywordDef(e.target.value)}
-            rows={6}
-            maxLength={500}
-          />
-          <Count>{keywordDef.length}/500</Count>
-        </Field>
-
-        <Field>
-          <Label>태그 선택</Label>
-          <ChipWrap>
-            {ALL_TAGS.map(tag => (
-              <Chip
-                key={tag}
-                $active={selected.has(tag)}
-                type="button"
-                onClick={() => onToggle(tag)}
-              >
-                {tag}
-              </Chip>
-            ))}
-          </ChipWrap>
-          <Notice>
-            <NoticeIcon aria-hidden>🔔</NoticeIcon>
-            <div>
-              제안하신 키워드는 내부 검토 후 등록됩니다. 보다 구체적인 정의와 예시를 포함하면 검토가 빨라져요.
-            </div>
-          </Notice>
-        </Field>
-
-        <Field>
-          <Label>이미지 첨부</Label>
-          <UploadBox
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
-            role="button"
-            tabIndex={0}
-          >
-            {imageUrl ? (
-              <Preview>
-                <img src={imageUrl} alt="미리보기" />
-              </Preview>
-            ) : (
-              <>
-                <UploadIcon aria-hidden>🖼️</UploadIcon>
-                <UploadText>이미지를 끌어놓거나 클릭하여 업로드하세요 (PNG/JPG)</UploadText>
-              </>
-            )}
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={(e) => e.target.files && onUpload(e.target.files[0])}
-            />
-          </UploadBox>
-        </Field>
-
-        <Submit type="submit" disabled={!canSubmit}>완료</Submit> */}
-        </Card>
-
-    );
+        </Card> : <Card2>
+            <div style={{ marginTop: "100px", fontSize: "20px", fontWeight: "600" }}>키워드 요청 완료</div>
+            <div style={{ marginTop: "50px" }}>클루시드에 더 많은 정보를 제공 해주셔서 감사합니다.</div>
+            <div style={{ marginTop: "0px" }}>요청하신 키워드는 클루시드팀에서 검토 후 최대 14일 이내 등록 예정이에요.</div>
+            <img style={{ marginTop: "40px" }} src={Uploadcompleteicon}></img>
+            <Gohomebtn style={{ marginTop: "20px" }} onClick={() => navigate(`/`, { replace: true })}>홈으로</Gohomebtn>
+        </Card2>);
 }
 
 /* ===== styles ===== */
 
+const Gohomebtn = styled.div`
+width:300px;
+height:50px;
+margin-top:20px;
+background-color:#021122;
+color:white;
+border-radius:8px 8px 8px 8px;
+ align-items:center;
+ justify-content:center;
+ display:flex;
+`
+
 
 const Card = styled.div`
-width:600px;
+  width:600px;
   display: flex;
   flex-direction:column;
+  background-color:none;
+`;
+
+const Card2 = styled.div`
+  width:600px;
+  display: flex;
+  flex-direction:column;
+  background-color:none;
+  align-items:center;
 `;
 
 const Title = styled.div`

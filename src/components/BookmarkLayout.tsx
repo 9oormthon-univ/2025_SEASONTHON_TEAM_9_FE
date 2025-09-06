@@ -249,7 +249,6 @@ export default function BookmarkLayout({ children }: Props) {
     </LayoutContainer>
   );
 }
-/* ================= styled-components ================= */
 
 const LayoutContainer = styled.div`
   display: flex;

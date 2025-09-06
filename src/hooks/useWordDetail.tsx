@@ -18,7 +18,7 @@ export default function useWordDetail(id?: string) {
         id: t.id,
         name: t.nameKr,
         isBookmarked: t.isBookmarked,
-        definition: t.definition,
+        definition: t.definition[0],
         tags: t.tags.map((tag) => tag.name),
       }));
 
@@ -26,7 +26,7 @@ export default function useWordDetail(id?: string) {
         id: res.data.terms[0].id,
         name: res.data.terms[0].nameKr,
         isBookmarked: res.data.terms[0].isBookmarked,
-        definition: res.data.terms[0].definition,
+        definition: res.data.terms[0].definition[0],
         tags: res.data.terms[0].tags.map((tag) => tag.name),
       };
       setMappedWord(mapWord);
