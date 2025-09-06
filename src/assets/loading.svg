@@ -1,10 +1,18 @@
-<svg width="154" height="154" viewBox="0 0 154 154" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_i_46_5328)">
-<circle cx="76.9996" cy="76.9999" r="76.7418" fill="url(#paint0_linear_46_5328)"/>
+<svg width="210" height="210" viewBox="0 0 210 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_f_46_5326)">
+<circle cx="105" cy="105" r="87.5" fill="url(#paint0_linear_46_5326)"/>
 </g>
-<circle cx="76.9996" cy="76.9999" r="76.3832" stroke="#F8F9FD" stroke-width="0.717213"/>
+<g filter="url(#filter1_i_46_5326)">
+<circle cx="105" cy="105" r="76.7418" fill="url(#paint1_linear_46_5326)"/>
+</g>
+<circle cx="105" cy="105" r="76.3832" stroke="#F8F9FD" stroke-width="0.717213"/>
 <defs>
-<filter id="filter0_i_46_5328" x="0.257812" y="0.258057" width="157.07" height="156.352" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_f_46_5326" x="-10.4713" y="-10.4713" width="230.943" height="230.943" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="13.9857" result="effect1_foregroundBlur_46_5326"/>
+</filter>
+<filter id="filter1_i_46_5326" x="28.2578" y="28.2581" width="157.07" height="156.352" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
@@ -12,9 +20,13 @@
 <feGaussianBlur stdDeviation="3.51434"/>
 <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
 <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.65 0"/>
-<feBlend mode="normal" in2="shape" result="effect1_innerShadow_46_5328"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_46_5326"/>
 </filter>
-<linearGradient id="paint0_linear_46_5328" x1="31.6147" y1="0.258059" x2="131.874" y2="140.126" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_46_5326" x1="53.2527" y1="17.5" x2="167.567" y2="176.976" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DDEBFC"/>
+<stop offset="1" stop-color="#C8D6E8"/>
+</linearGradient>
+<linearGradient id="paint1_linear_46_5326" x1="59.6147" y1="28.2581" x2="159.874" y2="168.126" gradientUnits="userSpaceOnUse">
 <stop stop-color="#DDEBFC"/>
 <stop offset="1" stop-color="#C1D9F8"/>
 </linearGradient>

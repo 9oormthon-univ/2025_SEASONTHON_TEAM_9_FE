@@ -432,8 +432,8 @@ const LoadingBox = styled.div`
 `;
 
 const RotatingIcon = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 175px;
+  height: 175px;
 
   /* 회전 + 은은한 밝기 */
   animation: spin 1.5s linear infinite,
