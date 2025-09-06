@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { TokenReq } from "@/api/axiosInstance"; // axios 인스턴스 import
 
+import Kakaoicon from "@/assets/loginicon/kakaoicon.png"
+import Appleicon from "@/assets/loginicon/appleicon.png"
+import Navericon from "@/assets/loginicon/navericon.png"
+
 export default function Loginpage() {
   const navigate = useNavigate();
 
@@ -76,10 +80,11 @@ export default function Loginpage() {
       </div>
 
       <Btncontainer2>
-        <div>카카오</div>
-        <div>네이버</div>
-        <div>애플</div>
+        <img src={Kakaoicon}></img>
+        <img src={Navericon}></img>
+        <img src={Appleicon}></img>
       </Btncontainer2>
+      <div style={{marginBottom:"100px"}}></div>
     </Container>
   );
 }
@@ -145,11 +150,10 @@ const Btn = styled.button`
 `;
 
 const Btncontainer2 = styled.div`
-  width: 60%;
+  width: 250px;
   margin-top: 40px;
   display: flex;
   flex-direction: row;
-  height: 90px;
   justify-content: space-between;
 `;
 
