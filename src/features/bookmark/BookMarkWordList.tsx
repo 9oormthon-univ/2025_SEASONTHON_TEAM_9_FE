@@ -6,6 +6,7 @@ import { TokenReq } from "@/api/axiosInstance";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import SkeletonWordList from "../word/SkeletonWordList";
+import noIcon from "@/assets/bookmarkicon/no.svg";
 
 type Tag = {
   id: string;
@@ -50,12 +51,10 @@ export default function BookMarkWordList() {
 
   return (
     <PageWrapper>
-      {/* 단어 개수 */}
       <Typography sx={{ fontWeight: 600, mb: 2 }}>
         {words.length}개의 단어
       </Typography>
 
-      {/* 카테고리 탭 */}
       <Box sx={{ display: "flex", mb: 4 }}>
         <Tabs
           value={tab}
@@ -87,6 +86,26 @@ export default function BookMarkWordList() {
       {/* 카드 그리드 */}
       {loading ? (
         <SkeletonWordList />
+      ) : words.length === 0 ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            flexDirection: "column",
+            gap: "2px",
+          }}
+        >
+          <img src={noIcon} />
+          <p style={{ color: "rgba(30, 32, 36, 0.66)", fontSize: "20px" }}>
+            아직 저장된 키워드가 없어요
+          </p>
+          <p style={{ fontSize: "14px", color: "rgba(30, 32, 36, 0.34)" }}>
+            폴더를 만들면 중요한 키워드를 볼 수 있어요
+          </p>
+        </div>
       ) : (
         <CardGrid>
           {words.map((w) => (
