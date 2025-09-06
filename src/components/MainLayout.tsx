@@ -56,12 +56,11 @@ const MainLayout = () => {
           </div>
 
           {!accessToken ? (
-            <div
-              style={{ position: "absolute", right: "200px" }}
+            <Loginbtn 
               onClick={() => navigate(`/login`, { replace: false })}
             >
               로그인
-            </div>
+            </Loginbtn>
           ) : (
             <NavbarRightBtn>
               <img
@@ -127,3 +126,21 @@ const NavButton = styled.div<{ $active: boolean }>`
     cursor: pointer;
   }
 `;
+
+const Loginbtn = styled.div`
+position: absolute;
+right: 200px;
+width:70px;
+height:40px;
+background-color:rgba(30, 32, 36, 1);
+color:rgba(247, 248, 252, 1);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:16px;
+font-weight:600;
+border-radius:10px;
+&:hover{
+cursor:pointer;
+}
+`
