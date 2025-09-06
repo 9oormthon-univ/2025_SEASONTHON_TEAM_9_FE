@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   Box,
@@ -8,34 +8,59 @@ import {
   Typography,
   IconButton,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Menu,
+  MenuItem,
+  ListItemIcon,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@/assets/bookmarkicon/close_fill.png"
+import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import { TokenReq } from "@/api/axiosInstance";
+import { toast } from "react-toastify";
+import EditIcon from "@/assets/bookmarkicon/edit.svg";
+import DeleteIcon from "@/assets/bookmarkicon/delete.svg";
 
 type Folder = {
-  id: number;
+  id: string;
   name: string;
-  count: number;
-}
+  createdAt: string;
+  updatedAt: string;
+};
 
 export default function BookmarkPage() {
-  const [tab, setTab] = useState(0); // 0 = 단어, 1 = 콘텐츠
-  const [addfolder, setaddfolder] = useState(false)
-  const [addfoldername, setaddfoldername] = useState("")
-  const [folderdatas, setfolderdatas] = useState<Folder[]>([])
-  const [error, setError] = useState(false)
+  const [tab, setTab] = useState(0);
+  const [addFolder, setAddFolder] = useState(false);
+  const [addFoldername, setAddFoldername] = useState("");
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedFolder, setSelectedFolder] = useState<Folder | null>(null);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false); // ✅ 삭제 모달 상태
+
   const navigate = useNavigate();
 
-  const folders = Array.from({ length: 4 }).map((_, i) => ({
-    id: i + 1,
-    name: tab === 0 ? "단어 폴더" : "콘텐츠 폴더",
-    count: 16,
-  }));
+  // ✅ 폴더 목록 가져오기
+  const fetchFolders = async () => {
+    try {
+      const res = await TokenReq.get<{ folders: Folder[] }>(
+        "/bookmarks/folders"
+      );
+      setFolders(res.data.folders);
+    } catch (err) {
+      toast.error("폴더 목록 불러오기 실패");
+    }
+  };
 
-  const handleNavigate = (id: number) => {
+  useEffect(() => {
+    fetchFolders();
+  }, []);
+
+  const handleNavigate = (id: string) => {
     if (tab === 0) {
       navigate(`word/${id}`);
     } else {
@@ -43,192 +68,257 @@ export default function BookmarkPage() {
     }
   };
 
-  const add_folder = () => {
-    handleaddfolder()
-    setaddfolder(false)
-    setaddfoldername("")
-  }
-
-  const add_foldername = (e: any) => {
-    setaddfoldername(e.target.value)
-  }
-
-  const handleaddfolder = async () => {
+  // ✅ 새 폴더 추가
+  const handleAddFolder = async () => {
     try {
-      const res = await TokenReq.post("/folders", { name: addfoldername });
-
+      const res = await TokenReq.post("/bookmarks/folders", {
+        name: addFoldername,
+      });
       if (res.status === 200) {
-
-        setError(false);
-        navigate(`/bookmark`, { replace: true });
+        setAddFolder(false);
+        setAddFoldername("");
+        toast.success("폴더 생성 성공");
+        fetchFolders();
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || "로그인 실패");
+      toast.error("폴더 생성 실패");
     }
+  };
+
+  // ✅ 옵션 메뉴 열기
+  const handleMenuOpen = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    folder: Folder
+  ) => {
+    e.stopPropagation();
+    setAnchorEl(e.currentTarget);
+    setSelectedFolder(folder);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  // ✅ 폴더 수정
+  const handleEdit = () => {
+    toast.info(`폴더 수정: ${selectedFolder?.name}`);
+    handleMenuClose();
+  };
+
+  // ✅ 폴더 삭제 버튼 → 모달 열기
+  const openDeleteConfirm = () => {
+    setDeleteConfirmOpen(true);
+    handleMenuClose();
+  };
+
+  // ✅ 실제 삭제
+  const handleDeleteConfirm = async () => {
+    if (!selectedFolder) return;
+    try {
+      await TokenReq.delete("/bookmarks/folders/delete", {
+        data: { folderId: selectedFolder.id },
+      });
+      toast.success("폴더 삭제 성공");
+      fetchFolders();
+    } catch (err) {
+      toast.error("폴더 삭제 실패");
+    }
+    setDeleteConfirmOpen(false);
+    setSelectedFolder(null);
   };
 
   return (
     <PageWrapper>
-      {addfolder && <Overlaycontainer>
-        <OverlayModal>
-          <OverlayBar style={{ display: "flex", justifyContent: "space-between" }}>
-            <text style={{ fontWeight: "500", fontSize: "18px" }}>새로운 폴더 생성하기</text>
-            <img src={CloseIcon} onClick={() => { setaddfoldername(""); setaddfolder(false) }}></img>
-          </OverlayBar>
-          <OverlayBar>
-            <Inputbar
-              placeholder="원하는 검색어를 입력하세요"
-              value={addfoldername}
-              onChange={add_foldername}
-            ></Inputbar>
-            <Sendbtn onClick={() => { add_folder() }}>확인</Sendbtn>
-          </OverlayBar>
-        </OverlayModal>
-      </Overlaycontainer>}
-      {/* 제목 + 탭 */}
-      {!addfolder && <div>
-        <Header>
-          <Typography sx={{ fontWeight: 600, fontSize: "24px" }}>
-            나의 북마크
-          </Typography>
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Tabs
-              value={tab}
-              onChange={(_, v) => setTab(v)}
-              TabIndicatorProps={{ style: { display: "none" } }}
-              sx={{
-                "& .MuiTab-root": {
-                  borderRadius: "6px",
-                  minHeight: "32px",
-                  padding: "6px 16px",
-                  textTransform: "none",
-                  fontWeight: 500,
-                  color: "#9ca3af",
-                },
-                "& .Mui-selected": {
-                  backgroundColor: "#111827",
-                  color: "#fff",
-                },
-              }}
-            >
-              <Tab label="단어" />
-              <Tab label="콘텐츠" />
-            </Tabs>
-          </Box>
-        </Header>
-
-        {/* 폴더 카드들 */}
-        <FolderGrid>
-          {folders.map((f) => (
-            <CardWrapper key={f.id} onClick={() => handleNavigate(f.id)}>
-              <FolderBox />
-              <InfoRow>
-                <div>
-                  <Typography variant="subtitle1" fontWeight={500}>
-                    {f.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    +{f.count}개의 {tab === 0 ? "단어" : "콘텐츠"}
-                  </Typography>
-                </div>
-                <IconButton
-                  size="small"
-                  onClick={(e) => {
-                    e.stopPropagation(); // 옵션 클릭 시 카드 클릭 막기
-                    console.log("옵션 클릭");
-                  }}
-                >
-                  <MoreVertIcon fontSize="small" />
-                </IconButton>
-              </InfoRow>
-            </CardWrapper>
-          ))}
-
-          {/* 추가하기 버튼 */}
-          <AddCard>
+      {/* 폴더 추가 모달 */}
+      <Dialog
+        open={addFolder}
+        onClose={() => setAddFolder(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between" }}>
+          새로운 폴더 생성하기
+          <IconButton onClick={() => setAddFolder(false)} size="small">
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            marginBottom: "20px",
+          }}
+        >
+          <DialogContent>
+            <TextField
+              sx={{ height: "100%", padding: "0px" }}
+              autoFocus
+              fullWidth
+              placeholder="폴더 이름을 입력하세요"
+              value={addFoldername}
+              onChange={(e) => setAddFoldername(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
             <Button
-              onClick={() => { setaddfolder(true) }}
-              variant="text"
-              startIcon={<AddIcon />}
-              sx={{
-                flexDirection: "column",
-                color: "#9ca3af",
-                height: "100%",
-                fontWeight: 500,
-              }}
+              variant="contained"
+              onClick={handleAddFolder}
+              disabled={!addFoldername.trim()}
+              sx={{ height: "52px", marginRight: "20px", width: "110px" }}
             >
-              추가하기
+              확인
             </Button>
-          </AddCard>
-        </FolderGrid>
-      </div>}
+          </DialogActions>
+        </div>
+      </Dialog>
+
+      {/* 제목 + 탭 */}
+      <Header>
+        <Typography sx={{ fontWeight: 600, fontSize: "24px" }}>
+          나의 북마크
+        </Typography>
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Tabs
+            value={tab}
+            onChange={(_, v) => setTab(v)}
+            TabIndicatorProps={{ style: { display: "none" } }}
+            sx={{
+              "& .MuiTab-root": {
+                borderRadius: "6px",
+                minHeight: "32px",
+                padding: "6px 16px",
+                textTransform: "none",
+                fontWeight: 500,
+                color: "#9ca3af",
+              },
+              "& .Mui-selected": {
+                backgroundColor: "#111827",
+                color: "#fff",
+              },
+            }}
+          >
+            <Tab label="단어" />
+            <Tab label="콘텐츠" />
+          </Tabs>
+        </Box>
+      </Header>
+
+      {/* 폴더 카드들 */}
+      <FolderGrid>
+        {folders.map((f) => (
+          <CardWrapper key={f.id} onClick={() => handleNavigate(f.id)}>
+            <FolderBox />
+            <InfoRow>
+              <div>
+                <Typography variant="subtitle1" fontWeight={500}>
+                  {f.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  생성일: {new Date(f.createdAt).toLocaleDateString()}
+                </Typography>
+              </div>
+              <IconButton size="small" onClick={(e) => handleMenuOpen(e, f)}>
+                <MoreVertIcon fontSize="small" />
+              </IconButton>
+            </InfoRow>
+          </CardWrapper>
+        ))}
+
+        {/* 추가하기 버튼 */}
+        <AddCard>
+          <Button
+            onClick={() => setAddFolder(true)}
+            variant="text"
+            startIcon={<AddIcon />}
+            sx={{
+              flexDirection: "column",
+              color: "#9ca3af",
+              height: "100%",
+              fontWeight: 500,
+            }}
+          >
+            추가하기
+          </Button>
+        </AddCard>
+      </FolderGrid>
+
+      {/* 옵션 메뉴 */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleEdit}>
+          <ListItemIcon>
+            <img src={EditIcon} alt="edit" width={18} height={18} />
+          </ListItemIcon>
+          수정하기
+        </MenuItem>
+        <MenuItem onClick={openDeleteConfirm}>
+          <ListItemIcon>
+            <img src={DeleteIcon} alt="delete" width={18} height={18} />
+          </ListItemIcon>
+          삭제하기
+        </MenuItem>
+      </Menu>
+      <Dialog
+        open={deleteConfirmOpen}
+        onClose={() => setDeleteConfirmOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle
+          sx={{
+            fontWeight: "600",
+            textAlign: "center",
+            marginTop: "10px",
+            position: "relative",
+          }}
+        >
+          폴더 삭제하기
+          <IconButton
+            onClick={() => setDeleteConfirmOpen(false)}
+            size="small"
+            sx={{ position: "absolute", right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+
+        <DialogContent sx={{ textAlign: "center", color: "#555" }}>
+          한번 삭제한 폴더는 다시 되돌릴 수 없어요 <br />
+          정말 삭제하실 건가요?
+        </DialogContent>
+
+        <DialogActions sx={{ justifyContent: "center" }}>
+          <Button
+            variant="contained"
+            onClick={handleDeleteConfirm}
+            sx={{
+              backgroundColor: "#111827",
+              "&:hover": { backgroundColor: "#1f2937" },
+              borderRadius: "8px",
+              width: "240px",
+              height: "50px",
+              marginBottom: "20px",
+            }}
+          >
+            삭제하기
+          </Button>
+        </DialogActions>
+      </Dialog>
     </PageWrapper>
   );
 }
 
 /* ================= styles ================= */
 
-const Overlaycontainer = styled.div`
-width:100%;
-height:400px;
-display:flex;
-justify-content:center;
-align-items:center;
-`
-const OverlayModal = styled.div`
-width:500px;
-height:200px;
-background-color:white;
-flex-direction:column;
-display:flex;
-align-items:center;
-border-radius:20px;
-border:1px solid lightgrey;
-`
-const OverlayBar = styled.div`
-width:400px;
-height:50px;
-margin-top:30px;
-display:flex;
-align-items:center;
-flex-direction:row;
-`
-
-const Inputbar = styled.input`
-  width: 280px;
-  height: 50px;
-  padding: 0 12px;
-  border: 1px solid #1e202457;
-  border-radius: 8px;
-  font-size: 14px;
-  box-sizing: border-box; /* padding, border 포함해서 100% */
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #dfe1e5;
-  }
-
-  &::placeholder {
-    color: #1e202457;
-  }
-`;
-
-const Sendbtn = styled.div`
-width:100px;
-height:50px;
-border-radius:25px;
-margin-left:20px;
-background-color:rgba(247, 248, 252, 1);
-display:flex;
-align-items:center;
-justify-content:center;
-`
-
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  margin-top: 50px;
 `;
 
 const PageWrapper = styled.div`

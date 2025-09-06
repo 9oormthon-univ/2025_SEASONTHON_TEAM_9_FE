@@ -28,7 +28,7 @@ export default function WordDetail() {
       const mappedWord: Word = {
         id: res.data.terms[0].id,
         name: res.data.terms[0].nameKr,
-        bookmarking: false,
+        isBookmarked: false,
         definition: res.data.terms[0].definition,
         tags: res.data.terms[0].tags.map((tag) => tag.name),
       };
@@ -38,7 +38,7 @@ export default function WordDetail() {
       const mappedRelations = res.data.terms[0].relations.map((r) => ({
         id: r.id,
         name: r.nameKr,
-        bookmarking: false,
+        isBookmarked: false,
         definition: r.definition,
         tags: [],
       }));
@@ -68,7 +68,7 @@ export default function WordDetail() {
             description={word.definition}
             tags={word.tags}
             comments={dummyComments}
-            bookmarking={word.bookmarking}
+            bookmarking={word.isBookmarked}
           />
         )}
 

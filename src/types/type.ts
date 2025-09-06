@@ -16,14 +16,15 @@ export type Term = {
   definition: string;
   imgUrl: string;
   tags: TermTag[];
-  relations: TermRelation[]; // 🔹 relations 추가
+  relations: TermRelation[];
+  isBookmarked: boolean;
 };
 
 export type Word = {
   id: string;
   name: string;
-  bookmarking: boolean;
+  isBookmarked: boolean;
   tags: string[];
   definition: string;
-  relations?: TermRelation[]; // 🔹 연관 키워드 필요할 때만 사용
+  relations?: TermRelation[];
 };

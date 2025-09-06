@@ -9,7 +9,7 @@ export default function BookMarkWordList() {
   const words = Array.from({ length: 9 }).map((_, i) => ({
     id: String(i),
     name: `단어명`,
-    bookmarking: i % 2 === 0,
+    isBookmarked: i % 2 === 0,
     tags: ["태그", "태그", "태그"],
     definition: "",
   }));
@@ -59,7 +59,7 @@ export default function BookMarkWordList() {
             id={w.id}
             key={w.id}
             name={w.name}
-            bookmarking={w.bookmarking}
+            isBookmarked={w.isBookmarked}
             tags={w.tags}
             definition={w.definition}
           />

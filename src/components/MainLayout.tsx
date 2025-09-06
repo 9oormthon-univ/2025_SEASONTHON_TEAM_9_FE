@@ -107,7 +107,7 @@ const Navbar = styled.div`
   height: 72px;
   background-color: white;
   border-bottom: 1px solid #f0f0f9;
-  z-index: 9999;
+  z-index: 100;
   box-sizing: border-box;
 `;
 
