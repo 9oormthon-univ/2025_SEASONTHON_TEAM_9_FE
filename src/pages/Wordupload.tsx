@@ -11,7 +11,7 @@ const ALL_TAGS: TagKey[] = ["개발", "기획", "UX/UI", "디자인", "마케팅
 
 export default function KeywordRequestForm() {
     const [keywordName, setKeywordName] = useState("");
-    const [keywordDef, setKeywordDef] = useState("");
+    const [keywordDef, setKeywordDef] = useState("생성 버튼을 누르면 자동으로 생성돼요");
     const [selected, setSelected] = useState<Set<TagKey>>(new Set(["개발"]));
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -88,7 +88,12 @@ export default function KeywordRequestForm() {
                         value={keywordName}
                         onChange={changename}
                     ></Namebar>
-                    <Definitionbar></Definitionbar>
+                    <Definitionbar>
+                        <div style={{width:"90%",color:"rgba(30, 32, 36, 0.34)",minHeight:"100px",marginTop:"10px",fontSize:"16px"}}>{keywordDef}</div>
+                        <div style={{width:"90%",height:"35px",margin:"10px 0px",display:"flex",justifyContent:"end"}}>
+                            <div style={{borderRadius:"10px",width:"50px",height:"100%",backgroundColor:"rgba(2, 17, 34, 1)",color:"white",display:"flex",justifyContent:"center",alignItems:"center"}}>생성</div>
+                        </div>
+                    </Definitionbar>
                     <Tagbar>
                         {ALL_TAGS.map((v, i) => (<Tags key={i}>{v}</Tags>))}
                     </Tagbar>
@@ -281,10 +286,13 @@ width: 100%;
 
 const Definitionbar = styled.div`
 width: 100%;
-height: 150px;
+height: auto;
 background-color:rgba(240, 240, 249, 1);
-  border-radius: 12px;
-  margin-top:10px;
+border-radius: 12px;
+margin-top:10px;
+display:flex;
+flex-direction:column;
+align-items:center;
 `
 
 const Tagbar = styled.div`
