@@ -15,6 +15,7 @@ import BookMarkContentDetailPage from "@/pages/BookMarkContentDetailPage";
 import BookmarkLayout from "@/components/BookmarkLayout";
 import ContentsDetailPage from "@/pages/ContentsDetailPage";
 import WordDetailPage from "@/pages/WordDetailPage";
+import KeywordRequestForm from "@/pages/Wordupload";
 
 const routes = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ const routes = createBrowserRouter([
         path: "word/:id",
         element: <WordDetailPage />,
       },
+      {
+        path:"wordupload",
+        element:<KeywordRequestForm/>
+      }
     ],
   },
 ]);

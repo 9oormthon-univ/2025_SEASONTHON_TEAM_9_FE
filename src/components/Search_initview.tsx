@@ -3,7 +3,7 @@ import Arrowicon from "@/assets/arrow_right_circle_fill.png"
 
 export default function SearchGuideSection() {
     const items: RowItem[] = [
-        { label: "키워드", title: "키워드는 알지만 정확한 의미가 궁금할 때", hints: ["운보딩", "CI/CD"] },
+        { label: "키워드", title: "키워드는 알지만 정확한 의미가 궁금할 때", hints: ["온보딩 CI/CD"] },
         { label: "텍스트 검색", title: "적용 상황은 알지만 정확한 키워드를 모를 때", hints: ["신규 유저가 앱에 처음 접속했을 때 보여주는 화면이 뭐였지?"] },
         { label: "이미지 검색", title: "스크린샷에서 궁금한 부분이 있을 때", hints: ["이미지와 함께 궁금한 부분을 설명하면 해당 맥락에 맞는 키워드를 제안해드려요"] },
     ];
