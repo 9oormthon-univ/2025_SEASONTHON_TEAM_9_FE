@@ -17,7 +17,6 @@ import WordDetailPage from "@/pages/WordDetailPage";
 import KeywordRequestForm from "@/pages/Wordupload";
 import BadgePage from "@/pages/BadgePage";
 
-
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -80,9 +79,9 @@ const routes = createBrowserRouter([
         element:<KeywordRequestForm/>
       },
       {
-        path: "badge",
-        element: <BadgePage />,
-      },
+        path:"badge",
+        element:<BadgePage/>
+      }
     ],
   },
 ]);
