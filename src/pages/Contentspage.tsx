@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import { Box, Button } from "@mui/material";
 import yellowfilter from "@/assets/yellowfilter.svg";
 import SortIcon from "@/assets/word/sort.svg";
-
+import contentBanner from "@/assets/contentBanner.png";
 
 type Content = {
   id: string;
@@ -137,7 +137,7 @@ export default function Contentspage() {
 
   return !select ? (
     <Container>
-      <Bg />
+      <Bg src={contentBanner} />
       <ContentsContainer>
         <Title>
           <Box
