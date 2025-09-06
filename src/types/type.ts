@@ -13,7 +13,7 @@ export type Term = {
   id: string;
   nameKr: string;
   nameEn: string;
-  definition: string;
+  definition: string[];
   imgUrl: string;
   tags: TermTag[];
   relations: TermRelation[];

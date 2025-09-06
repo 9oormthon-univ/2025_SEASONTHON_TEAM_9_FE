@@ -6,8 +6,8 @@ import bookmark_fill from "@/assets/bookmarkicon/bookmark_fill.png";
 import SearchCard from "@/components/SearchCard";
 import SearchGuideSection from "@/components/Search_initview";
 import searchIcon from "@/assets/search.svg";
-import submitIcon from "@/assets/submit.svg"; // ✅ 제출 버튼 아이콘
-import loadingIcon from "@/assets/loading.svg"; // ✅ 로딩 아이콘 추가
+import submitIcon from "@/assets/submit.svg";
+import loadingIcon from "@/assets/loading.svg";
 import clucidChat from "@/assets/clucidChat.svg";
 
 const tagname = ["키워드", "텍스트", "이미지"];
@@ -36,7 +36,7 @@ export default function SearchPage() {
   const endRef = useRef<HTMLDivElement | null>(null);
   const taRef = useRef<HTMLTextAreaElement | null>(null);
   const [isInit, setIsInit] = useState(true);
-  const [loading, setLoading] = useState(false); // ✅ 로딩 상태 추가
+  const [loading, setLoading] = useState(false);
   const [selectedTag, setSelectedTag] = useState<number>(0);
 
   // 새 메시지 도착 시 맨 아래로 스크롤
