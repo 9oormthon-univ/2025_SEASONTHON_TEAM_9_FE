@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { TokenReq } from "@/api/axiosInstance";
 import type { Word, Term } from "@/types/type";
 
-export default function useWordDetail(id?: string) {
+export default function useWordDetail(id?: string, search?: string) {
   const [words, setWords] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
   const [mappedWord, setMappedWord] = useState<Word>();
@@ -10,10 +10,16 @@ export default function useWordDetail(id?: string) {
   async function fetchTerms() {
     try {
       setLoading(true);
-      const res = await TokenReq.get<{ terms: Term[] }>("/terms", {
-        params: { ids: id || "" },
-      });
-
+      let res;
+      if (search) {
+        res = await TokenReq.get<{ terms: Term[] }>(
+          "/terms/names?query=" + encodeURIComponent(search)
+        );
+      } else {
+        res = await TokenReq.get<{ terms: Term[] }>("/terms", {
+          params: { ids: id || "" },
+        });
+      }
       const mapped: Word[] = res.data.terms.map((t) => ({
         id: t.id,
         name: t.nameKr,
@@ -41,7 +47,7 @@ export default function useWordDetail(id?: string) {
 
   useEffect(() => {
     fetchTerms();
-  }, []);
+  }, [search]);
 
   return { words, loading, mappedWord };
 }
