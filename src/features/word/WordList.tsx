@@ -20,6 +20,8 @@ import useWordDetail from "@/hooks/useWordDetail";
 import type { Word } from "@/types/type";
 import PlusIcon from "@/assets/plus.svg";
 import wordBanner from "@/assets/wordBanner.png";
+import useDebounce from "@/hooks/useDebounce"; // ✅ debounce 훅 추가
+import { useNavigate } from "react-router-dom";
 
 function getKoreanInitial(char: string): string {
   const KOR_BEGIN_UNICODE = 44032;
@@ -53,13 +55,17 @@ function getKoreanInitial(char: string): string {
 
 export default function WordList() {
   const [value, setValue] = useState(0);
-  const { words = [], loading } = useWordDetail();
+  const [search, setSearch] = useState("");
+
+  const debouncedSearch = useDebounce(search, 1000);
+  const { words = [], loading } = useWordDetail(undefined, debouncedSearch);
 
   const [langFilter, setLangFilter] = useState<"kor" | "eng" | null>(null);
   const [charFilter, setCharFilter] = useState<string | null>(null);
 
   const [anchorKor, setAnchorKor] = useState<null | HTMLElement>(null);
   const [anchorEng, setAnchorEng] = useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
 
   const tags = useMemo(() => {
     const dic = new Set<string>();
@@ -119,6 +125,8 @@ export default function WordList() {
             placeholder="원하는 단어를 검색하세요"
             variant="outlined"
             fullWidth
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -133,6 +141,18 @@ export default function WordList() {
             }}
           />
         </SearchBox>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+            marginBottom: "30px",
+          }}
+        >
+          <Button onClick={() => navigate("/wordupload")}>
+            새로운 키워드 요청하기
+          </Button>
+        </div>
 
         {/* 탭 & 필터 */}
         <ToolbarWrapper>
@@ -178,7 +198,8 @@ export default function WordList() {
                 : "한글 선택"}
             </Button>
 
-            {/* <Button
+            {/* ✅ 영어 버튼
+            <Button
               variant="outlined"
               size="small"
               onClick={(e) => setAnchorEng(e.currentTarget)}
@@ -232,6 +253,7 @@ export default function WordList() {
             {koreanInitials.map((k) => (
               <Button
                 fullWidth
+                key={k}
                 onClick={() => {
                   setLangFilter("kor");
                   setCharFilter(k);
@@ -263,6 +285,7 @@ export default function WordList() {
             {englishAlphabet.map((c) => (
               <Button
                 fullWidth
+                key={c}
                 onClick={() => {
                   setLangFilter("eng");
                   setCharFilter(c);
@@ -319,7 +342,7 @@ const PageWrapper = styled.div`
 
 const SearchBox = styled.div`
   width: 100%;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 `;
 
 const ToolbarWrapper = styled.div`
