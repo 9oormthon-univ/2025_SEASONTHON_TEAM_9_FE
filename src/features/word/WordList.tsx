@@ -21,6 +21,7 @@ import type { Word } from "@/types/type";
 import PlusIcon from "@/assets/plus.svg";
 import wordBanner from "@/assets/wordBanner.png";
 import useDebounce from "@/hooks/useDebounce"; // ✅ debounce 훅 추가
+import { useNavigate } from "react-router-dom";
 
 function getKoreanInitial(char: string): string {
   const KOR_BEGIN_UNICODE = 44032;
@@ -56,7 +57,7 @@ export default function WordList() {
   const [value, setValue] = useState(0);
   const [search, setSearch] = useState("");
 
-  const debouncedSearch = useDebounce(search, 2000);
+  const debouncedSearch = useDebounce(search, 1000);
   const { words = [], loading } = useWordDetail(undefined, debouncedSearch);
 
   const [langFilter, setLangFilter] = useState<"kor" | "eng" | null>(null);
@@ -64,6 +65,7 @@ export default function WordList() {
 
   const [anchorKor, setAnchorKor] = useState<null | HTMLElement>(null);
   const [anchorEng, setAnchorEng] = useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
 
   const tags = useMemo(() => {
     const dic = new Set<string>();
@@ -139,6 +141,18 @@ export default function WordList() {
             }}
           />
         </SearchBox>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+            marginBottom: "30px",
+          }}
+        >
+          <Button onClick={() => navigate("/wordupload")}>
+            새로운 키워드 요청하기
+          </Button>
+        </div>
 
         {/* 탭 & 필터 */}
         <ToolbarWrapper>
@@ -328,7 +342,7 @@ const PageWrapper = styled.div`
 
 const SearchBox = styled.div`
   width: 100%;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 `;
 
 const ToolbarWrapper = styled.div`
